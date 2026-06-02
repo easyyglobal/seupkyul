@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세없결 — 가맹점주 PWA 미리보기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:         #1A1A1A;
+  --teal-dark:    #000000;
+  --teal-light:   #555555;
+  --beige:        #E8DDC0;
+  --bg:           #FAFAF8;
+  --coral:        #E8DDC0;
+  --glass:        rgba(255,255,255,0.92);
+  --glass-border: rgba(192,192,192,0.25);
+  --ok:    #4A9A6A;
+  --warn:  #C8922A;
+  --err:   #C45252;
+}
+body {
+  font-family: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
+  background: #F5F2EC;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+/* ── 폰 프레임 ── */
+.phone-frame {
+  width: 390px;
+  flex-shrink: 0;
+}
+.phone-label {
+  text-align: center;
+  font-size: 13px; font-weight: 700;
+  color: var(--teal); margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+.phone-shell {
+  background: #111;
+  border-radius: 44px;
+  padding: 14px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.phone-notch {
+  background: #111; height: 10px;
+  border-radius: 8px; width: 120px;
+  margin: 0 auto 6px;
+}
+.phone-screen {
+  background: var(--bg);
+  border-radius: 34px;
+  overflow: hidden;
+  height: 740px;
+  position: relative;
+}
+
+/* ── 스크린 내부 — 공통 ── */
+.screen {
+  position: absolute; inset: 0;
+  overflow-y: auto;
+  padding-bottom: 72px;
+  display: none;
+}
+.screen.active { display: block; }
+#screen-login.active { display: flex; flex-direction: column; justify-content: center; }
+.screen::-webkit-scrollbar { display: none; }
+
+/* 헤더 */
+.app-header {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(250,250,248,0.95);
+  backdrop-filter: blur(12px);
+  padding: 16px 20px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.app-header h1 { font-size: 20px; font-weight: 800; color: var(--teal); }
+.app-header .sub { font-size: 11px; color: #888; margin-top: 1px; }
+.header-icon {
+  width: 40px; height: 40px;
+  background: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(0,0,0,0.06);
+  position: relative; cursor: pointer;
+  font-size: 18px;
+}
+.notif-dot {
+  position: absolute; top: 4px; right: 4px;
+  width: 8px; height: 8px;
+  background: var(--err); border-radius: 50%;
+  border: 1.5px solid var(--bg);
+}
+
+.screen-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 20px; }
+
+/* 섹션 헤더 */
+.sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.sec-title { font-size: 16px; font-weight: 800; color: #1a1a1a; }
+.sec-link { font-size: 12px; font-weight: 600; color: var(--teal); }
+
+/* 글래스 카드 */
+.gcard {
+  background: var(--glass);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+/* 빠른 발주 카드 */
+.quick-card {
+  padding: 16px 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.quick-info { flex: 1; min-width: 0; }
+.quick-name { font-size: 14px; font-weight: 800; color: #1a1a1a; }
+.quick-cnt  { font-size: 11px; color: #aaa; margin-top: 2px; }
+.quick-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.quick-price { font-size: 14px; font-weight: 800; color: var(--teal); }
+.btn-quick {
+  background: var(--teal); color: white;
+  font-size: 13px; font-weight: 700;
+  min-width: 54px; min-height: 44px;
+  border-radius: 12px; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .15s;
+}
+.btn-quick:hover { background: var(--teal-dark); }
+
+/* 재고 칩 */
+.stock-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px; border: 1px solid;
+}
+.stock-chip.ok     { color: var(--ok);   background: rgba(76,175,130,0.12);  border-color: rgba(76,175,130,0.3);  }
+.stock-chip.warn   { color: var(--warn); background: rgba(244,162,60,0.12);  border-color: rgba(244,162,60,0.3);  }
+.stock-chip.err    { color: var(--err);  background: rgba(224,82,82,0.12);   border-color: rgba(224,82,82,0.3);   }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* 재고 카드 */
+.stock-card {
+  padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.stock-name { font-size: 13px; font-weight: 600; color: #333; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stock-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.btn-order-sm {
+  min-height: 36px; min-width: 54px;
+  font-size: 11px; font-weight: 700; color: var(--teal);
+  border: 1.5px solid rgba(26,26,26,0.25); border-radius: 10px;
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-order-sm:hover { background: rgba(26,26,26,0.05); }
+
+/* 타임라인 */
+.timeline { padding: 20px; }
+.tl-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.tl-order-no { font-size: 11px; color: #aaa; }
+.tl-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.tl-item { display: flex; gap: 14px; padding-bottom: 18px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-ico-col { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.tl-ico {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid; font-size: 11px; font-weight: 800;
+}
+.tl-ico.done    { background: var(--teal); border-color: var(--teal); color: white; }
+.tl-ico.current { background: white; border-color: var(--teal); color: var(--teal); }
+.tl-ico.pending { background: white; border-color: #ddd; color: #ddd; }
+.tl-line { width: 2px; flex: 1; margin-top: 4px; }
+.tl-line.done { background: var(--teal); }
+.tl-line.pending { background: #e5e7eb; }
+.tl-content { flex: 1; padding-top: 3px; }
+.tl-label { font-size: 13px; font-weight: 700; }
+.tl-label.done, .tl-label.current { color: var(--teal); }
+.tl-label.pending { color: #ccc; }
+.tl-date { font-size: 11px; color: #aaa; margin-top: 2px; }
+.tl-track { font-size: 11px; color: var(--teal); font-weight: 600; margin-top: 3px; }
+
+/* 발주 이력 카드 */
+.order-hist-card { padding: 16px 18px; }
+.hist-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.hist-no { font-size: 11px; color: #aaa; font-family: monospace; }
+.status-badge {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px;
+}
+.status-badge.delivery { background: rgba(59,130,246,0.1); color: #3B82F6; }
+.status-badge.done2    { background: rgba(26,26,26,0.1); color: var(--teal); }
+.hist-bottom { display: flex; justify-content: space-between; align-items: center; }
+.hist-date { font-size: 12px; color: #aaa; }
+.btn-reorder {
+  font-size: 11px; font-weight: 700; color: var(--teal);
+  border: 1.5px solid rgba(26,26,26,0.3); border-radius: 10px;
+  padding: 6px 12px; background: transparent; cursor: pointer;
+  min-height: 32px;
+}
+
+/* 상품 리스트 (발주) */
+.product-item { padding: 14px 18px; display: flex; align-items: center; gap: 12px; }
+.prod-img {
+  width: 60px; height: 60px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--beige) 0%, rgba(232,221,208,0.4) 100%);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.prod-info { flex: 1; min-width: 0; }
+.prod-name { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+.prod-unit { font-size: 11px; color: #aaa; margin-top: 2px; }
+.prod-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+.prod-price { font-size: 13px; font-weight: 800; color: var(--teal); }
+.qty-ctrl { display: flex; align-items: center; gap: 6px; }
+.qty-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px solid rgba(26,26,26,0.2);
+  background: white; color: var(--teal);
+  font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; line-height: 1;
+}
+.qty-btn.add { background: var(--teal); color: white; border-color: var(--teal); }
+.qty-num { font-size: 14px; font-weight: 800; color: var(--teal); min-width: 20px; text-align: center; }
+
+/* 하단 탭 바 */
+.tab-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 72px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+}
+.tab-btn2 {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  cursor: pointer; border: none; background: transparent;
+  font-family: inherit;
+  padding-bottom: 6px;
+}
+.tab-icon { font-size: 22px; }
+.tab-label { font-size: 10px; font-weight: 600; color: #aaa; }
+.tab-btn2.active .tab-label { color: var(--teal); }
+.tab-btn2.active .tab-icon { filter: saturate(2) brightness(0.8); }
+
+/* ── 설명 패널 ── */
+.info-panel {
+  flex: 1; max-width: 360px;
+  display: flex; flex-direction: column; gap: 16px;
+  padding-top: 40px;
+}
+.info-panel h2 { font-size: 22px; font-weight: 800; color: var(--teal); }
+.info-panel p { font-size: 14px; color: #555; line-height: 1.7; }
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.feature-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: #444; line-height: 1.5;
+}
+.feat-ico {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: rgba(26,26,26,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.screen-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-chip {
+  font-size: 12px; font-weight: 600; color: var(--teal);
+  background: rgba(26,26,26,0.08);
+  padding: 6px 14px; border-radius: 100px;
+  cursor: pointer; border: none; font-family: inherit;
+  transition: background .15s, color .15s;
+}
+.nav-chip.active { background: var(--teal); color: white; }
+
+/* ── 폰 프레임 반응형 ────────────────────────────────
+   390px 폰이 화면보다 클 때 스케일 축소
+   ───────────────────────────────────────────────── */
+@media (max-width: 440px) {
+  body { padding: 16px 8px; gap: 16px; }
+  .phone-frame { width: 100%; max-width: 390px; }
+}
+
+@media (max-width: 400px) {
+  .phone-shell {
+    border-radius: 32px;
+    padding: 10px;
+  }
+  .phone-screen {
+    border-radius: 26px;
+    /* 기기 높이에 맞게 동적 조절 */
+    height: calc(100dvh - 80px);
+    min-height: 580px;
+    max-height: 740px;
+  }
+}
+
+/* ── 스크린 전환 & 카드 개선 ─────────────────── */
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(9px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes loginIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* 스크린 활성화 시 부드러운 진입 */
+.screen.active          { animation: screenIn .25s ease both; }
+#screen-login.active    { animation: loginIn .3s ease both; }
+
+/* gcard 터치 피드백 */
+.gcard { transition: box-shadow .2s ease, transform .2s ease; }
+.gcard:active { transform: scale(0.985); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+
+/* 로그인 버튼 glow */
+#screen-login button[onclick="doFranLogin()"] {
+  transition: transform .2s, box-shadow .2s !important;
+}
+#screen-login button[onclick="doFranLogin()"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(232,221,192,0.25) !important;
+}
+
+/* 탭바 blur 강화 */
+.tab-bar {
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+}
+</style>
+</head>
+<body>
+
+<!-- 폰 프레임 -->
+<div class="phone-frame">
+  <p class="phone-label">📱 가맹점주 모바일 웹</p>
+  <div class="phone-shell">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+
+      <!-- 로그인 화면 -->
+      <div class="screen active" id="screen-login" style="background:linear-gradient(160deg,#1A1A1A 0%,#2D2D2D 100%);padding-bottom:0;">
+        <div style="padding:32px 24px;">
+          <div style="text-align:center;margin-bottom:40px;">
+            <div style="width:56px;height:56px;background:var(--beige);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;">🌿</div>
+            <div style="font-size:26px;font-weight:800;color:white;letter-spacing:-1px;">seupkyul</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px;letter-spacing:0.03em;">가맹점주 전용 앱</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <input id="franEmail" type="email" value="gangnam@seupkyul.com" placeholder="이메일"
+              style="height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;padding:0 16px;font-size:14px;color:white;font-family:inherit;outline:none;-webkit-text-fill-color:white;">
+            <input id="franPw" type="password" value="branch1234" placeholder="비밀번호"
+              style="height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;padding:0 16px;font-size:14px;color:white;font-family:inherit;outline:none;-webkit-text-fill-color:white;">
+            <div id="franLoginError" style="display:none;font-size:12px;color:#ff8585;padding:2px 4px;">이메일 또는 비밀번호가 올바르지 않습니다.</div>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.55);padding:4px 0;">
+              <input type="checkbox" id="franAutoLogin" checked style="width:17px;height:17px;accent-color:var(--beige);cursor:pointer;">
+              자동 로그인
+            </label>
+            <button onclick="doFranLogin()" style="height:54px;background:var(--beige);color:#1A1A1A;font-size:16px;font-weight:800;border:none;border-radius:16px;cursor:pointer;font-family:inherit;letter-spacing:-0.3px;margin-top:6px;">로그인</button>
+          </div>
+          <div style="margin-top:20px;background:rgba(255,255,255,0.06);border-radius:12px;padding:12px 14px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.9;">
+            강남점: gangnam@seupkyul.com / branch1234<br>
+            홍대점: hongdae@seupkyul.com / branch1234
+          </div>
+        </div>
+      </div>
+
+      <!-- 대시보드 화면 -->
+      <div class="screen" id="screen-home">
+        <div class="app-header">
+          <div>
+            <h1 id="franBranchName">강남점</h1>
+            <p class="sub">seupkyul 가맹점주</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="header-icon">🔔<span class="notif-dot"></span></div>
+            <div class="header-icon" style="font-size:13px;font-weight:700;color:var(--teal);width:auto;padding:0 10px;border-radius:12px;" onclick="if(confirm('로그아웃 하시겠습니까?')){localStorage.removeItem('fran_email');localStorage.removeItem('fran_pw');switchScreen('login');}">로그아웃</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <!-- 오늘의 예약 대시보드 -->
+          <div>
+            <div class="sec-head">
+              <span class="sec-title">오늘의 예약</span>
+              <span class="sec-link" style="cursor:pointer;" onclick="switchScreen('booking')">전체 보기 →</span>
+            </div>
+            <div class="gcard" style="padding:0;overflow:hidden;">
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(0,0,0,0.05);">
+                <div style="padding:14px 10px;text-align:center;border-right:1px solid rgba(0,0,0,0.05);">
+                  <div style="font-size:20px;font-weight:800;color:var(--teal);">8</div>
+                  <div style="font-size:10px;color:#888;margin-top:2px;">오늘</div>
+                </div>
+                <div style="padding:14px 10px;text-align:center;border-right:1px solid rgba(0,0,0,0.05);">
+                  <div style="font-size:20px;font-weight:800;color:var(--ok);">5</div>
+                  <div style="font-size:10px;color:#888;margin-top:2px;">완료</div>
+                </div>
+                <div style="padding:14px 10px;text-align:center;">
+                  <div style="font-size:20px;font-weight:800;color:var(--warn);">3</div>
+                  <div style="font-size:10px;color:#888;margin-top:2px;">예정</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(0,0,0,0.04);">
+                <div style="font-size:10px;font-weight:800;color:var(--teal);background:rgba(26,26,26,0.08);border-radius:6px;padding:3px 7px;min-width:38px;text-align:center;">13:00</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;">박서윤</div><div style="font-size:10px;color:#888;margin-top:1px;">두피 앰플 케어 · 박지현</div></div>
+                <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,26,26,0.1);color:var(--teal);white-space:nowrap;">진행중</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(0,0,0,0.04);">
+                <div style="font-size:10px;font-weight:800;color:var(--warn);background:rgba(245,158,11,0.1);border-radius:6px;padding:3px 7px;min-width:38px;text-align:center;">15:00</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;">최예진</div><div style="font-size:10px;color:#888;margin-top:1px;">딥클리닉 케어 · 최유진</div></div>
+                <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(245,158,11,0.12);color:var(--warn);white-space:nowrap;">예정</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;">
+                <div style="font-size:10px;font-weight:800;color:var(--warn);background:rgba(245,158,11,0.1);border-radius:6px;padding:3px 7px;min-width:38px;text-align:center;">17:00</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;">정은하</div><div style="font-size:10px;color:#888;margin-top:1px;">케라틴 코팅 · 박지현</div></div>
+                <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(245,158,11,0.12);color:var(--warn);white-space:nowrap;">예정</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 빠른 발주 -->
+          <div>
+            <div class="sec-head"><span class="sec-title">빠른 발주</span><span class="sec-link">전체 상품 →</span></div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="gcard quick-card">
+                <div class="quick-info">
+                  <div class="quick-name">클리닉 기본 세트</div>
+                  <div class="quick-cnt">3개 상품 구성</div>
+                </div>
+                <div class="quick-right">
+                  <span class="quick-price">320,000원</span>
+                  <button class="btn-quick">주문</button>
+                </div>
+              </div>
+              <div class="gcard quick-card">
+                <div class="quick-info">
+                  <div class="quick-name">트리트먼트 보충 세트</div>
+                  <div class="quick-cnt">2개 상품 구성</div>
+                </div>
+                <div class="quick-right">
+                  <span class="quick-price">180,000원</span>
+                  <button class="btn-quick">주문</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 재고 현황 -->
+          <div>
+            <div class="sec-head"><span class="sec-title">재고 현황</span><span class="sec-link">발주하기 →</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="gcard stock-card">
+                <span class="stock-name">딥 리페어 앰플 100ml</span>
+                <div class="stock-right">
+                  <span class="stock-chip warn"><span class="dot"></span>부족</span>
+                  <button class="btn-order-sm">발주</button>
+                </div>
+              </div>
+              <div class="gcard stock-card">
+                <span class="stock-name">케라틴 트리트먼트 200ml</span>
+                <div class="stock-right">
+                  <span class="stock-chip err"><span class="dot"></span>품절</span>
+                  <button class="btn-order-sm">발주</button>
+                </div>
+              </div>
+              <div class="gcard stock-card">
+                <span class="stock-name">두피 토닉 150ml</span>
+                <div class="stock-right">
+                  <span class="stock-chip ok"><span class="dot"></span>원활</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 최근 발주 타임라인 -->
+          <div>
+            <div class="sec-head"><span class="sec-title">최근 발주 현황</span><span class="sec-link">전체 보기 →</span></div>
+            <div class="gcard timeline">
+              <div class="tl-head">
+                <span class="sec-title" style="font-size:13px;">O20240528-0001</span>
+                <span class="tl-order-no">5월 28일</span>
+              </div>
+              <ul class="tl-list">
+                <li class="tl-item">
+                  <div class="tl-ico-col">
+                    <div class="tl-ico done">✓</div>
+                    <div class="tl-line done"></div>
+                  </div>
+                  <div class="tl-content">
+                    <div class="tl-label done">발주완료</div>
+                    <div class="tl-date">5월 26일 10:00</div>
+                  </div>
+                </li>
+                <li class="tl-item">
+                  <div class="tl-ico-col">
+                    <div class="tl-ico done">✓</div>
+                    <div class="tl-line done"></div>
+                  </div>
+                  <div class="tl-content">
+                    <div class="tl-label done">본사승인</div>
+                    <div class="tl-date">5월 26일 14:00</div>
+                  </div>
+                </li>
+                <li class="tl-item">
+                  <div class="tl-ico-col">
+                    <div class="tl-ico done">✓</div>
+                    <div class="tl-line done"></div>
+                  </div>
+                  <div class="tl-content">
+                    <div class="tl-label done">출고완료</div>
+                    <div class="tl-date">5월 27일 09:00</div>
+                    <div class="tl-track">CJ대한통운 · 1234567890</div>
+                  </div>
+                </li>
+                <li class="tl-item">
+                  <div class="tl-ico-col">
+                    <div class="tl-ico current" style="animation: pulse 1.5s infinite;">●</div>
+                    <div class="tl-line pending"></div>
+                  </div>
+                  <div class="tl-content">
+                    <div class="tl-label current">배송중</div>
+                    <div class="tl-date">5월 27일 11:00</div>
+                  </div>
+                </li>
+                <li class="tl-item">
+                  <div class="tl-ico-col"><div class="tl-ico pending">○</div></div>
+                  <div class="tl-content"><div class="tl-label pending">매장도착</div></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 발주 화면 -->
+      <div class="screen" id="screen-order">
+        <div class="app-header">
+          <div><h1>발주하기</h1></div>
+          <div class="header-icon" style="font-size:14px;font-weight:800;color:var(--teal);">🛒<span style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--err);border-radius:50%;font-size:9px;color:white;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg);">2</span></div>
+        </div>
+        <!-- 카테고리 탭 -->
+        <div style="display:flex;gap:8px;padding:8px 20px;overflow-x:auto;">
+          <button style="flex-shrink:0;padding:6px 18px;border-radius:100px;font-size:13px;font-weight:700;border:none;background:var(--teal);color:white;font-family:inherit;cursor:pointer;">전체</button>
+          <button style="flex-shrink:0;padding:6px 18px;border-radius:100px;font-size:13px;font-weight:600;border:1.5px solid rgba(26,26,26,0.2);background:white;color:#555;font-family:inherit;cursor:pointer;">클리닉</button>
+          <button style="flex-shrink:0;padding:6px 18px;border-radius:100px;font-size:13px;font-weight:600;border:1.5px solid rgba(26,26,26,0.2);background:white;color:#555;font-family:inherit;cursor:pointer;">트리트먼트</button>
+          <button style="flex-shrink:0;padding:6px 18px;border-radius:100px;font-size:13px;font-weight:600;border:1.5px solid rgba(26,26,26,0.2);background:white;color:#555;font-family:inherit;cursor:pointer;">소모품</button>
+        </div>
+        <div style="padding:8px 20px;display:flex;flex-direction:column;gap:8px;">
+          <!-- 상품 1 -->
+          <div class="gcard product-item">
+            <div class="prod-img">💧</div>
+            <div class="prod-info">
+              <div class="prod-name">딥 리페어 앰플 100ml</div>
+              <div class="prod-unit">1개</div>
+              <div class="prod-bottom">
+                <div>
+                  <span class="stock-chip ok" style="font-size:10px;padding:2px 8px;"><span class="dot"></span>원활</span>
+                </div>
+                <div class="qty-ctrl">
+                  <button class="qty-btn" onclick="this.parentNode.querySelector('.qty-num').textContent=Math.max(0,parseInt(this.parentNode.querySelector('.qty-num').textContent)-1)">−</button>
+                  <span class="qty-num">2</span>
+                  <button class="qty-btn add" onclick="this.parentNode.querySelector('.qty-num').textContent=parseInt(this.parentNode.querySelector('.qty-num').textContent)+1">+</button>
+                </div>
+              </div>
+              <div class="prod-price" style="margin-top:4px;">45,000원</div>
+            </div>
+          </div>
+          <!-- 상품 2 -->
+          <div class="gcard product-item">
+            <div class="prod-img">🧴</div>
+            <div class="prod-info">
+              <div class="prod-name">케라틴 트리트먼트 200ml</div>
+              <div class="prod-unit">1개</div>
+              <div class="prod-bottom">
+                <div><span class="stock-chip warn" style="font-size:10px;padding:2px 8px;"><span class="dot"></span>부족</span></div>
+                <div class="qty-ctrl">
+                  <button class="qty-btn">−</button>
+                  <span class="qty-num">0</span>
+                  <button class="qty-btn add">+</button>
+                </div>
+              </div>
+              <div class="prod-price" style="margin-top:4px;">38,000원</div>
+            </div>
+          </div>
+          <!-- 상품 3 품절 -->
+          <div class="gcard product-item" style="opacity:0.55;">
+            <div class="prod-img">🌿</div>
+            <div class="prod-info">
+              <div class="prod-name">두피 토닉 150ml</div>
+              <div class="prod-unit">1개</div>
+              <div class="prod-bottom">
+                <div><span class="stock-chip err" style="font-size:10px;padding:2px 8px;"><span class="dot"></span>품절</span></div>
+                <button style="background:rgba(224,82,82,0.1);color:var(--err);border:1.5px solid rgba(224,82,82,0.3);border-radius:10px;padding:6px 12px;font-size:11px;font-weight:700;cursor:not-allowed;font-family:inherit;">품절</button>
+              </div>
+              <div class="prod-price" style="margin-top:4px;">32,000원</div>
+            </div>
+          </div>
+        </div>
+        <!-- 결제 하단 고정 -->
+        <div style="position:absolute;bottom:72px;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,0.06);padding:12px 20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span style="font-size:13px;color:#666;">장바구니 2개 상품</span>
+            <span style="font-size:16px;font-weight:800;color:var(--teal);">90,000원</span>
+          </div>
+          <button onclick="alert('결제 확인 페이지로 이동합니다.')" style="width:100%;min-height:50px;background:var(--teal);color:white;font-size:15px;font-weight:800;border:none;border-radius:16px;cursor:pointer;font-family:inherit;">결제하기</button>
+        </div>
+      </div>
+
+      <!-- 이력 화면 -->
+      <div class="screen" id="screen-history">
+        <div class="app-header"><div><h1>발주 이력</h1></div></div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px;">
+          <div class="gcard order-hist-card">
+            <div class="hist-top">
+              <div>
+                <div class="hist-no">O20240528-0001</div>
+                <span class="status-badge delivery">배송중</span>
+              </div>
+              <span style="font-size:15px;font-weight:800;color:var(--teal);">320,000원</span>
+            </div>
+            <div class="hist-bottom">
+              <span class="hist-date">2024년 5월 28일</span>
+              <button class="btn-reorder">그대로 재주문</button>
+            </div>
+          </div>
+          <div class="gcard order-hist-card">
+            <div class="hist-top">
+              <div>
+                <div class="hist-no">O20240520-0002</div>
+                <span class="status-badge done2">도착완료</span>
+              </div>
+              <span style="font-size:15px;font-weight:800;color:var(--teal);">180,000원</span>
+            </div>
+            <div class="hist-bottom">
+              <span class="hist-date">2024년 5월 20일</span>
+              <button class="btn-reorder">그대로 재주문</button>
+            </div>
+          </div>
+          <div class="gcard order-hist-card">
+            <div class="hist-top">
+              <div>
+                <div class="hist-no">O20240512-0003</div>
+                <span class="status-badge done2">도착완료</span>
+              </div>
+              <span style="font-size:15px;font-weight:800;color:var(--teal);">450,000원</span>
+            </div>
+            <div class="hist-bottom">
+              <span class="hist-date">2024년 5월 12일</span>
+              <button class="btn-reorder">그대로 재주문</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 예약 관리 화면 -->
+      <div class="screen" id="screen-booking">
+        <div class="app-header">
+          <div><h1>예약 관리</h1><p class="sub">강남점 · 오늘 예약</p></div>
+          <div class="header-icon">📅</div>
+        </div>
+        <div class="screen-body">
+          <div class="gcard" style="padding:16px 18px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(26,26,26,0.06);border-radius:12px;overflow:hidden;">
+              <div style="padding:12px 8px;text-align:center;border-right:1px solid rgba(26,26,26,0.1);">
+                <div style="font-size:24px;font-weight:800;color:var(--teal);">8</div>
+                <div style="font-size:10px;color:#888;margin-top:2px;">오늘 전체</div>
+              </div>
+              <div style="padding:12px 8px;text-align:center;border-right:1px solid rgba(26,26,26,0.1);">
+                <div style="font-size:24px;font-weight:800;color:var(--ok);">5</div>
+                <div style="font-size:10px;color:#888;margin-top:2px;">완료</div>
+              </div>
+              <div style="padding:12px 8px;text-align:center;">
+                <div style="font-size:24px;font-weight:800;color:var(--warn);">3</div>
+                <div style="font-size:10px;color:#888;margin-top:2px;">예정</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sec-head"><span class="sec-title">오늘 예약 (5월 28일)</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="gcard" style="padding:14px 16px;opacity:0.65;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <span style="font-size:13px;font-weight:800;">김민지</span>
+                  <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(34,197,94,0.1);color:var(--ok);">완료</span>
+                </div>
+                <div style="font-size:11px;color:#888;">10:00 · 박지현 디자이너 · 딥클리닉 케어</div>
+              </div>
+              <div class="gcard" style="padding:14px 16px;opacity:0.65;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <span style="font-size:13px;font-weight:800;">이수연</span>
+                  <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(34,197,94,0.1);color:var(--ok);">완료</span>
+                </div>
+                <div style="font-size:11px;color:#888;">11:30 · 최유진 디자이너 · 케라틴 코팅</div>
+              </div>
+              <div class="gcard" style="padding:14px 16px;border:1.5px solid rgba(26,26,26,0.35);">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <span style="font-size:13px;font-weight:800;">박서윤</span>
+                  <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(26,26,26,0.1);color:var(--teal);">진행중</span>
+                </div>
+                <div style="font-size:11px;color:#888;margin-bottom:10px;">13:00 · 박지현 디자이너 · 두피 앰플 케어</div>
+                <button onclick="alert('시술 완료 처리되었습니다.')" style="width:100%;height:38px;background:var(--teal);color:white;font-size:12px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">시술 완료</button>
+              </div>
+              <div class="gcard" style="padding:14px 16px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <span style="font-size:13px;font-weight:800;">최예진</span>
+                  <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(245,158,11,0.12);color:var(--warn);">예정</span>
+                </div>
+                <div style="font-size:11px;color:#888;margin-bottom:10px;">15:00 · 최유진 디자이너 · 딥클리닉 케어</div>
+                <div style="display:flex;gap:8px;">
+                  <button onclick="alert('예약이 취소되었습니다.')" style="flex:1;height:38px;background:rgba(239,68,68,0.08);color:var(--err);font-size:12px;font-weight:700;border:1.5px solid rgba(239,68,68,0.2);border-radius:10px;cursor:pointer;font-family:inherit;">취소</button>
+                  <button onclick="alert('예약이 확정되었습니다.')" style="flex:2;height:38px;background:var(--teal);color:white;font-size:12px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">확정</button>
+                </div>
+              </div>
+              <div class="gcard" style="padding:14px 16px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <span style="font-size:13px;font-weight:800;">정은하</span>
+                  <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(245,158,11,0.12);color:var(--warn);">예정</span>
+                </div>
+                <div style="font-size:11px;color:#888;margin-bottom:10px;">17:00 · 박지현 디자이너 · 케라틴 코팅</div>
+                <div style="display:flex;gap:8px;">
+                  <button onclick="alert('예약이 취소되었습니다.')" style="flex:1;height:38px;background:rgba(239,68,68,0.08);color:var(--err);font-size:12px;font-weight:700;border:1.5px solid rgba(239,68,68,0.2);border-radius:10px;cursor:pointer;font-family:inherit;">취소</button>
+                  <button onclick="alert('예약이 확정되었습니다.')" style="flex:2;height:38px;background:var(--teal);color:white;font-size:12px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">확정</button>
+                </div>
+              </div>
+              <div class="gcard" style="padding:14px 16px;opacity:0.4;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <span style="font-size:13px;font-weight:800;">홍지원</span>
+                  <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(239,68,68,0.1);color:var(--err);">노쇼</span>
+                </div>
+                <div style="font-size:11px;color:#888;">12:00 · 최유진 디자이너 · 두피 앰플 케어</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 매출 관리 화면 -->
+      <div class="screen" id="screen-revenue">
+        <div class="app-header">
+          <div><h1>매출 관리</h1><p class="sub">강남점</p></div>
+          <div class="header-icon">💰</div>
+        </div>
+        <div class="screen-body">
+          <div class="gcard" style="padding:22px 20px;background:linear-gradient(135deg,#1A1A1A,#3A3A3A);border:none;">
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.75);margin-bottom:4px;">오늘 매출</div>
+            <div style="font-size:30px;font-weight:800;color:white;letter-spacing:-1px;">1,240,000원</div>
+            <div style="display:flex;gap:16px;margin-top:8px;">
+              <span style="font-size:11px;color:rgba(255,255,255,0.85);">▲ 전일 대비 +18%</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.6);">목표 150만원 · 83%</span>
+            </div>
+          </div>
+          <div class="gcard" style="padding:18px 18px;">
+            <div class="sec-head"><span class="sec-title">이번 주 매출</span></div>
+            <div style="display:flex;align-items:flex-end;gap:5px;height:72px;margin-top:12px;">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:rgba(26,26,26,0.2);border-radius:4px 4px 0 0;height:42px;"></div><span style="font-size:9px;color:#aaa;">월</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:rgba(26,26,26,0.35);border-radius:4px 4px 0 0;height:56px;"></div><span style="font-size:9px;color:#aaa;">화</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:rgba(26,26,26,0.3);border-radius:4px 4px 0 0;height:48px;"></div><span style="font-size:9px;color:#aaa;">수</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:rgba(26,26,26,0.45);border-radius:4px 4px 0 0;height:62px;"></div><span style="font-size:9px;color:#aaa;">목</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:var(--teal);border-radius:4px 4px 0 0;height:72px;"></div><span style="font-size:9px;font-weight:700;color:var(--teal);">금</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:rgba(26,26,26,0.1);border-radius:4px 4px 0 0;height:18px;"></div><span style="font-size:9px;color:#ccc;">토</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;background:rgba(26,26,26,0.07);border-radius:4px 4px 0 0;height:8px;"></div><span style="font-size:9px;color:#ccc;">일</span></div>
+            </div>
+            <div style="text-align:center;margin-top:8px;font-size:11px;color:#aaa;">주간 누계 <strong style="color:var(--teal);">6,840,000원</strong></div>
+          </div>
+          <div>
+            <div class="sec-head"><span class="sec-title">오늘 시술별 매출</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="gcard" style="padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:700;">딥클리닉 케어</span><span style="font-size:14px;font-weight:800;color:var(--teal);">620,000원</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><div style="flex:1;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden;"><div style="width:50%;height:100%;background:var(--teal);border-radius:2px;"></div></div><span style="font-size:11px;color:#aaa;">2건</span></div>
+              </div>
+              <div class="gcard" style="padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:700;">케라틴 코팅</span><span style="font-size:14px;font-weight:800;color:var(--teal);">380,000원</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><div style="flex:1;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden;"><div style="width:31%;height:100%;background:var(--teal-light);border-radius:2px;"></div></div><span style="font-size:11px;color:#aaa;">2건</span></div>
+              </div>
+              <div class="gcard" style="padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:700;">두피 앰플 케어</span><span style="font-size:14px;font-weight:800;color:var(--teal);">240,000원</span></div>
+                <div style="display:flex;align-items:center;gap:10px;"><div style="flex:1;height:4px;background:#f0f0f0;border-radius:2px;overflow:hidden;"><div style="width:19%;height:100%;background:var(--teal-light);border-radius:2px;"></div></div><span style="font-size:11px;color:#aaa;">1건</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="gcard" style="padding:18px 18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-size:11px;color:#aaa;margin-bottom:4px;">5월 누계 매출</div><div style="font-size:22px;font-weight:800;letter-spacing:-0.5px;">32,400,000원</div></div>
+              <div style="text-align:right;"><div style="font-size:11px;color:#aaa;margin-bottom:4px;">목표 달성률</div><div style="font-size:22px;font-weight:800;color:var(--teal);">81%</div></div>
+            </div>
+            <div style="margin-top:12px;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden;"><div style="width:81%;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-light));border-radius:3px;"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:5px;"><span style="font-size:10px;color:#aaa;">32,400,000원 달성</span><span style="font-size:10px;color:#aaa;">목표 4,000만원</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 탭 바 -->
+      <div class="tab-bar" id="franTabBar" style="display:none;">
+        <button class="tab-btn2 active" id="tab-home" onclick="switchScreen('home')">
+          <span class="tab-icon">🏠</span>
+          <span class="tab-label">홈</span>
+        </button>
+        <button class="tab-btn2" id="tab-booking" onclick="switchScreen('booking')">
+          <span class="tab-icon">📅</span>
+          <span class="tab-label">예약</span>
+        </button>
+        <button class="tab-btn2" id="tab-order" onclick="switchScreen('order')">
+          <span class="tab-icon">📦</span>
+          <span class="tab-label">발주</span>
+        </button>
+        <button class="tab-btn2" id="tab-revenue" onclick="switchScreen('revenue')">
+          <span class="tab-icon">💰</span>
+          <span class="tab-label">매출</span>
+        </button>
+        <button class="tab-btn2" id="tab-history" onclick="switchScreen('history')">
+          <span class="tab-icon">📋</span>
+          <span class="tab-label">이력</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 설명 패널 -->
+<div class="info-panel">
+  <h2>가맹점주 PWA</h2>
+  <p>발주 · 예약 · 매출을 하나의 앱으로. 약제 묻은 손으로도 조작 가능한 초간편 UX, 홈 화면 추가로 앱처럼 사용합니다.</p>
+
+  <div class="screen-nav">
+    <button class="nav-chip active" onclick="switchScreen('home');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">홈 대시보드</button>
+    <button class="nav-chip" onclick="switchScreen('booking');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">예약 관리</button>
+    <button class="nav-chip" onclick="switchScreen('order');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">발주하기</button>
+    <button class="nav-chip" onclick="switchScreen('revenue');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">매출 관리</button>
+    <button class="nav-chip" onclick="switchScreen('history');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">발주 이력</button>
+  </div>
+
+  <ul class="feature-list">
+    <li><div class="feat-ico">📅</div><div><strong>예약 관리</strong> — 오늘 예약 현황, 확정·취소·노쇼 처리 원터치</div></li>
+    <li><div class="feat-ico">💰</div><div><strong>매출 관리</strong> — 일별·주별 매출 차트, 시술별 수익 분석</div></li>
+    <li><div class="feat-ico">⚡</div><div><strong>빠른 발주</strong> — 저장 세트 템플릿으로 1~2탭에 발주 완료</div></li>
+    <li><div class="feat-ico">🎨</div><div><strong>재고 인디케이터</strong> — 그린/오렌지/레드 컬러칩으로 즉시 파악</div></li>
+    <li><div class="feat-ico">📱</div><div><strong>최소 터치 타겟 54px</strong> — 오조작 방지, 손가락 끝으로도 정확하게</div></li>
+  </ul>
+  <a href="index.html" style="font-size:13px;color:var(--teal);font-weight:600;">← 목록으로 돌아가기</a>
+</div>
+
+<script>
+const FRAN_ACCOUNTS = {
+  'gangnam@seupkyul.com': 'branch1234',
+  'hongdae@seupkyul.com': 'branch1234',
+  'bundang@seupkyul.com': 'branch1234',
+  'sinchon@seupkyul.com': 'branch1234',
+  'jamsil@seupkyul.com':  'branch1234',
+};
+
+function switchScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn2').forEach(b => b.classList.remove('active'));
+  const tabBar = document.getElementById('franTabBar');
+  if (name === 'login') {
+    tabBar.style.display = 'none';
+  } else {
+    tabBar.style.display = '';
+    const tabEl = document.getElementById('tab-' + name);
+    if (tabEl) tabEl.classList.add('active');
+  }
+}
+
+function doFranLogin() {
+  const email = document.getElementById('franEmail').value.trim();
+  const pw = document.getElementById('franPw').value;
+  const errEl = document.getElementById('franLoginError');
+  if (FRAN_ACCOUNTS[email] && FRAN_ACCOUNTS[email] === pw) {
+    errEl.style.display = 'none';
+    const autoLogin = document.getElementById('franAutoLogin').checked;
+    try {
+      if (autoLogin) { localStorage.setItem('fran_email', email); localStorage.setItem('fran_pw', pw); }
+      else { localStorage.removeItem('fran_email'); localStorage.removeItem('fran_pw'); }
+    } catch(e) {}
+    switchScreen('home');
+  } else {
+    errEl.style.display = 'block';
+  }
+}
+
+/* 자동 로그인 체크 */
+(function() {
+  try {
+    const e = localStorage.getItem('fran_email');
+    const p = localStorage.getItem('fran_pw');
+    if (e && p && FRAN_ACCOUNTS[e] === p) switchScreen('home');
+  } catch(e2) {}
+})();
+
+document.querySelectorAll('.btn-quick').forEach(btn => {
+  btn.addEventListener('click', () => alert('결제 확인 페이지로 이동합니다.'));
+});
+</script>
+</body>
+</html>

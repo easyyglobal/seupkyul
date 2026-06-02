@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 210" width="700" height="210">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- ─── SYMBOL ─── -->
+  <!-- S-curve (gold) -->
+  <path
+    d="M 82,22 C 48,54 48,80 82,103 C 116,126 116,152 82,182"
+    fill="none"
+    stroke="#C8A87A"
+    stroke-width="1.6"
+    stroke-linecap="butt"
+  />
+
+  <!-- Horizontal crossbar -->
+  <line x1="32"  y1="103" x2="132" y2="103" stroke="#C8A87A" stroke-width="1.6"/>
+
+  <!-- Left end cap -->
+  <line x1="32"  y1="95"  x2="32"  y2="111" stroke="#C8A87A" stroke-width="1.6"/>
+
+  <!-- Right end cap -->
+  <line x1="132" y1="95"  x2="132" y2="111" stroke="#C8A87A" stroke-width="1.6"/>
+
+
+  <!-- ─── WORDMARK ─── -->
+  <!-- seupkyul -->
+  <text
+    x="172" y="116"
+    font-family="'Raleway', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-weight="200"
+    font-size="62"
+    letter-spacing="2.5"
+    fill="#1A1A1A"
+  >seupkyul</text>
+
+  <!-- HAIR CLINIC -->
+  <text
+    x="177" y="150"
+    font-family="'Raleway', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-weight="300"
+    font-size="13.5"
+    letter-spacing="9"
+    fill="#9A9A9A"
+  >HAIR CLINIC</text>
+
+</svg>

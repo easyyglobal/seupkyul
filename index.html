@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세없결 — 디자인 미리보기</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #1A1A1A;
+    --teal-light: #555555;
+    --beige: #E8DDC0;
+    --bg: #FFFFFF;
+    --coral: #E8DDC0;
+    --glass: rgba(255,255,255,0.88);
+    --glass-border: rgba(192,192,192,0.25);
+  }
+  body {
+    font-family: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
+    background: var(--teal);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .wrap { width: 100%; max-width: 700px; }
+  .logo { color: white; font-size: 36px; font-weight: 800; text-align: center; margin-bottom: 8px; letter-spacing: -1px; }
+  .sub  { color: rgba(255,255,255,0.5); font-size: 14px; text-align: center; margin-bottom: 48px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .card {
+    display: block;
+    text-decoration: none;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+  .card-icon { font-size: 32px; margin-bottom: 12px; }
+  .card-title { font-size: 18px; font-weight: 700; color: var(--teal); margin-bottom: 6px; }
+  .card-desc  { font-size: 13px; color: #666; line-height: 1.5; }
+  .card-tag   { display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 600; color: var(--teal); background: rgba(26,74,74,0.08); padding: 3px 10px; border-radius: 100px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="logo">seupkyul</p>
+  <p class="sub">Design Preview — 화면을 선택하세요</p>
+  <div class="grid">
+    <a href="b2c-home.html" class="card">
+      <div class="card-icon">🌿</div>
+      <div class="card-title">B2C 홈페이지</div>
+      <div class="card-desc">고객용 메인 홈, 예약 플로우 3단계, 마이페이지</div>
+      <span class="card-tag">Desktop + Mobile</span>
+    </a>
+    <a href="franchisee.html" class="card">
+      <div class="card-icon">📦</div>
+      <div class="card-title">가맹점주 PWA</div>
+      <div class="card-desc">빠른 발주, 재고 현황, 배송 타임라인 모바일 뷰</div>
+      <span class="card-tag">Mobile Web</span>
+    </a>
+    <a href="admin.html" class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">통합 어드민</div>
+      <div class="card-desc">전사 대시보드, 발주·출고 관리, 지점 스케줄러</div>
+      <span class="card-tag">PC Web</span>
+    </a>
+  </div>
+</div>
+</body>
+</html>
