@@ -35,7 +35,7 @@ body {
   background: var(--teal);
   display: flex; flex-direction: column;
   position: fixed; top: 0; bottom: 0; left: 0;
-  z-index: 20;
+  z-index: 20; overflow: hidden;
 }
 .sb-logo {
   height: 60px; padding: 0 20px;
@@ -62,7 +62,7 @@ body {
   cursor: pointer; margin-bottom: 2px;
   color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 600;
   transition: background .15s, color .15s;
-  position: relative;
+  position: relative; white-space: nowrap; overflow: hidden;
 }
 .sb-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
 .sb-item.active { background: rgba(255,255,255,0.14); color: white; }
@@ -279,6 +279,46 @@ tr:hover td { background: rgba(26,26,26,0.02); }
 }
 .btn-confirm:hover { background: var(--teal-dark); }
 
+/* ── 공지/팝업 관리 ── */
+.notice-card {
+  background: white; border-radius: 14px;
+  padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex; align-items: center; gap: 14px;
+  border: 1px solid rgba(0,0,0,0.04); transition: box-shadow .15s;
+}
+.notice-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.notice-thumb {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: var(--bg); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.notice-thumb img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; }
+.notice-info { flex: 1; min-width: 0; }
+.notice-title { font-size: 14px; font-weight: 700; color: #1A1A1A; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.notice-meta  { font-size: 11px; color: #aaa; }
+.notice-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.btn-notice-edit { font-size: 12px; font-weight: 700; color: var(--teal); background: rgba(26,26,26,0.06); border: none; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-family: inherit; transition: background .15s; }
+.btn-notice-edit:hover { background: rgba(26,26,26,0.12); }
+.btn-notice-del  { font-size: 12px; font-weight: 700; color: var(--err); background: rgba(196,82,82,0.06); border: none; border-radius: 8px; padding: 5px 12px; cursor: pointer; font-family: inherit; transition: background .15s; }
+.btn-notice-del:hover  { background: rgba(196,82,82,0.12); }
+.img-upload-area {
+  border: 2px dashed rgba(0,0,0,0.12); border-radius: 12px;
+  padding: 20px; text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.img-upload-area:hover { border-color: var(--teal); background: rgba(26,26,26,0.02); }
+.img-upload-area.has-img { padding: 8px; border-style: solid; border-color: rgba(0,0,0,0.08); }
+.date-range { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+.date-range-sep { font-size: 13px; color: #aaa; text-align: center; }
+.type-radio-group { display: flex; gap: 10px; }
+.type-radio-label {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 12px;
+  cursor: pointer; font-size: 13px; font-weight: 700; color: #666; transition: all .15s;
+}
+.type-radio-label.selected { border-color: var(--teal); background: rgba(26,26,26,0.05); color: var(--teal); }
+.type-radio-label input { display: none; }
+
 /* 엑셀 업로드 */
 .upload-zone {
   border: 2px dashed rgba(26,26,26,0.2); border-radius: 14px;
@@ -454,6 +494,24 @@ tr:hover td { background: rgba(26,26,26,0.02); }
 }
 .sidebar-backdrop.visible { display: block; }
 
+/* ── 사이드바 접기 (데스크탑) ── */
+.sidebar.collapsed { width: 64px; transition: width .25s cubic-bezier(.4,0,.2,1); }
+.sidebar.collapsed .sb-logo { justify-content: center; padding: 0 12px; }
+.sidebar.collapsed .sb-logo-text { display: none; }
+.sidebar.collapsed .sb-toggle { transform: rotate(180deg); }
+.sidebar.collapsed .sb-role { display: none; }
+.sidebar.collapsed .sb-item { justify-content: center; padding: 11px 0; font-size: 0; }
+.sidebar.collapsed .sb-icon { font-size: 16px !important; width: 20px !important; }
+.sidebar.collapsed .sb-item > *:not(.sb-icon):not(.sb-badge) { display: none; }
+.sidebar.collapsed .sb-badge { display: none; }
+.sidebar.collapsed .sb-footer { padding: 8px 0 12px; }
+.sidebar.collapsed .sb-logout { justify-content: center; font-size: 0; }
+.sidebar.collapsed .sb-logout .sb-icon { font-size: 16px !important; }
+.sidebar.collapsed .sb-logout > *:not(.sb-icon) { display: none; }
+.sidebar { transition: width .25s cubic-bezier(.4,0,.2,1); }
+.sb-toggle { transition: transform .25s cubic-bezier(.4,0,.2,1); }
+.main { transition: margin-left .25s cubic-bezier(.4,0,.2,1), width .25s cubic-bezier(.4,0,.2,1); }
+
 /* ── 1024px: 사이드바 → 아이콘 전용 ── */
 @media (max-width: 1024px) {
   .sidebar { width: 64px; }
@@ -559,6 +617,21 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
 
 /* 차트 카드 등장 */
 .chart-card { animation: fadeSlideUp .5s ease both .2s; }
+
+/* ── 문의 관리 ── */
+.inq-tab-bar { display:flex;gap:0;background:white;border-radius:14px;padding:4px;margin-bottom:20px;width:fit-content;box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+.inq-tab { background:none;border:none;padding:8px 22px;border-radius:10px;font-size:13px;font-weight:600;color:#888;cursor:pointer;font-family:inherit;transition:background .15s,color .15s; }
+.inq-tab.active { background:var(--teal);color:white; }
+.inq-row { display:flex;align-items:center;gap:14px;background:white;border-radius:14px;padding:16px 20px;margin-bottom:8px;cursor:pointer;transition:box-shadow .15s;box-shadow:0 2px 10px rgba(0,0,0,0.04); }
+.inq-row:hover { box-shadow:0 6px 24px rgba(0,0,0,0.1); }
+.inq-status { font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;flex-shrink:0; }
+.inq-status.pending  { background:#FFF3E0;color:#E65100; }
+.inq-status.answered { background:#E8F5E9;color:#2E7D32; }
+.inq-row-info { flex:1;min-width:0; }
+.inq-row-subject { font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:3px; }
+.inq-row-meta    { font-size:12px;color:#999; }
+.inq-row-arrow   { font-size:20px;color:#CCC;flex-shrink:0; }
+.inq-empty { text-align:center;padding:60px 20px;color:#aaa;font-size:14px; }
 </style>
 </head>
 <body>
@@ -567,7 +640,7 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
 <nav class="sidebar">
   <div class="sb-logo">
     <span class="sb-logo-text">seupkyul</span>
-    <button class="sb-toggle">◀</button>
+    <button class="sb-toggle" onclick="toggleSidebar()" title="사이드바 접기/펼치기">◀</button>
   </div>
   <div class="sb-role">본사 관리자</div>
   <div class="sb-nav">
@@ -590,6 +663,10 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
     </div>
     <div class="sb-item" onclick="switchPage('customers',this)">
       <span class="sb-icon">👥</span> 고객 관리
+    </div>
+    <div class="sb-item" onclick="switchPage('inquiries',this)">
+      <span class="sb-icon">💬</span> 문의 관리
+      <span class="sb-badge" id="sb-inq-badge" style="display:none;">0</span>
     </div>
     <div class="sb-item" onclick="switchPage('settlement',this)">
       <span class="sb-icon">💳</span> 정산 관리
@@ -1209,11 +1286,11 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
           <div style="width:80px;height:80px;background:#F5F0E8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;" onclick="alert('이미지 업로드')">🖼️<br><span style="font-size:9px;color:#aaa;">클릭 업로드</span></div>
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">딥 클리닉</span>
+              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">파망떼7케어</span>
               <span style="font-size:10px;padding:2px 9px;border-radius:100px;background:rgba(34,197,94,0.1);color:var(--ok);">홈 노출중</span>
             </div>
-            <div style="font-size:12px;color:#777;margin-bottom:6px;">손상도 3-4단계 · 60분 · 89,000원</div>
-            <div style="font-size:12px;color:#555;line-height:1.5;">집중 케라틴 복구 처방으로 끊어지는 모발을 근본부터 회복시킵니다.</div>
+            <div style="font-size:12px;color:#777;margin-bottom:6px;">pamangtte 7단계 집중 케어 · 정가 590,000원 / 특가 490,000원</div>
+            <div style="font-size:12px;color:#555;line-height:1.5;">pamangtte 자체 개발 7단계 솔루션으로 극손상 모발을 근본부터 완전 복구.</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;min-width:80px;">
             <button onclick="alert('편집 모드')" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;">편집</button>
@@ -1224,11 +1301,11 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
           <div style="width:80px;height:80px;background:#F5F0E8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;" onclick="alert('이미지 업로드')">🖼️<br><span style="font-size:9px;color:#aaa;">클릭 업로드</span></div>
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">리페어 클리닉 Pro</span>
+              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">복구염색</span>
               <span style="font-size:10px;padding:2px 9px;border-radius:100px;background:rgba(34,197,94,0.1);color:var(--ok);">홈 노출중</span>
             </div>
-            <div style="font-size:12px;color:#777;margin-bottom:6px;">손상도 4-5단계 · 90분 · 129,000원</div>
-            <div style="font-size:12px;color:#555;line-height:1.5;">극손상 모발 전용. 단백질 코팅 + 수분 밸런스 이중 케어 시스템.</div>
+            <div style="font-size:12px;color:#777;margin-bottom:6px;">손상 없는 컬러링 · 정가 700,000원 / 특가 150,000원</div>
+            <div style="font-size:12px;color:#555;line-height:1.5;">모발 손상 없이 원하는 컬러를 구현하는 세없결 특허 복구염색 시스템.</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;min-width:80px;">
             <button onclick="alert('편집 모드')" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;">편집</button>
@@ -1239,26 +1316,11 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
           <div style="width:80px;height:80px;background:#F5F0E8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;" onclick="alert('이미지 업로드')">🖼️<br><span style="font-size:9px;color:#aaa;">클릭 업로드</span></div>
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">모이스처 클리닉</span>
-              <span style="font-size:10px;padding:2px 9px;border-radius:100px;background:#f0f0f0;color:#aaa;">숨김</span>
-            </div>
-            <div style="font-size:12px;color:#777;margin-bottom:6px;">손상도 2-3단계 · 50분 · 69,000원</div>
-            <div style="font-size:12px;color:#555;line-height:1.5;">건조하고 푸석한 모발에 수분과 광택을 채워주는 수분 집중 케어.</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:8px;min-width:80px;">
-            <button onclick="alert('편집 모드')" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;">편집</button>
-            <button onclick="alert('삭제 확인')" style="font-size:12px;font-weight:700;color:var(--err);background:rgba(196,82,82,0.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;">삭제</button>
-          </div>
-        </div>
-        <div style="background:white;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.04);display:grid;grid-template-columns:80px 1fr auto;gap:16px;align-items:center;">
-          <div style="width:80px;height:80px;background:#F5F0E8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;" onclick="alert('이미지 업로드')">🖼️<br><span style="font-size:9px;color:#aaa;">클릭 업로드</span></div>
-          <div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">두피 앰플 케어</span>
+              <span style="font-size:15px;font-weight:800;color:#1A1A1A;">엉킨머리풀기</span>
               <span style="font-size:10px;padding:2px 9px;border-radius:100px;background:rgba(34,197,94,0.1);color:var(--ok);">홈 노출중</span>
             </div>
-            <div style="font-size:12px;color:#777;margin-bottom:6px;">두피 케어 전용 · 40분 · 68,000원</div>
-            <div style="font-size:12px;color:#555;line-height:1.5;">앰플 집중 영양 공급으로 두피 밸런스를 회복시키는 프리미엄 케어.</div>
+            <div style="font-size:12px;color:#777;margin-bottom:6px;">심각한 엉킴 복구 · 정가 300,000원 / 특가 890,000원</div>
+            <div style="font-size:12px;color:#555;line-height:1.5;">끊김 없이 엉킨 모발을 단계적으로 풀어 건강한 결을 되찾는 집중 케어.</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;min-width:80px;">
             <button onclick="alert('편집 모드')" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;">편집</button>
@@ -1285,7 +1347,7 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
             </div>
           </div>
           <div class="form-group" style="margin-bottom:8px;"><label class="form-label">고객명(이니셜)</label><input class="form-input" type="text" value="김○○님 (강남점)" style="font-size:12px;"></div>
-          <div class="form-group" style="margin-bottom:8px;"><label class="form-label">시술 프로그램</label><select class="form-input" style="font-size:12px;"><option>딥 클리닉 3회차</option><option>리페어 클리닉 Pro</option><option>모이스처 클리닉</option></select></div>
+          <div class="form-group" style="margin-bottom:8px;"><label class="form-label">시술 프로그램</label><select class="form-input" style="font-size:12px;"><option>파망떼7케어</option><option>복구염색</option><option>엉킨머리풀기</option></select></div>
           <div style="display:flex;gap:8px;margin-top:4px;">
             <button onclick="alert('저장')" style="flex:1;height:36px;background:var(--teal);color:white;font-size:12px;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">저장</button>
             <button onclick="alert('삭제')" style="height:36px;padding:0 12px;background:rgba(196,82,82,0.08);color:var(--err);font-size:12px;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">삭제</button>
@@ -1301,7 +1363,7 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
             </div>
           </div>
           <div class="form-group" style="margin-bottom:8px;"><label class="form-label">고객명(이니셜)</label><input class="form-input" type="text" value="이○○님 (홍대점)" style="font-size:12px;"></div>
-          <div class="form-group" style="margin-bottom:8px;"><label class="form-label">시술 프로그램</label><select class="form-input" style="font-size:12px;"><option>리페어 클리닉 2회차</option><option>딥 클리닉</option><option>모이스처 클리닉</option></select></div>
+          <div class="form-group" style="margin-bottom:8px;"><label class="form-label">시술 프로그램</label><select class="form-input" style="font-size:12px;"><option>파망떼7케어</option><option>복구염색</option><option>엉킨머리풀기</option></select></div>
           <div style="display:flex;gap:8px;margin-top:4px;">
             <button onclick="alert('저장')" style="flex:1;height:36px;background:var(--teal);color:white;font-size:12px;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">저장</button>
             <button onclick="alert('삭제')" style="height:36px;padding:0 12px;background:rgba(196,82,82,0.08);color:var(--err);font-size:12px;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">삭제</button>
@@ -1316,21 +1378,23 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
 
     <!-- 공지/팝업 탭 -->
     <div id="b2c-notices" class="b2c-tab" style="display:none;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <div style="font-size:15px;font-weight:700;color:#1A1A1A;">공지사항 & 팝업 관리</div>
-        <button onclick="alert('공지 추가')" style="background:var(--teal);color:white;font-size:13px;font-weight:700;padding:8px 18px;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">+ 공지 추가</button>
+      <div class="page-header" style="margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:800;color:#1A1A1A;">공지/팝업 관리</div>
+        <button class="btn-upload" style="background:var(--teal);color:white;border-color:var(--teal);" onclick="openNoticeModal()">+ 등록</button>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="background:white;border-radius:14px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:flex;align-items:center;gap:16px;">
-          <div style="flex:1;"><div style="font-size:14px;font-weight:700;margin-bottom:4px;">잠실점 5월 오픈 이벤트 20% 할인</div><div style="font-size:11px;color:#aaa;">2026.05.01 ~ 05.31</div></div>
-          <span style="font-size:11px;padding:3px 10px;border-radius:100px;background:rgba(34,197,94,0.1);color:var(--ok);">게시중</span>
-          <button onclick="alert('편집')" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;">편집</button>
-        </div>
-        <div style="background:white;border-radius:14px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:flex;align-items:center;gap:16px;">
-          <div style="flex:1;"><div style="font-size:14px;font-weight:700;margin-bottom:4px;">6월 여름 특가 케어 프로그램</div><div style="font-size:11px;color:#aaa;">2026.06.01 예정</div></div>
-          <span style="font-size:11px;padding:3px 10px;border-radius:100px;background:rgba(245,158,11,0.1);color:var(--warn);">예약</span>
-          <button onclick="alert('편집')" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;">편집</button>
-        </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;" id="noticeKpi"></div>
+      <div class="status-tabs" id="noticeFilterTabs" style="margin-bottom:16px;">
+        <button class="stab active" onclick="filterNoticeType(this,'all')">전체</button>
+        <button class="stab" onclick="filterNoticeType(this,'notice')">공지사항</button>
+        <button class="stab" onclick="filterNoticeType(this,'popup')">팝업</button>
+        <button class="stab" onclick="filterNoticeType(this,'active')">게시중</button>
+        <button class="stab" onclick="filterNoticeType(this,'draft')">임시저장</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="noticeList"></div>
+      <div id="noticeEmpty" style="display:none;text-align:center;padding:60px 20px;">
+        <div style="font-size:40px;margin-bottom:12px;">📭</div>
+        <div style="font-size:15px;font-weight:700;color:#555;margin-bottom:6px;">등록된 공지가 없습니다</div>
+        <div style="font-size:13px;color:#aaa;">+ 등록 버튼으로 공지사항 또는 팝업을 추가하세요</div>
       </div>
     </div><!-- /b2c-notices -->
 
@@ -1405,6 +1469,20 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
     </div>
   </div><!-- /page-accounts -->
 
+  <!-- 문의 관리 페이지 -->
+  <div class="page" id="page-inquiries">
+    <div class="page-header">
+      <h1 class="page-title">문의 관리</h1>
+      <button class="btn-upload" onclick="renderAdminInquiries()">↻ 새로고침</button>
+    </div>
+    <div class="inq-tab-bar">
+      <button class="inq-tab active" id="inq-tab-customer"  onclick="switchInqTab('customer',this)">👤 고객 1:1 문의</button>
+      <button class="inq-tab"        id="inq-tab-franchise" onclick="switchInqTab('franchise',this)">🏢 가맹 문의</button>
+    </div>
+    <div id="inq-pane-customer"><div class="inq-empty">접수된 문의가 없습니다</div></div>
+    <div id="inq-pane-franchise" style="display:none;"><div class="inq-empty">접수된 가맹 문의가 없습니다</div></div>
+  </div><!-- /page-inquiries -->
+
 </div><!-- /main -->
 
 <!-- 송장 입력 모달 -->
@@ -1428,6 +1506,19 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
     <div class="modal-btns">
       <button class="btn-cancel" onclick="document.getElementById('trackModal').classList.remove('open')">취소</button>
       <button class="btn-confirm" onclick="confirmShip()">출고 완료</button>
+    </div>
+  </div>
+</div>
+
+<!-- 문의 답변 모달 -->
+<div class="modal-overlay" id="inqReplyModal" onclick="if(event.target===this)closeInqModal()">
+  <div class="modal-box" style="max-width:560px;width:100%;">
+    <div class="modal-title" id="inq-modal-title">문의 내용</div>
+    <div id="inq-modal-body" style="margin-bottom:14px;"></div>
+    <div id="inq-modal-reply" style="margin-bottom:0;"></div>
+    <div class="modal-btns" style="margin-top:16px;">
+      <button class="btn-cancel" onclick="closeInqModal()">닫기</button>
+      <button class="btn-confirm" id="inq-send-btn" onclick="submitInqReply()">답변 등록</button>
     </div>
   </div>
 </div>
@@ -1457,11 +1548,20 @@ const PAGE_TITLES = {
   reservations:'예약 관리',
   products:    '상품/재고 관리',
   customers:   '고객 관리',
+  inquiries:   '문의 관리',
   settlement:  '정산 관리',
   branches:    '지점 관리',
   b2c:         'B2C 홈페이지 관리',
   accounts:    '계정/권한 관리',
 };
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const main    = document.querySelector('.main');
+  const collapsed = sidebar.classList.toggle('collapsed');
+  main.style.marginLeft = collapsed ? '64px' : '228px';
+  main.style.width      = collapsed ? 'calc(100% - 64px)' : 'calc(100% - 228px)';
+}
+
 function switchPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
@@ -1736,6 +1836,317 @@ function doAdminLogin() {
   }
 }
 
+// ── 공지/팝업 관리 ──
+const NOTICE_KEY = 'seupkyul_notices';
+const NOTICE_SEED = [
+  { id:1, type:'popup',  title:'6월 여름 특가 케어 프로그램',     content:'여름 시즌 특가! 딥 리페어 앰플 케어 프로그램을 최대 30% 할인된 가격으로 만나보세요. 기간 한정 이벤트이니 서두르세요.', startDate:'2026-06-01', endDate:'2026-06-30', imageData:'', status:'active',  createdAt:'2026-06-01' },
+  { id:2, type:'notice', title:'잠실점 오픈 기념 전 메뉴 20% 할인', content:'세없결 잠실점 그랜드 오픈을 기념하여 모든 시술 메뉴 20% 할인 이벤트를 진행합니다. 많은 관심 부탁드립니다.',             startDate:'2026-05-01', endDate:'2026-06-30', imageData:'', status:'active',  createdAt:'2026-05-01' },
+  { id:3, type:'notice', title:'7월 전 지점 영업시간 변경 안내',   content:'7월 1일부터 전 지점 영업시간이 오전 10시 ~ 오후 8시로 변경됩니다. 주말은 오전 10시 ~ 오후 6시입니다.',                    startDate:'2026-07-01', endDate:'2026-07-31', imageData:'', status:'draft', createdAt:'2026-06-01' },
+];
+let _noticeFilter = 'all';
+let _noticeImageData = '';
+
+function getNotices() {
+  try { const d = localStorage.getItem(NOTICE_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  const seed = JSON.parse(JSON.stringify(NOTICE_SEED));
+  localStorage.setItem(NOTICE_KEY, JSON.stringify(seed));
+  return seed;
+}
+function saveNotices(list) { localStorage.setItem(NOTICE_KEY, JSON.stringify(list)); }
+function isNoticeActive(n) {
+  const today = new Date().toISOString().slice(0,10);
+  return n.status === 'active' && n.startDate <= today && n.endDate >= today;
+}
+function renderNoticeKpi() {
+  const list = getNotices();
+  const kpi = document.getElementById('noticeKpi');
+  if (!kpi) return;
+  const active = list.filter(isNoticeActive);
+  const items = [
+    {label:'전체 등록',    val:list.length,                           sub:'공지+팝업'},
+    {label:'게시중 공지',  val:active.filter(n=>n.type==='notice').length, sub:'현재 노출'},
+    {label:'활성 팝업',    val:active.filter(n=>n.type==='popup').length,  sub:'현재 노출'},
+    {label:'임시저장',     val:list.filter(n=>n.status==='draft').length,  sub:'미게시'},
+  ];
+  kpi.innerHTML = items.map(i=>`
+    <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+      <div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">${i.label}</div>
+      <div style="font-size:26px;font-weight:800;color:var(--teal);">${i.val}</div>
+      <div style="font-size:11px;color:#aaa;margin-top:3px;">${i.sub}</div>
+    </div>`).join('');
+}
+function renderNoticeList() {
+  renderNoticeKpi();
+  const list = getNotices();
+  let filtered = list;
+  if (_noticeFilter==='notice') filtered = list.filter(n=>n.type==='notice');
+  else if (_noticeFilter==='popup')  filtered = list.filter(n=>n.type==='popup');
+  else if (_noticeFilter==='active') filtered = list.filter(isNoticeActive);
+  else if (_noticeFilter==='draft')  filtered = list.filter(n=>n.status==='draft');
+  const container = document.getElementById('noticeList');
+  const empty = document.getElementById('noticeEmpty');
+  if (!container) return;
+  if (!filtered.length) {
+    container.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  container.innerHTML = filtered.map(n => {
+    const act = isNoticeActive(n);
+    const sColor = act ? '#4A9A6A' : (n.status==='draft' ? '#C8922A' : '#999');
+    const sBg    = act ? 'rgba(74,154,106,0.1)' : (n.status==='draft' ? 'rgba(200,146,42,0.1)' : 'rgba(0,0,0,0.04)');
+    const sLabel = act ? '게시중' : (n.status==='draft' ? '임시저장' : '종료');
+    const tLabel = n.type==='popup' ? '🪟 팝업' : '📋 공지';
+    const tBg    = n.type==='popup' ? 'rgba(200,168,122,0.12)' : 'rgba(59,130,246,0.1)';
+    const tColor = n.type==='popup' ? '#A07840' : '#3B82F6';
+    const thumb  = n.imageData
+      ? `<img src="${n.imageData}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;">`
+      : `<span style="font-size:22px;">${n.type==='popup'?'🪟':'📋'}</span>`;
+    return `<div class="notice-card">
+      <div class="notice-thumb">${thumb}</div>
+      <div class="notice-info">
+        <div class="notice-title">${n.title}</div>
+        <div class="notice-meta">${n.startDate} ~ ${n.endDate}</div>
+      </div>
+      <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:${tBg};color:${tColor};flex-shrink:0;">${tLabel}</span>
+      <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:${sBg};color:${sColor};flex-shrink:0;">${sLabel}</span>
+      <div class="notice-actions">
+        <button class="btn-notice-edit" onclick="openNoticeModal(${n.id})">편집</button>
+        <button class="btn-notice-del"  onclick="deleteNotice(${n.id})">삭제</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterNoticeType(el, type) {
+  document.querySelectorAll('#noticeFilterTabs .stab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  _noticeFilter = type;
+  renderNoticeList();
+}
+function onNoticeTypeChange(type) {
+  document.getElementById('typeNoticeLabel').classList.toggle('selected', type==='notice');
+  document.getElementById('typePopupLabel').classList.toggle('selected',  type==='popup');
+  document.getElementById('popupImageGroup').style.display = type==='popup' ? 'block' : 'none';
+}
+function openNoticeModal(id) {
+  _noticeImageData = '';
+  const modal = document.getElementById('noticeModal');
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('imgUploadPlaceholder').style.display = 'block';
+  document.getElementById('imgRemoveBtn').style.display = 'none';
+  document.getElementById('imgUploadArea').classList.remove('has-img');
+  document.getElementById('noticeImageInput').value = '';
+  if (id) {
+    const n = getNotices().find(x=>x.id===id);
+    if (!n) return;
+    document.getElementById('noticeEditId').value = id;
+    document.getElementById('noticeModalTitle').textContent = '공지 편집';
+    document.getElementById('noticeModalSub').textContent = '공지사항 또는 팝업을 수정합니다';
+    document.querySelector(`input[name="noticeType"][value="${n.type}"]`).checked = true;
+    onNoticeTypeChange(n.type);
+    document.getElementById('noticeTitle').value   = n.title;
+    document.getElementById('noticeContent').value = n.content;
+    document.getElementById('noticeStart').value   = n.startDate;
+    document.getElementById('noticeEnd').value     = n.endDate;
+    document.getElementById('noticeStatus').value  = n.status;
+    if (n.imageData) {
+      _noticeImageData = n.imageData;
+      document.getElementById('imgPreview').src = n.imageData;
+      document.getElementById('imgPreview').style.display = 'block';
+      document.getElementById('imgUploadPlaceholder').style.display = 'none';
+      document.getElementById('imgRemoveBtn').style.display = 'inline-block';
+      document.getElementById('imgUploadArea').classList.add('has-img');
+    }
+  } else {
+    document.getElementById('noticeEditId').value = '';
+    document.getElementById('noticeModalTitle').textContent = '공지 등록';
+    document.getElementById('noticeModalSub').textContent = '새 공지사항 또는 팝업을 등록합니다';
+    document.querySelector('input[name="noticeType"][value="notice"]').checked = true;
+    onNoticeTypeChange('notice');
+    document.getElementById('noticeTitle').value   = '';
+    document.getElementById('noticeContent').value = '';
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById('noticeStart').value = today;
+    document.getElementById('noticeEnd').value   = today;
+    document.getElementById('noticeStatus').value = 'active';
+  }
+  modal.classList.add('open');
+}
+function closeNoticeModal() { document.getElementById('noticeModal').classList.remove('open'); }
+function handleNoticeImageUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5*1024*1024) { alert('이미지는 5MB 이하만 가능합니다.'); return; }
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    _noticeImageData = ev.target.result;
+    document.getElementById('imgPreview').src = _noticeImageData;
+    document.getElementById('imgPreview').style.display = 'block';
+    document.getElementById('imgUploadPlaceholder').style.display = 'none';
+    document.getElementById('imgRemoveBtn').style.display = 'inline-block';
+    document.getElementById('imgUploadArea').classList.add('has-img');
+  };
+  reader.readAsDataURL(file);
+}
+function removeNoticeImage() {
+  _noticeImageData = '';
+  document.getElementById('noticeImageInput').value = '';
+  document.getElementById('imgPreview').src = '';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('imgUploadPlaceholder').style.display = 'block';
+  document.getElementById('imgRemoveBtn').style.display = 'none';
+  document.getElementById('imgUploadArea').classList.remove('has-img');
+}
+function saveNotice() {
+  const title = document.getElementById('noticeTitle').value.trim();
+  if (!title) { alert('제목을 입력해주세요.'); return; }
+  const start = document.getElementById('noticeStart').value;
+  const end   = document.getElementById('noticeEnd').value;
+  if (start && end && end < start) { alert('종료일은 시작일보다 늦어야 합니다.'); return; }
+  const list   = getNotices();
+  const editId = document.getElementById('noticeEditId').value;
+  const data = {
+    type:      document.querySelector('input[name="noticeType"]:checked').value,
+    title,
+    content:   document.getElementById('noticeContent').value.trim(),
+    startDate: start || new Date().toISOString().slice(0,10),
+    endDate:   end   || new Date().toISOString().slice(0,10),
+    imageData: _noticeImageData,
+    status:    document.getElementById('noticeStatus').value,
+    createdAt: new Date().toISOString().slice(0,10),
+  };
+  if (editId) {
+    const idx = list.findIndex(n=>n.id===parseInt(editId));
+    if (idx>-1) list[idx] = {...list[idx], ...data};
+  } else {
+    data.id = Date.now();
+    list.push(data);
+  }
+  saveNotices(list);
+  closeNoticeModal();
+  renderNoticeList();
+  alert('저장되었습니다.');
+}
+function deleteNotice(id) {
+  if (!confirm('이 항목을 삭제할까요?')) return;
+  saveNotices(getNotices().filter(n=>n.id!==id));
+  renderNoticeList();
+}
+// 초기화
+renderNoticeList();
+
+/* ══════════════════════════════════════
+   문의 관리
+══════════════════════════════════════ */
+const CUST_INQ_KEY  = 'seupkyul_customer_inquiries';
+const FRAN_INQ_KEY  = 'seupkyul_franchise_inquiries';
+let _inqId = null, _inqType = null;
+
+function _getInq(type) {
+  const key = type === 'franchise' ? FRAN_INQ_KEY : CUST_INQ_KEY;
+  try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+}
+function _saveInq(type, list) {
+  localStorage.setItem(type === 'franchise' ? FRAN_INQ_KEY : CUST_INQ_KEY, JSON.stringify(list));
+}
+function _esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function switchInqTab(type, el) {
+  document.querySelectorAll('.inq-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('inq-pane-customer').style.display  = type === 'customer'  ? 'block' : 'none';
+  document.getElementById('inq-pane-franchise').style.display = type === 'franchise' ? 'block' : 'none';
+}
+
+function renderAdminInquiries() {
+  ['customer','franchise'].forEach(type => {
+    const list = _getInq(type);
+    const pane = document.getElementById('inq-pane-' + type);
+    if (!pane) return;
+    if (list.length === 0) {
+      pane.innerHTML = '<div class="inq-empty">접수된 ' + (type === 'franchise' ? '가맹 ' : '') + '문의가 없습니다</div>';
+      return;
+    }
+    pane.innerHTML = list.slice().reverse().map(inq => {
+      const subject = type === 'franchise'
+        ? (_esc(inq.region) + ' 지역 · ' + _esc(inq.budget))
+        : _esc(inq.subject);
+      return `<div class="inq-row" onclick="openInqModal(${inq.id},'${type}')">
+        <div class="inq-status ${inq.status === 'answered' ? 'answered' : 'pending'}">${inq.status === 'answered' ? '답변완료' : '미답변'}</div>
+        <div class="inq-row-info">
+          <div class="inq-row-subject">${subject}</div>
+          <div class="inq-row-meta">${_esc(inq.name)} · ${_esc(inq.phone || '')} · ${inq.date}</div>
+        </div>
+        <div class="inq-row-arrow">›</div>
+      </div>`;
+    }).join('');
+  });
+  // 미답변 뱃지 업데이트
+  const pending = _getInq('customer').filter(i=>i.status==='pending').length
+                + _getInq('franchise').filter(i=>i.status==='pending').length;
+  const badge = document.getElementById('sb-inq-badge');
+  if (badge) { badge.textContent = pending; badge.style.display = pending > 0 ? 'flex' : 'none'; }
+}
+
+function openInqModal(id, type) {
+  _inqId = id; _inqType = type;
+  const inq = _getInq(type).find(i => i.id === id);
+  if (!inq) return;
+  document.getElementById('inq-modal-title').textContent = type === 'franchise' ? '가맹 문의 내용' : '1:1 고객 문의 내용';
+  const extra = type === 'franchise'
+    ? `<div style="font-size:12px;color:#888;margin-top:6px;">희망지역: ${_esc(inq.region)} · 예산: ${_esc(inq.budget)} · 경험: ${_esc(inq.experience||'-')}</div>`
+    : `<div style="font-size:12px;color:#888;margin-top:6px;">유형: ${_esc(inq.subject)}</div>`;
+  document.getElementById('inq-modal-body').innerHTML = `
+    <div style="background:#F8F8F5;border-radius:12px;padding:16px 20px;font-size:13px;">
+      <div style="font-weight:700;color:#1A1A1A;margin-bottom:4px;">${_esc(inq.name)} · ${_esc(inq.phone||'')} · ${inq.date}</div>
+      ${extra}
+      <div style="color:#444;line-height:1.75;margin-top:10px;white-space:pre-wrap;">${_esc(inq.content)}</div>
+    </div>`;
+  const replyEl = document.getElementById('inq-modal-reply');
+  const btn = document.getElementById('inq-send-btn');
+  if (inq.status === 'answered') {
+    replyEl.innerHTML = `
+      <div style="background:#EDFAED;border-radius:12px;padding:14px 20px;font-size:13px;margin:14px 0 10px;">
+        <div style="font-size:11px;font-weight:700;color:#2E7D32;margin-bottom:6px;">등록된 답변 · ${inq.replyDate}</div>
+        <div style="color:#333;line-height:1.75;white-space:pre-wrap;">${_esc(inq.reply)}</div>
+      </div>
+      <textarea id="inq-reply-input" placeholder="답변을 수정하려면 입력 후 등록하세요."
+        style="width:100%;padding:12px 16px;border:1.5px solid #E0E0E0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;min-height:90px;outline:none;box-sizing:border-box;"></textarea>`;
+    btn.textContent = '답변 수정';
+  } else {
+    replyEl.innerHTML = `<textarea id="inq-reply-input" placeholder="답변 내용을 입력하세요."
+      style="width:100%;margin-top:14px;padding:12px 16px;border:1.5px solid #E0E0E0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;min-height:120px;outline:none;box-sizing:border-box;"></textarea>`;
+    btn.textContent = '답변 등록';
+  }
+  document.getElementById('inqReplyModal').classList.add('open');
+}
+
+function closeInqModal() {
+  document.getElementById('inqReplyModal').classList.remove('open');
+  _inqId = null; _inqType = null;
+}
+
+function submitInqReply() {
+  const input = document.getElementById('inq-reply-input');
+  if (!input || !input.value.trim()) { alert('답변 내용을 입력해주세요.'); return; }
+  const list = _getInq(_inqType);
+  const idx  = list.findIndex(i => i.id === _inqId);
+  if (idx === -1) return;
+  const d = new Date();
+  list[idx].status    = 'answered';
+  list[idx].reply     = input.value.trim();
+  list[idx].replyDate = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  _saveInq(_inqType, list);
+  closeInqModal();
+  renderAdminInquiries();
+}
+
+renderAdminInquiries();
+
 // 모달 외부 클릭 닫기
 document.querySelectorAll('.modal-overlay, .dm-overlay').forEach(o => {
   o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
@@ -1749,6 +2160,71 @@ function toggleAdminSidebar() {
   bd.classList.toggle('visible');
 }
 </script>
+
+<!-- ── 공지/팝업 등록·편집 모달 ── -->
+<div class="modal-overlay" id="noticeModal">
+  <div class="modal-box" style="width:540px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+      <div>
+        <div class="modal-title" id="noticeModalTitle">공지 등록</div>
+        <div class="modal-sub" id="noticeModalSub">새 공지사항 또는 팝업을 등록합니다</div>
+      </div>
+      <button onclick="closeNoticeModal()" style="background:none;border:none;font-size:20px;color:#aaa;cursor:pointer;padding:0 4px;line-height:1;">✕</button>
+    </div>
+    <input type="hidden" id="noticeEditId">
+    <div class="form-group">
+      <label class="form-label">노출 타입</label>
+      <div class="type-radio-group" id="noticeTypeGroup">
+        <label class="type-radio-label selected" id="typeNoticeLabel">
+          <input type="radio" name="noticeType" value="notice" checked onchange="onNoticeTypeChange('notice')"> 📋 공지사항
+        </label>
+        <label class="type-radio-label" id="typePopupLabel">
+          <input type="radio" name="noticeType" value="popup" onchange="onNoticeTypeChange('popup')"> 🪟 팝업
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">제목</label>
+      <input class="form-input" id="noticeTitle" type="text" placeholder="공지 제목을 입력하세요">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용</label>
+      <textarea class="form-input" id="noticeContent" rows="4" style="height:auto;padding:12px 14px;resize:vertical;" placeholder="공지 내용을 입력하세요"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">게시 기간</label>
+      <div class="date-range">
+        <input class="form-input" id="noticeStart" type="date">
+        <div class="date-range-sep">~</div>
+        <input class="form-input" id="noticeEnd" type="date">
+      </div>
+    </div>
+    <div class="form-group" id="popupImageGroup" style="display:none;">
+      <label class="form-label">이미지 첨부 <span style="font-weight:400;color:#aaa;">(선택)</span></label>
+      <div class="img-upload-area" id="imgUploadArea" onclick="document.getElementById('noticeImageInput').click()">
+        <div id="imgUploadPlaceholder">
+          <div style="font-size:28px;margin-bottom:8px;">📎</div>
+          <div style="font-size:13px;font-weight:600;color:#666;">이미지를 클릭하여 업로드</div>
+          <div style="font-size:11px;color:#aaa;margin-top:4px;">JPG · PNG · GIF · 최대 5MB</div>
+        </div>
+        <img id="imgPreview" style="display:none;max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;" alt="미리보기">
+      </div>
+      <input type="file" id="noticeImageInput" accept="image/*" style="display:none;" onchange="handleNoticeImageUpload(event)">
+      <button id="imgRemoveBtn" style="display:none;margin-top:6px;background:none;border:none;font-size:12px;color:var(--err);cursor:pointer;font-family:inherit;" onclick="removeNoticeImage()">✕ 이미지 제거</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">상태</label>
+      <select class="form-select" id="noticeStatus">
+        <option value="active">게시중</option>
+        <option value="draft">임시저장</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeNoticeModal()">취소</button>
+      <button class="btn-confirm" onclick="saveNotice()">저장</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── 관리자 로그인 화면 ── -->
 <div class="admin-login-screen" id="adminLoginScreen">
