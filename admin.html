@@ -609,6 +609,28 @@ tr:hover td { background: rgba(26,26,26,0.02); }
 .sidebar { background: linear-gradient(180deg, #1C1C1C 0%, #101010 100%) !important; }
 .sb-item.active { background: rgba(232,221,192,0.11) !important; color: #F0EBE0 !important; box-shadow: inset 3px 0 0 rgba(232,221,192,0.55); }
 
+/* 사이드바 그룹 헤더 */
+.sb-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; margin: 6px 0 2px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); cursor: pointer;
+  border-radius: 8px; transition: background .15s, color .15s;
+  user-select: none;
+}
+.sb-group-header:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); }
+.sb-group-arrow { font-size: 8px; transition: transform .2s; }
+.sb-group-header.open .sb-group-arrow { transform: rotate(90deg); }
+.sb-group-body { overflow: hidden; transition: max-height .25s ease; }
+.sb-group-body.closed { max-height: 0 !important; }
+/* 접힌 사이드바에서 그룹 헤더 숨기고 메뉴 항상 표시 */
+.sidebar.collapsed .sb-group-header { display: none; }
+.sidebar.collapsed .sb-group-body { max-height: none !important; overflow: visible; }
+@media (max-width: 1024px) {
+  .sb-group-header { display: none; }
+  .sb-group-body { max-height: none !important; overflow: visible; }
+}
+
 /* 프로그레스 바 진입 애니메이션 */
 .prog-fill { transform-origin: left; animation: progReveal 1.2s cubic-bezier(0.16,1,0.3,1) both 0.4s; }
 
@@ -647,40 +669,93 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
     <div class="sb-item active" onclick="switchPage('dashboard',this)">
       <span class="sb-icon">📊</span> 대시보드
     </div>
-    <div class="sb-item" onclick="switchPage('orders',this)">
-      <span class="sb-icon">📦</span> B2B 발주/출고
-      <span class="sb-badge">3</span>
+
+    <!-- 운영관리 -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>🏢 운영관리</span><span class="sb-group-arrow">▶</span>
     </div>
-    <div class="sb-item" onclick="switchPage('b2c-orders',this)">
-      <span class="sb-icon">🛍️</span> B2C 주문 관리
-      <span class="sb-badge" style="background:#E8DDC0;color:#1A1A1A;">7</span>
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('reservations',this)">
+        <span class="sb-icon">📅</span> 예약 관리
+      </div>
+      <div class="sb-item" onclick="switchPage('staff',this)">
+        <span class="sb-icon">👤</span> 직원 관리
+      </div>
+      <div class="sb-item" onclick="switchPage('attendance',this)">
+        <span class="sb-icon">⏰</span> 근태 관리
+      </div>
     </div>
-    <div class="sb-item" onclick="switchPage('reservations',this)">
-      <span class="sb-icon">📅</span> 예약 관리
+
+    <!-- 주문발주 -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>📦 주문발주</span><span class="sb-group-arrow">▶</span>
     </div>
-    <div class="sb-item" onclick="switchPage('products',this)">
-      <span class="sb-icon">🧴</span> 상품/재고
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('orders',this)">
+        <span class="sb-icon">📦</span> B2B 발주/출고
+        <span class="sb-badge">3</span>
+      </div>
+      <div class="sb-item" onclick="switchPage('b2c-orders',this)">
+        <span class="sb-icon">🛍️</span> B2C 주문 관리
+        <span class="sb-badge" style="background:#E8DDC0;color:#1A1A1A;">7</span>
+      </div>
     </div>
-    <div class="sb-item" onclick="switchPage('customers',this)">
-      <span class="sb-icon">👥</span> 고객 관리
+
+    <!-- 정산분석 -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>💰 정산분석</span><span class="sb-group-arrow">▶</span>
     </div>
-    <div class="sb-item" onclick="switchPage('inquiries',this)">
-      <span class="sb-icon">💬</span> 문의 관리
-      <span class="sb-badge" id="sb-inq-badge" style="display:none;">0</span>
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('settlement',this)">
+        <span class="sb-icon">💳</span> 정산 관리
+      </div>
+      <div class="sb-item" onclick="switchPage('branches',this)">
+        <span class="sb-icon">📍</span> 지점 관리
+      </div>
     </div>
-    <div class="sb-item" onclick="switchPage('settlement',this)">
-      <span class="sb-icon">💳</span> 정산 관리
+
+    <!-- 고객CRM -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>👥 고객CRM</span><span class="sb-group-arrow">▶</span>
     </div>
-    <div class="sb-item" onclick="switchPage('branches',this)">
-      <span class="sb-icon">📍</span> 지점 관리
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('customers',this)">
+        <span class="sb-icon">👥</span> 고객 관리
+      </div>
+      <div class="sb-item" onclick="switchPage('inquiries',this)">
+        <span class="sb-icon">💬</span> 문의 관리
+        <span class="sb-badge" id="sb-inq-badge" style="display:none;">0</span>
+      </div>
     </div>
-    <div style="margin:8px 12px;height:1px;background:rgba(255,255,255,0.06);"></div>
-    <div class="sb-item" onclick="switchPage('b2c',this)">
-      <span class="sb-icon">🌐</span> B2C 홈페이지
+
+    <!-- 상품관리 -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>🧴 상품관리</span><span class="sb-group-arrow">▶</span>
     </div>
-    <div style="margin:8px 12px;height:1px;background:rgba(255,255,255,0.06);"></div>
-    <div class="sb-item" onclick="switchPage('accounts',this)">
-      <span class="sb-icon">🔐</span> 계정/권한 관리
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('products',this)">
+        <span class="sb-icon">🧴</span> 상품/재고
+      </div>
+    </div>
+
+    <!-- 홈페이지 -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>🌐 홈페이지</span><span class="sb-group-arrow">▶</span>
+    </div>
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('b2c',this)">
+        <span class="sb-icon">🌐</span> B2C 홈페이지
+      </div>
+    </div>
+
+    <!-- 설정 -->
+    <div class="sb-group-header open" onclick="toggleSbGroup(this)">
+      <span>⚙️ 설정</span><span class="sb-group-arrow">▶</span>
+    </div>
+    <div class="sb-group-body" style="max-height:300px;">
+      <div class="sb-item" onclick="switchPage('accounts',this)">
+        <span class="sb-icon">🔐</span> 계정/권한 관리
+      </div>
     </div>
   </div>
   <div class="sb-footer">
@@ -820,7 +895,7 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
     <div class="order-widget">
       <div class="widget-head">
         <div class="widget-title">발주 대기 <span class="badge-count">3건</span></div>
-        <span class="widget-link" onclick="switchPage('orders',document.querySelector('.sb-item:nth-child(2)'))">전체 보기 →</span>
+        <span class="widget-link" onclick="switchPage('orders')">전체 보기 →</span>
       </div>
       <div class="order-row">
         <div><div class="order-branch">강남점</div><div class="order-summary">O20240528-0001 · 딥 리페어 앰플 외 2건</div></div>
@@ -922,15 +997,27 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
   <div class="page" id="page-reservations">
     <div class="page-header">
       <h1 class="page-title">예약 관리</h1>
-      <button class="btn-upload" style="background:var(--teal);color:white;border-color:var(--teal);">+ 예약 추가</button>
+      <div style="display:flex;gap:8px;">
+        <button onclick="syncNaverReservations()" style="background:#03C75A;color:white;border:none;border-radius:10px;padding:0 16px;height:38px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">N</span> 네이버 예약 동기화</button>
+        <button onclick="openNewResvModal()" class="btn-upload" style="background:var(--teal);color:white;border-color:var(--teal);">+ 예약 추가</button>
+      </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
-      <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">오늘 전체</div><div style="font-size:26px;font-weight:800;color:var(--teal);">127</div><div style="font-size:11px;color:var(--ok);margin-top:3px;">▲ 전일 +3건</div></div>
-      <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">확정</div><div style="font-size:26px;font-weight:800;color:var(--ok);">98</div><div style="font-size:11px;color:#aaa;margin-top:3px;">77%</div></div>
-      <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">대기</div><div style="font-size:26px;font-weight:800;color:var(--warn);">23</div><div style="font-size:11px;color:#aaa;margin-top:3px;">처리 필요</div></div>
+    <!-- KPI -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;" id="resvKpi">
+      <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">오늘 전체</div><div style="font-size:26px;font-weight:800;color:var(--teal);" id="resvKpiTotal">—</div><div style="font-size:11px;color:var(--ok);margin-top:3px;" id="resvKpiTotalSub"></div></div>
+      <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">네이버 예약</div><div style="font-size:26px;font-weight:800;color:#03C75A;" id="resvKpiNaver">—</div><div style="font-size:11px;color:#aaa;margin-top:3px;">오늘 기준</div></div>
+      <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">대기</div><div style="font-size:26px;font-weight:800;color:var(--warn);" id="resvKpiPending">—</div><div style="font-size:11px;color:#aaa;margin-top:3px;">처리 필요</div></div>
       <div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);"><div style="font-size:11px;color:#999;font-weight:600;margin-bottom:6px;">노쇼 (이번 달)</div><div style="font-size:26px;font-weight:800;color:var(--err);">12</div><div style="font-size:11px;color:var(--err);margin-top:3px;">▲ 전월 +2건</div></div>
     </div>
-    <div class="branch-filter-tabs" id="resvBranchFilter">
+    <!-- 출처 탭 -->
+    <div class="status-tabs" style="margin-bottom:0;">
+      <button class="stab active" onclick="filterResvSource(this,'all')">전체</button>
+      <button class="stab" onclick="filterResvSource(this,'naver')" style="display:flex;align-items:center;gap:4px;"><span style="color:#03C75A;font-weight:800;">N</span> 네이버 예약</button>
+      <button class="stab" onclick="filterResvSource(this,'homepage')">🌐 홈페이지</button>
+      <button class="stab" onclick="filterResvSource(this,'direct')">📞 직접입력</button>
+    </div>
+    <!-- 지점 필터 -->
+    <div class="branch-filter-tabs" id="resvBranchFilter" style="margin-top:10px;">
       <button class="bftab active" onclick="filterResvBranch(this,'all')">전체 지점</button>
       <button class="bftab" onclick="filterResvBranch(this,'강남점')">강남점</button>
       <button class="bftab" onclick="filterResvBranch(this,'홍대점')">홍대점</button>
@@ -938,27 +1025,10 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
       <button class="bftab" onclick="filterResvBranch(this,'신촌점')">신촌점</button>
       <button class="bftab" onclick="filterResvBranch(this,'잠실점')">잠실점</button>
     </div>
-    <div class="status-tabs">
-      <button class="stab active" onclick="filterTab(this)">전체 (127)</button>
-      <button class="stab" onclick="filterTab(this)">대기 (23)</button>
-      <button class="stab" onclick="filterTab(this)">확정 (98)</button>
-      <button class="stab" onclick="filterTab(this)">완료 (1,840)</button>
-      <button class="stab" onclick="filterTab(this)">취소 (45)</button>
-      <button class="stab" onclick="filterTab(this)">노쇼 (12)</button>
-    </div>
-    <div class="table-card" id="resvTable">
+    <div class="table-card" id="resvTable" style="margin-top:12px;">
       <table>
-        <thead><tr><th>예약번호</th><th>고객명</th><th>지점</th><th>시술 프로그램</th><th>디자이너</th><th>예약일시</th><th>상태</th><th>처리</th></tr></thead>
-        <tbody id="resvTbody">
-          <tr data-branch="강남점"><td><span class="mono">R20260528-0001</span></td><td><b>김민지</b><br><span style="font-size:11px;color:#aaa;">010-1234-5678</span></td><td>강남점</td><td>딥클리닉 케어</td><td>박지현</td><td style="color:#aaa;font-size:12px;">2026.05.28 10:00</td><td><span class="status-badge2 s-done">완료</span></td><td><button class="btn-act track" onclick="openCustDetail('김민지','010-1234-5678')">상세</button></td></tr>
-          <tr data-branch="강남점"><td><span class="mono">R20260528-0002</span></td><td><b>이수연</b><br><span style="font-size:11px;color:#aaa;">010-2345-6789</span></td><td>강남점</td><td>케라틴 코팅</td><td>최유진</td><td style="color:#aaa;font-size:12px;">2026.05.28 11:30</td><td><span class="status-badge2 s-done">완료</span></td><td><button class="btn-act track" onclick="openCustDetail('이수연','010-2345-6789')">상세</button></td></tr>
-          <tr data-branch="강남점"><td><span class="mono">R20260528-0003</span></td><td><b>박서윤</b><br><span style="font-size:11px;color:#aaa;">010-3456-7890</span></td><td>강남점</td><td>두피 앰플 케어</td><td>박지현</td><td style="color:#aaa;font-size:12px;">2026.05.28 13:00</td><td><span class="status-badge2" style="background:rgba(26,26,26,0.1);color:var(--teal);">진행중</span></td><td><button class="btn-act approve" onclick="alert('완료 처리')">완료</button></td></tr>
-          <tr data-branch="홍대점"><td><span class="mono">R20260528-0004</span></td><td><b>최예진</b><br><span style="font-size:11px;color:#aaa;">010-4567-8901</span></td><td>홍대점</td><td>딥클리닉 케어</td><td>이하늘</td><td style="color:#aaa;font-size:12px;">2026.05.28 15:00</td><td><span class="status-badge2 s-pending">대기</span></td><td><button class="btn-act approve" onclick="alert('예약 확정')">확정</button></td></tr>
-          <tr data-branch="분당점"><td><span class="mono">R20260528-0005</span></td><td><b>정은하</b><br><span style="font-size:11px;color:#aaa;">010-5678-9012</span></td><td>분당점</td><td>케라틴 코팅</td><td>김소영</td><td style="color:#aaa;font-size:12px;">2026.05.28 15:30</td><td><span class="status-badge2 s-pending">대기</span></td><td><button class="btn-act approve" onclick="alert('예약 확정')">확정</button></td></tr>
-          <tr data-branch="신촌점"><td><span class="mono">R20260528-0006</span></td><td><b>강하은</b><br><span style="font-size:11px;color:#aaa;">010-6789-0123</span></td><td>신촌점</td><td>두피 앰플 케어</td><td>오지현</td><td style="color:#aaa;font-size:12px;">2026.05.28 16:00</td><td><span class="status-badge2 s-approved">확정</span></td><td><button class="btn-act track" onclick="openCustDetail('강하은','010-6789-0123')">상세</button></td></tr>
-          <tr data-branch="강남점"><td><span class="mono">R20260528-0007</span></td><td><b>홍지원</b><br><span style="font-size:11px;color:#aaa;">010-7890-1234</span></td><td>강남점</td><td>두피 앰플 케어</td><td>최유진</td><td style="color:#aaa;font-size:12px;">2026.05.28 12:00</td><td><span class="status-badge2" style="background:rgba(239,68,68,0.1);color:var(--err);">노쇼</span></td><td>—</td></tr>
-          <tr><td><span class="mono">R20260528-0008</span></td><td><b>윤지수</b><br><span style="font-size:11px;color:#aaa;">010-8901-2345</span></td><td>잠실점</td><td>딥클리닉 케어</td><td>박민준</td><td style="color:#aaa;font-size:12px;">2026.05.28 17:00</td><td><span class="status-badge2 s-approved">확정</span></td><td><button class="btn-act track">상세</button></td></tr>
-        </tbody>
+        <thead><tr><th>예약번호</th><th>출처</th><th>고객명</th><th>지점</th><th>시술 프로그램</th><th>담당자</th><th>예약일시</th><th>상태</th><th>처리</th></tr></thead>
+        <tbody id="resvTbody"></tbody>
       </table>
     </div>
   </div>
@@ -967,28 +1037,19 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
   <div class="page" id="page-products">
     <div class="page-header">
       <h1 class="page-title">상품/재고 관리</h1>
-      <button class="btn-upload" style="background:var(--teal);color:white;border-color:var(--teal);">+ 상품 추가</button>
+      <button class="btn-upload" style="background:var(--teal);color:white;border-color:var(--teal);" onclick="openProductModal()">+ 상품 추가</button>
     </div>
     <div class="status-tabs">
-      <button class="stab active" onclick="filterTab(this)">전체 (42)</button>
-      <button class="stab" onclick="filterTab(this)">클리닉 (14)</button>
-      <button class="stab" onclick="filterTab(this)">트리트먼트 (12)</button>
-      <button class="stab" onclick="filterTab(this)">소모품 (10)</button>
-      <button class="stab" onclick="filterTab(this)">장비 (6)</button>
+      <button class="stab active" onclick="filterProductCategory(this,'all')">전체</button>
+      <button class="stab" onclick="filterProductCategory(this,'클리닉')">클리닉</button>
+      <button class="stab" onclick="filterProductCategory(this,'트리트먼트')">트리트먼트</button>
+      <button class="stab" onclick="filterProductCategory(this,'소모품')">소모품</button>
+      <button class="stab" onclick="filterProductCategory(this,'장비')">장비</button>
     </div>
     <div class="table-card">
       <table>
-        <thead><tr><th>상품코드</th><th>상품명</th><th>카테고리</th><th>단가</th><th>재고 상태</th><th style="text-align:center;">현재고</th><th>최종 발주일</th><th>재고 변경</th></tr></thead>
-        <tbody>
-          <tr><td><span class="mono">P-001</span></td><td><b>딥 리페어 앰플 100ml</b></td><td style="color:#888;font-size:12px;">클리닉</td><td style="font-weight:700;color:var(--teal);">45,000원</td><td><span class="status-badge2 s-approved">원활</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="45" min="0" onchange="updateStockQty('P-001',this.value)"></td><td style="color:#aaa;font-size:12px;">2026.05.20</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;" onchange="alert('재고 상태 변경: '+this.value)"><option>원활</option><option>부족</option><option>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-002</span></td><td><b>케라틴 트리트먼트 200ml</b></td><td style="color:#888;font-size:12px;">트리트먼트</td><td style="font-weight:700;color:var(--teal);">38,000원</td><td><span class="status-badge2 s-pending">부족</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="8" min="0" onchange="updateStockQty('P-002',this.value)" style="color:var(--warn);"></td><td style="color:#aaa;font-size:12px;">2026.05.15</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;" onchange="alert('재고 상태 변경: '+this.value)"><option>원활</option><option selected>부족</option><option>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-003</span></td><td><b>두피 토닉 150ml</b></td><td style="color:#888;font-size:12px;">클리닉</td><td style="font-weight:700;color:var(--teal);">32,000원</td><td><span class="status-badge2" style="background:rgba(239,68,68,0.1);color:var(--err);">품절</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="0" min="0" onchange="updateStockQty('P-003',this.value)" style="color:var(--err);"></td><td style="color:#aaa;font-size:12px;">2026.05.10</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;" onchange="alert('재고 상태 변경: '+this.value)"><option>원활</option><option>부족</option><option selected>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-004</span></td><td><b>모이스처 샴푸 300ml</b></td><td style="color:#888;font-size:12px;">소모품</td><td style="font-weight:700;color:var(--teal);">18,000원</td><td><span class="status-badge2 s-approved">원활</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="62" min="0" onchange="updateStockQty('P-004',this.value)"></td><td style="color:#aaa;font-size:12px;">2026.05.22</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;"><option>원활</option><option>부족</option><option>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-005</span></td><td><b>헤어 클리닉 마스크팩 50g</b></td><td style="color:#888;font-size:12px;">클리닉</td><td style="font-weight:700;color:var(--teal);">22,000원</td><td><span class="status-badge2 s-approved">원활</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="38" min="0" onchange="updateStockQty('P-005',this.value)"></td><td style="color:#aaa;font-size:12px;">2026.05.18</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;"><option>원활</option><option>부족</option><option>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-006</span></td><td><b>프로틴 코팅제 100ml</b></td><td style="color:#888;font-size:12px;">트리트먼트</td><td style="font-weight:700;color:var(--teal);">55,000원</td><td><span class="status-badge2 s-pending">부족</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="7" min="0" onchange="updateStockQty('P-006',this.value)" style="color:var(--warn);"></td><td style="color:#aaa;font-size:12px;">2026.05.12</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;"><option>원활</option><option selected>부족</option><option>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-007</span></td><td><b>알루미늄 포일 (500매)</b></td><td style="color:#888;font-size:12px;">소모품</td><td style="font-weight:700;color:var(--teal);">12,000원</td><td><span class="status-badge2 s-approved">원활</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="156" min="0" onchange="updateStockQty('P-007',this.value)"></td><td style="color:#aaa;font-size:12px;">2026.05.25</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;"><option>원활</option><option>부족</option><option>품절</option></select></td></tr>
-          <tr><td><span class="mono">P-008</span></td><td><b>스티머 기기 1대</b></td><td style="color:#888;font-size:12px;">장비</td><td style="font-weight:700;color:var(--teal);">280,000원</td><td><span class="status-badge2 s-done">원활</span></td><td style="text-align:center;"><input class="stock-qty-input" type="number" value="3" min="0" onchange="updateStockQty('P-008',this.value)"></td><td style="color:#aaa;font-size:12px;">2026.04.30</td><td><select style="font-size:11px;padding:4px 8px;border:1.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-family:inherit;"><option>원활</option><option>부족</option><option>품절</option></select></td></tr>
-        </tbody>
+        <thead><tr><th>코드</th><th style="text-align:center;">이미지</th><th>상품명</th><th>카테고리</th><th>B2C가격</th><th>B2B단가</th><th>재고상태</th><th style="text-align:center;">현재고</th><th style="text-align:center;">B2C노출</th><th>관리</th></tr></thead>
+        <tbody id="products-tbody"></tbody>
       </table>
     </div>
   </div>
@@ -1113,16 +1174,16 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
       </div>
       <div class="table-card">
         <table>
-          <thead><tr><th>고객명</th><th>연락처</th><th>누적 방문</th><th>마지막 방문</th><th>시술 누계</th><th>쇼핑 누계</th><th>등급</th><th>액션</th></tr></thead>
+          <thead><tr><th>고객명</th><th>연락처</th><th>누적 방문</th><th>마지막 방문</th><th>시술 누계</th><th>쇼핑 누계</th><th>마일리지</th><th>등급</th><th>액션</th></tr></thead>
           <tbody>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('김민지','010-1234-5678')">김민지</b></td><td class="mono">010-1234-5678</td><td style="font-weight:700;">7회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">574,000원</td><td style="font-weight:700;color:var(--teal);">106,000원</td><td><span class="status-badge2" style="background:rgba(212,134,10,0.12);color:#D4860A;">VIP</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('김민지','010-1234-5678')">상세</button><button class="btn-act approve" onclick="alert('알림 발송')">알림</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('이수연','010-2345-6789')">이수연</b></td><td class="mono">010-2345-6789</td><td style="font-weight:700;">5회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">414,000원</td><td style="font-weight:700;color:var(--teal);">36,000원</td><td><span class="status-badge2 s-approved">일반</span></td><td><button class="btn-act track" onclick="openCustDetail('이수연','010-2345-6789')">상세</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('박서윤','010-3456-7890')">박서윤</b></td><td class="mono">010-3456-7890</td><td style="font-weight:700;">3회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">168,000원</td><td style="font-weight:700;color:var(--teal);">112,000원</td><td><span class="status-badge2 s-approved">일반</span></td><td><button class="btn-act track" onclick="openCustDetail('박서윤','010-3456-7890')">상세</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('최예진','010-4567-8901')">최예진</b></td><td class="mono">010-4567-8901</td><td style="font-weight:700;">2회</td><td style="color:#aaa;font-size:12px;">2026.05.10</td><td style="font-weight:700;color:var(--teal);">94,000원</td><td style="font-weight:700;color:var(--teal);">84,000원</td><td><span class="status-badge2 s-pending">신규</span></td><td><button class="btn-act track" onclick="openCustDetail('최예진','010-4567-8901')">상세</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('강하은','010-6789-0123')">강하은</b></td><td class="mono">010-6789-0123</td><td style="font-weight:700;">11회</td><td style="color:#aaa;font-size:12px;">2026.05.22</td><td style="font-weight:700;color:var(--teal);">1,208,000원</td><td style="font-weight:700;color:var(--teal);">32,000원</td><td><span class="status-badge2" style="background:rgba(212,134,10,0.12);color:#D4860A;">VIP</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('강하은','010-6789-0123')">상세</button><button class="btn-act approve" onclick="alert('알림 발송')">알림</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('정은하','010-5678-9012')">정은하</b></td><td class="mono">010-5678-9012</td><td style="font-weight:700;">1회</td><td style="color:#aaa;font-size:12px;">2026.02.14</td><td style="font-weight:700;color:#aaa;">89,000원</td><td style="font-weight:700;color:#aaa;">—</td><td><span class="status-badge2" style="background:rgba(239,68,68,0.08);color:var(--err);">이탈위험</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('정은하','010-5678-9012')">상세</button><button class="btn-act ship" onclick="alert('재방문 유도 알림 발송')">재유도</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('홍지원','010-7890-1234')">홍지원</b></td><td class="mono">010-7890-1234</td><td style="font-weight:700;">1회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:#aaa;">89,000원</td><td style="font-weight:700;color:var(--teal);">28,000원</td><td><span class="status-badge2 s-pending">신규</span></td><td><button class="btn-act track" onclick="openCustDetail('홍지원','010-7890-1234')">상세</button></td></tr>
-            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('윤지수','010-8901-2345')">윤지수</b></td><td class="mono">010-8901-2345</td><td style="font-weight:700;">8회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">790,000원</td><td style="font-weight:700;color:var(--teal);">—</td><td><span class="status-badge2" style="background:rgba(212,134,10,0.12);color:#D4860A;">VIP</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('윤지수','010-8901-2345')">상세</button><button class="btn-act approve" onclick="alert('알림 발송')">알림</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('김민지','010-1234-5678')">김민지</b></td><td class="mono">010-1234-5678</td><td style="font-weight:700;">7회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">574,000원</td><td style="font-weight:700;color:var(--teal);">106,000원</td><td style="font-weight:700;color:var(--ok);" id="ml-김민지">5,400P</td><td><span class="status-badge2" style="background:rgba(212,134,10,0.12);color:#D4860A;">VIP</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('김민지','010-1234-5678')">상세</button><button class="btn-act approve" onclick="alert('알림 발송')">알림</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('이수연','010-2345-6789')">이수연</b></td><td class="mono">010-2345-6789</td><td style="font-weight:700;">5회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">414,000원</td><td style="font-weight:700;color:var(--teal);">36,000원</td><td style="font-weight:700;color:var(--ok);" id="ml-이수연">1,080P</td><td><span class="status-badge2 s-approved">일반</span></td><td><button class="btn-act track" onclick="openCustDetail('이수연','010-2345-6789')">상세</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('박서윤','010-3456-7890')">박서윤</b></td><td class="mono">010-3456-7890</td><td style="font-weight:700;">3회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">168,000원</td><td style="font-weight:700;color:var(--teal);">112,000원</td><td style="font-weight:700;color:var(--ok);" id="ml-박서윤">3,360P</td><td><span class="status-badge2 s-approved">일반</span></td><td><button class="btn-act track" onclick="openCustDetail('박서윤','010-3456-7890')">상세</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('최예진','010-4567-8901')">최예진</b></td><td class="mono">010-4567-8901</td><td style="font-weight:700;">2회</td><td style="color:#aaa;font-size:12px;">2026.05.10</td><td style="font-weight:700;color:var(--teal);">94,000원</td><td style="font-weight:700;color:var(--teal);">84,000원</td><td style="font-weight:700;color:var(--ok);" id="ml-최예진">2,520P</td><td><span class="status-badge2 s-pending">신규</span></td><td><button class="btn-act track" onclick="openCustDetail('최예진','010-4567-8901')">상세</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('강하은','010-6789-0123')">강하은</b></td><td class="mono">010-6789-0123</td><td style="font-weight:700;">11회</td><td style="color:#aaa;font-size:12px;">2026.05.22</td><td style="font-weight:700;color:var(--teal);">1,208,000원</td><td style="font-weight:700;color:var(--teal);">32,000원</td><td style="font-weight:700;color:var(--ok);" id="ml-강하은">960P</td><td><span class="status-badge2" style="background:rgba(212,134,10,0.12);color:#D4860A;">VIP</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('강하은','010-6789-0123')">상세</button><button class="btn-act approve" onclick="alert('알림 발송')">알림</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('정은하','010-5678-9012')">정은하</b></td><td class="mono">010-5678-9012</td><td style="font-weight:700;">1회</td><td style="color:#aaa;font-size:12px;">2026.02.14</td><td style="font-weight:700;color:#aaa;">89,000원</td><td style="font-weight:700;color:#aaa;">—</td><td style="color:#aaa;" id="ml-정은하">0P</td><td><span class="status-badge2" style="background:rgba(239,68,68,0.08);color:var(--err);">이탈위험</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('정은하','010-5678-9012')">상세</button><button class="btn-act ship" onclick="alert('재방문 유도 알림 발송')">재유도</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('홍지원','010-7890-1234')">홍지원</b></td><td class="mono">010-7890-1234</td><td style="font-weight:700;">1회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:#aaa;">89,000원</td><td style="font-weight:700;color:var(--teal);">28,000원</td><td style="font-weight:700;color:var(--ok);" id="ml-홍지원">840P</td><td><span class="status-badge2 s-pending">신규</span></td><td><button class="btn-act track" onclick="openCustDetail('홍지원','010-7890-1234')">상세</button></td></tr>
+            <tr><td><b style="cursor:pointer;color:var(--blue);" onclick="openCustDetail('윤지수','010-8901-2345')">윤지수</b></td><td class="mono">010-8901-2345</td><td style="font-weight:700;">8회</td><td style="color:#aaa;font-size:12px;">2026.05.28</td><td style="font-weight:700;color:var(--teal);">790,000원</td><td style="font-weight:700;color:var(--teal);">—</td><td style="color:#aaa;" id="ml-윤지수">0P</td><td><span class="status-badge2" style="background:rgba(212,134,10,0.12);color:#D4860A;">VIP</span></td><td style="display:flex;gap:6px;"><button class="btn-act track" onclick="openCustDetail('윤지수','010-8901-2345')">상세</button><button class="btn-act approve" onclick="alert('알림 발송')">알림</button></td></tr>
           </tbody>
         </table>
       </div>
@@ -1218,6 +1279,8 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
       <button class="stab" onclick="switchB2cTab(this,'b2c-ba')">전후비교 관리</button>
       <button class="stab" onclick="switchB2cTab(this,'b2c-notices')">공지/팝업</button>
       <button class="stab" onclick="switchB2cTab(this,'b2c-seo')">SEO 설정</button>
+      <button class="stab" onclick="switchB2cTab(this,'b2c-shop')">쇼핑몰 관리</button>
+      <button class="stab" onclick="switchB2cTab(this,'b2c-mileage')">마일리지 설정</button>
     </div>
 
     <!-- 히어로 배너 탭 -->
@@ -1410,6 +1473,57 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
       </div>
     </div><!-- /b2c-seo -->
 
+    <!-- 쇼핑몰 관리 탭 -->
+    <div id="b2c-shop" class="b2c-tab" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#1A1A1A;">쇼핑몰 상품 관리</div>
+          <div style="font-size:12px;color:#888;margin-top:3px;">B2C 쇼핑몰에 노출할 상품을 선택하고 순서를 조정하세요</div>
+        </div>
+        <button onclick="switchPage('products',document.querySelector('.sb-item[onclick*=\"products\"]'))" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:inherit;">+ 상품 등록/편집 →</button>
+      </div>
+      <div id="shop-mgmt-list"></div>
+    </div><!-- /b2c-shop -->
+
+    <!-- 마일리지 설정 탭 -->
+    <div id="b2c-mileage" class="b2c-tab" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <!-- 설정 카드 -->
+        <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+          <div style="font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:20px;">마일리지 적립/사용 설정</div>
+          <div class="form-group">
+            <label class="form-label">구매 적립률 (%)</label>
+            <input class="form-input" type="number" id="mileage-earn-rate" value="3" min="0" max="30" placeholder="예: 3 → 구매금액의 3% 적립">
+            <div style="font-size:11px;color:#aaa;margin-top:4px;">예: 3% 설정 시 10,000원 구매 → 300P 적립</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">최소 적립 기준 금액 (원)</label>
+            <input class="form-input" type="number" id="mileage-min-earn" value="10000" min="0" placeholder="이 금액 이상 구매 시 적립">
+          </div>
+          <div class="form-group">
+            <label class="form-label">최소 사용 마일리지 (P)</label>
+            <input class="form-input" type="number" id="mileage-min-redeem" value="1000" min="0" placeholder="이 마일리지 이상부터 사용 가능">
+          </div>
+          <div class="form-group">
+            <label class="form-label">최대 사용 비율 (%)</label>
+            <input class="form-input" type="number" id="mileage-max-redeem-rate" value="50" min="0" max="100" placeholder="결제금액 대비 최대 사용 비율">
+            <div style="font-size:11px;color:#aaa;margin-top:4px;">예: 50% 설정 시 10,000원 주문에서 최대 5,000P 사용 가능</div>
+          </div>
+          <button onclick="saveMileageSettingsForm()" style="width:100%;height:44px;background:var(--teal);color:white;font-size:14px;font-weight:700;border:none;border-radius:12px;cursor:pointer;font-family:inherit;">설정 저장</button>
+        </div>
+        <!-- 고객 마일리지 현황 -->
+        <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+          <div style="font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:16px;">고객 마일리지 현황</div>
+          <div class="table-card" style="margin:0;box-shadow:none;">
+            <table style="min-width:unset;">
+              <thead><tr><th>고객명</th><th>잔액</th><th>총 적립</th><th>총 사용</th><th>내역</th></tr></thead>
+              <tbody id="mileage-cust-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div><!-- /b2c-mileage -->
+
   </div><!-- /page-b2c -->
 
   <!-- 계정/권한 관리 페이지 -->
@@ -1468,6 +1582,48 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
       </div>
     </div>
   </div><!-- /page-accounts -->
+
+  <!-- 직원 관리 페이지 -->
+  <div class="page" id="page-staff">
+    <div class="page-header">
+      <h1 class="page-title">직원 관리</h1>
+      <button class="btn-upload" style="background:var(--teal);color:white;border-color:var(--teal);" onclick="openAddStaff()">+ 직원 추가</button>
+    </div>
+    <!-- 실적 카드 그리드 -->
+    <div style="font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:12px;">이달 직원별 실적</div>
+    <div id="staffPerfGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;"></div>
+    <!-- 직원 목록 -->
+    <div style="font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:12px;">직원 목록</div>
+    <div class="table-card">
+      <table>
+        <thead><tr><th>코드</th><th>이름</th><th>지점</th><th>직책</th><th>연락처</th><th style="text-align:center;">완료 시술</th><th>시술 매출</th><th style="text-align:center;">상태</th><th>관리</th></tr></thead>
+        <tbody id="staffTbody"></tbody>
+      </table>
+    </div>
+  </div><!-- /page-staff -->
+
+  <!-- 근태 관리 페이지 -->
+  <div class="page" id="page-attendance">
+    <div class="page-header">
+      <h1 class="page-title">근태 관리</h1>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="attendDateFilter" value="2026.06.10" onchange="renderAttendancePage()" style="height:38px;padding:0 14px;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;font-size:13px;font-family:inherit;">
+        <button class="btn-upload" onclick="renderAttendancePage()">🔍 조회</button>
+        <a href="staff-pwa.html" target="_blank" style="display:flex;align-items:center;gap:6px;height:38px;padding:0 16px;background:linear-gradient(135deg,#1A1A1A,#3A3A3A);color:white;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;">📱 직원 PWA 열기</a>
+      </div>
+    </div>
+    <!-- 요약 -->
+    <div style="background:white;border-radius:14px;padding:14px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:13px;font-weight:600;color:#555;margin-right:8px;">📊 현황:</span>
+      <span id="attendSummary" style="font-size:13px;"></span>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead><tr><th>직원</th><th>지점</th><th>날짜</th><th>출근</th><th>퇴근</th><th>근무시간</th><th>비고</th><th>처리</th></tr></thead>
+        <tbody id="attendTbody"></tbody>
+      </table>
+    </div>
+  </div><!-- /page-attendance -->
 
   <!-- 문의 관리 페이지 -->
   <div class="page" id="page-inquiries">
@@ -1553,6 +1709,8 @@ const PAGE_TITLES = {
   branches:    '지점 관리',
   b2c:         'B2C 홈페이지 관리',
   accounts:    '계정/권한 관리',
+  staff:       '직원 관리',
+  attendance:  '근태 관리',
 };
 function toggleSidebar() {
   const sidebar = document.querySelector('.sidebar');
@@ -1562,17 +1720,31 @@ function toggleSidebar() {
   main.style.width      = collapsed ? 'calc(100% - 64px)' : 'calc(100% - 228px)';
 }
 
+function toggleSbGroup(header) {
+  const body = header.nextElementSibling;
+  if (header.classList.toggle('open')) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.classList.remove('closed');
+  } else {
+    body.style.maxHeight = '0';
+    body.classList.add('closed');
+  }
+}
+
 function switchPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
+  if (!el) el = document.querySelector(`.sb-item[onclick*="'${name}'"]`);
+  if (el) el.classList.add('active');
   document.getElementById('topbar-title').textContent = PAGE_TITLES[name] || name;
-  // 모바일: 페이지 전환 시 사이드바 자동 닫기
   if (window.innerWidth <= 768) {
     document.querySelector('.sidebar').classList.remove('mob-open');
     document.getElementById('sidebarBackdrop').classList.remove('visible');
   }
+  if (name === 'reservations') renderReservations();
+  if (name === 'staff')        renderStaffPage();
+  if (name === 'attendance')   renderAttendancePage();
 }
 function filterTab(el, status) {
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
@@ -1583,6 +1755,8 @@ function switchB2cTab(el, tabId) {
   el.classList.add('active');
   document.querySelectorAll('.b2c-tab').forEach(t => t.style.display = 'none');
   document.getElementById(tabId).style.display = tabId === 'b2c-banner' ? 'grid' : 'block';
+  if (tabId === 'b2c-shop')    renderShopManagement();
+  if (tabId === 'b2c-mileage') renderMileageSettings();
 }
 function switchCustTab(el, tabId) {
   document.querySelectorAll('#page-customers .stab').forEach(b => b.classList.remove('active'));
@@ -1601,13 +1775,309 @@ function confirmShip() {
   alert(`출고 처리 완료!\n운송장: ${v}\n점주에게 배송 알림이 발송되었습니다.`);
 }
 
-/* ── 지점 필터 (예약관리) ── */
+/* ══════════════════════════════════════
+   통합 예약 관리
+══════════════════════════════════════ */
+const RESV_KEY = 'seupkyul_reservations';
+const RESV_SEED = [
+  { id:'R20260528-0001', source:'homepage', custName:'김민지',  custPhone:'010-1234-5678', branch:'강남점', service:'딥클리닉 케어',  staff:'박지현', datetime:'2026.05.28 10:00', status:'done' },
+  { id:'R20260528-0002', source:'naver',    custName:'이수연',  custPhone:'010-2345-6789', branch:'강남점', service:'케라틴 코팅',    staff:'최유진', datetime:'2026.05.28 11:30', status:'done' },
+  { id:'R20260528-0003', source:'naver',    custName:'박서윤',  custPhone:'010-3456-7890', branch:'강남점', service:'두피 앰플 케어', staff:'박지현', datetime:'2026.05.28 13:00', status:'inprogress' },
+  { id:'R20260528-0004', source:'homepage', custName:'최예진',  custPhone:'010-4567-8901', branch:'홍대점', service:'딥클리닉 케어',  staff:'이하늘', datetime:'2026.05.28 15:00', status:'pending' },
+  { id:'R20260528-0005', source:'direct',   custName:'정은하',  custPhone:'010-5678-9012', branch:'분당점', service:'케라틴 코팅',    staff:'김소영', datetime:'2026.05.28 15:30', status:'pending' },
+  { id:'R20260528-0006', source:'naver',    custName:'강하은',  custPhone:'010-6789-0123', branch:'신촌점', service:'두피 앰플 케어', staff:'오지현', datetime:'2026.05.28 16:00', status:'confirmed' },
+  { id:'R20260528-0007', source:'homepage', custName:'홍지원',  custPhone:'010-7890-1234', branch:'강남점', service:'두피 앰플 케어', staff:'최유진', datetime:'2026.05.28 12:00', status:'noshow' },
+  { id:'R20260528-0008', source:'naver',    custName:'윤지수',  custPhone:'010-8901-2345', branch:'잠실점', service:'딥클리닉 케어',  staff:'박민준', datetime:'2026.05.28 17:00', status:'confirmed' },
+  { id:'R20260609-0001', source:'naver',    custName:'신지아',  custPhone:'010-1111-2222', branch:'강남점', service:'케라틴 코팅',    staff:'박지현', datetime:'2026.06.09 10:00', status:'done' },
+  { id:'R20260609-0002', source:'homepage', custName:'류하린',  custPhone:'010-3333-4444', branch:'홍대점', service:'딥클리닉 케어',  staff:'이하늘', datetime:'2026.06.09 14:00', status:'done' },
+  { id:'R20260610-0001', source:'naver',    custName:'오채원',  custPhone:'010-5555-6666', branch:'잠실점', service:'두피 앰플 케어', staff:'박민준', datetime:'2026.06.10 11:00', status:'confirmed' },
+  { id:'R20260610-0002', source:'homepage', custName:'황소율',  custPhone:'010-7777-8888', branch:'강남점', service:'딥클리닉 케어',  staff:'최유진', datetime:'2026.06.10 14:00', status:'pending' },
+];
+let _resvSourceFilter = 'all';
+let _resvBranchFilter = 'all';
+
+function getReservations() {
+  try { const d = localStorage.getItem(RESV_KEY); if (d) return JSON.parse(d); } catch(e){}
+  const seed = JSON.parse(JSON.stringify(RESV_SEED));
+  localStorage.setItem(RESV_KEY, JSON.stringify(seed));
+  return seed;
+}
+function saveReservations(list) { localStorage.setItem(RESV_KEY, JSON.stringify(list)); }
+
+function renderReservations() {
+  const tbody = document.getElementById('resvTbody');
+  if (!tbody) return;
+  let list = getReservations();
+  if (_resvSourceFilter !== 'all') list = list.filter(r => r.source === _resvSourceFilter);
+  if (_resvBranchFilter !== 'all') list = list.filter(r => r.branch === _resvBranchFilter);
+  const srcBadge = {
+    naver:    '<span style="font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(3,199,90,0.1);color:#03C75A;">N 네이버</span>',
+    homepage: '<span style="font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(59,130,246,0.1);color:#3B82F6;">🌐 홈페이지</span>',
+    direct:   '<span style="font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(120,120,120,0.1);color:#888;">📞 직접입력</span>'
+  };
+  const statBadge = {
+    done:       '<span class="status-badge2 s-done">완료</span>',
+    confirmed:  '<span class="status-badge2 s-approved">확정</span>',
+    pending:    '<span class="status-badge2 s-pending">대기</span>',
+    inprogress: '<span class="status-badge2" style="background:rgba(26,26,26,0.1);color:var(--teal);">진행중</span>',
+    noshow:     '<span class="status-badge2" style="background:rgba(239,68,68,0.1);color:var(--err);">노쇼</span>',
+    cancelled:  '<span class="status-badge2" style="background:#f5f5f5;color:#aaa;">취소</span>'
+  };
+  tbody.innerHTML = list.length ? list.map(r => `
+    <tr>
+      <td><span class="mono" style="font-size:11px;">${r.id}</span></td>
+      <td>${srcBadge[r.source]||r.source}</td>
+      <td><b>${r.custName}</b><br><span style="font-size:11px;color:#aaa;">${r.custPhone}</span></td>
+      <td>${r.branch}</td>
+      <td>${r.service}</td>
+      <td>${r.staff}</td>
+      <td style="font-size:12px;color:#aaa;">${r.datetime}</td>
+      <td>${statBadge[r.status]||r.status}</td>
+      <td><div style="display:flex;gap:4px;flex-wrap:wrap;">
+        ${r.status==='pending'?`<button class="btn-act approve" onclick="confirmResvStatus('${r.id}','confirmed')">확정</button>`:''}
+        ${['inprogress','confirmed'].includes(r.status)?`<button class="btn-act approve" onclick="confirmResvStatus('${r.id}','done')">완료</button>`:''}
+        <button class="btn-act track" onclick="openCustDetail('${r.custName}','${r.custPhone}')">상세</button>
+      </div></td>
+    </tr>`).join('') : '<tr><td colspan="9" style="text-align:center;color:#aaa;padding:20px;">조건에 해당하는 예약이 없습니다.</td></tr>';
+  updateResvKpi();
+}
+
+function updateResvKpi() {
+  const all = getReservations();
+  const el1 = document.getElementById('resvKpiTotal');
+  const el2 = document.getElementById('resvKpiNaver');
+  const el3 = document.getElementById('resvKpiPending');
+  const el4 = document.getElementById('resvKpiTotalSub');
+  if (el1) el1.textContent = all.length;
+  if (el2) el2.textContent = all.filter(r=>r.source==='naver').length;
+  if (el3) el3.textContent = all.filter(r=>r.status==='pending').length;
+  if (el4) el4.textContent = `확정 ${all.filter(r=>r.status==='confirmed'||r.status==='done').length}건`;
+}
+
+function confirmResvStatus(id, status) {
+  const list = getReservations();
+  const r = list.find(x => x.id === id);
+  if (r) { r.status = status; saveReservations(list); renderReservations(); }
+}
+
+function filterResvSource(el, src) {
+  document.querySelectorAll('#page-reservations .stab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  _resvSourceFilter = src;
+  renderReservations();
+}
+
 function filterResvBranch(el, branch) {
   document.querySelectorAll('#resvBranchFilter .bftab').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.querySelectorAll('#resvTbody tr').forEach(row => {
-    row.style.display = (branch === 'all' || row.dataset.branch === branch) ? '' : 'none';
-  });
+  _resvBranchFilter = branch;
+  renderReservations();
+}
+
+function syncNaverReservations() {
+  const list = getReservations();
+  const now = Date.now();
+  const newItems = [
+    { id:'N-'+now,   source:'naver', custName:'김다은',  custPhone:'010-9191-2020', branch:'강남점', service:'딥클리닉 케어',  staff:'박지현', datetime:'2026.06.10 13:00', status:'pending' },
+    { id:'N-'+(now+1), source:'naver', custName:'이준서', custPhone:'010-4040-5050', branch:'홍대점', service:'두피 앰플 케어', staff:'이하늘', datetime:'2026.06.10 15:00', status:'pending' },
+  ];
+  newItems.forEach(n => { if (!list.find(r=>r.id===n.id)) list.push(n); });
+  saveReservations(list);
+  renderReservations();
+  showToast('✅ 네이버 예약 2건이 동기화되었습니다.');
+}
+
+function openNewResvModal() {
+  const staffList = getStaff().map(s => s.name).join(', ');
+  const name = prompt('고객명:'); if (!name) return;
+  const phone = prompt('연락처:') || '';
+  const service = prompt('시술 프로그램:', '딥클리닉 케어') || '기타';
+  const branch = prompt('지점:', '강남점') || '강남점';
+  const staff = prompt(`담당자 (${staffList}):`) || '';
+  const datetime = prompt('예약일시 (2026.06.10 14:00):') || '';
+  if (!datetime) return;
+  const list = getReservations();
+  list.push({ id:'D-'+Date.now(), source:'direct', custName:name, custPhone:phone, branch, service, staff, datetime, status:'confirmed' });
+  saveReservations(list);
+  renderReservations();
+  showToast('예약이 등록되었습니다.');
+}
+
+/* ══════════════════════════════════════
+   직원 관리
+══════════════════════════════════════ */
+const STAFF_KEY = 'seupkyul_staff';
+const STAFF_SEED = [
+  { id:'S-001', name:'박지현', branch:'강남점', role:'수석 디자이너', phone:'010-1000-0001', hireDate:'2023.03.01', active:true },
+  { id:'S-002', name:'최유진', branch:'강남점', role:'디자이너',      phone:'010-1000-0002', hireDate:'2024.01.10', active:true },
+  { id:'S-003', name:'이하늘', branch:'홍대점', role:'수석 디자이너', phone:'010-1000-0003', hireDate:'2022.07.01', active:true },
+  { id:'S-004', name:'김소영', branch:'분당점', role:'디자이너',      phone:'010-1000-0004', hireDate:'2024.03.15', active:true },
+  { id:'S-005', name:'오지현', branch:'신촌점', role:'디자이너',      phone:'010-1000-0005', hireDate:'2025.01.02', active:true },
+  { id:'S-006', name:'박민준', branch:'잠실점', role:'수석 디자이너', phone:'010-1000-0006', hireDate:'2023.08.01', active:true },
+];
+const SERVICE_PRICE = { '딥클리닉 케어':89000, '케라틴 코팅':120000, '두피 앰플 케어':68000, '에센스 광택 케어':78000, '기타':50000 };
+
+function getStaff() {
+  try { const d = localStorage.getItem(STAFF_KEY); if (d) return JSON.parse(d); } catch(e){}
+  const seed = JSON.parse(JSON.stringify(STAFF_SEED));
+  localStorage.setItem(STAFF_KEY, JSON.stringify(seed));
+  return seed;
+}
+function saveStaff(list) { localStorage.setItem(STAFF_KEY, JSON.stringify(list)); }
+
+function renderStaffPage() {
+  const tbody = document.getElementById('staffTbody');
+  if (!tbody) return;
+  const resvList = getReservations();
+  const staffList = getStaff();
+  tbody.innerHTML = staffList.map(s => {
+    const myResvs = resvList.filter(r => r.staff === s.name);
+    const done    = myResvs.filter(r => r.status === 'done').length;
+    const revenue = myResvs.filter(r => r.status === 'done').reduce((sum, r) => sum + (SERVICE_PRICE[r.service]||50000), 0);
+    return `<tr>
+      <td><span class="mono" style="font-size:11px;">${s.id}</span></td>
+      <td><b>${s.name}</b></td>
+      <td style="color:#888;">${s.branch}</td>
+      <td style="color:#888;">${s.role}</td>
+      <td style="color:#888;">${s.phone}</td>
+      <td style="text-align:center;">${done}건</td>
+      <td style="font-weight:700;color:var(--teal);">${revenue.toLocaleString()}원</td>
+      <td style="text-align:center;"><span class="status-badge2" style="background:rgba(74,154,106,0.1);color:var(--ok);">${s.active?'재직중':'퇴직'}</span></td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-act track" onclick="openStaffEdit('${s.id}')">편집</button>
+          <button class="btn-act" style="color:var(--err);background:rgba(196,82,82,0.06);border:1.5px solid rgba(196,82,82,0.15);" onclick="deleteStaff('${s.id}')">삭제</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  renderStaffPerformance();
+}
+
+function renderStaffPerformance() {
+  const perf = document.getElementById('staffPerfGrid');
+  if (!perf) return;
+  const resvList = getReservations();
+  const staffList = getStaff().filter(s => s.active);
+  perf.innerHTML = staffList.map(s => {
+    const done    = resvList.filter(r => r.staff === s.name && r.status === 'done').length;
+    const revenue = resvList.filter(r => r.staff === s.name && r.status === 'done').reduce((sum, r) => sum + (SERVICE_PRICE[r.service]||50000), 0);
+    const pct = Math.min(100, Math.round(revenue / 500000 * 100));
+    return `<div style="background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div>
+          <div style="font-size:14px;font-weight:800;">${s.name}</div>
+          <div style="font-size:11px;color:#aaa;">${s.branch} · ${s.role}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:18px;font-weight:800;color:var(--teal);">${done}건</div>
+          <div style="font-size:11px;color:#aaa;">시술 완료</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#888;margin-bottom:6px;">매출 ${revenue.toLocaleString()}원</div>
+      <div style="height:6px;background:#f0f0f0;border-radius:100px;overflow:hidden;">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--teal),#888);border-radius:100px;"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openStaffEdit(id) {
+  const list = getStaff();
+  const s = list.find(x => x.id === id);
+  if (!s) return;
+  const name = prompt('이름:', s.name); if (!name) return;
+  const branch = prompt('지점:', s.branch);
+  const role = prompt('직책:', s.role);
+  const phone = prompt('연락처:', s.phone);
+  Object.assign(s, { name, branch, role, phone });
+  saveStaff(list); renderStaffPage();
+  showToast('직원 정보가 수정되었습니다.');
+}
+function deleteStaff(id) {
+  if (!confirm('직원을 삭제할까요? 예약 기록은 유지됩니다.')) return;
+  const list = getStaff().filter(s => s.id !== id);
+  saveStaff(list); renderStaffPage();
+}
+function openAddStaff() {
+  const name = prompt('이름:'); if (!name) return;
+  const branch = prompt('지점:', '강남점');
+  const role = prompt('직책:', '디자이너');
+  const phone = prompt('연락처:') || '';
+  const list = getStaff();
+  list.push({ id:'S-'+Date.now(), name, branch, role, phone, hireDate: new Date().toISOString().slice(0,10).replace(/-/g,'.'), active:true });
+  saveStaff(list); renderStaffPage();
+  showToast('직원이 등록되었습니다.');
+}
+
+/* ══════════════════════════════════════
+   근태 관리
+══════════════════════════════════════ */
+const ATTEND_KEY = 'seupkyul_attendance';
+const ATTEND_SEED = [
+  { id:'A-001', staffId:'S-001', staffName:'박지현', branch:'강남점', date:'2026.06.10', clockIn:'09:02', clockOut:null,    note:'' },
+  { id:'A-002', staffId:'S-002', staffName:'최유진', branch:'강남점', date:'2026.06.10', clockIn:'09:15', clockOut:null,    note:'' },
+  { id:'A-003', staffId:'S-003', staffName:'이하늘', branch:'홍대점', date:'2026.06.10', clockIn:'09:00', clockOut:null,    note:'' },
+  { id:'A-004', staffId:'S-004', staffName:'김소영', branch:'분당점', date:'2026.06.10', clockIn:'10:05', clockOut:null,    note:'' },
+  { id:'A-005', staffId:'S-005', staffName:'오지현', branch:'신촌점', date:'2026.06.10', clockIn:'09:30', clockOut:null,    note:'' },
+  { id:'A-006', staffId:'S-006', staffName:'박민준', branch:'잠실점', date:'2026.06.10', clockIn:'09:10', clockOut:null,    note:'' },
+  { id:'A-007', staffId:'S-001', staffName:'박지현', branch:'강남점', date:'2026.06.09', clockIn:'09:00', clockOut:'19:10', note:'' },
+  { id:'A-008', staffId:'S-002', staffName:'최유진', branch:'강남점', date:'2026.06.09', clockIn:'09:20', clockOut:'19:30', note:'' },
+];
+
+function getAttendance() {
+  try { const d = localStorage.getItem(ATTEND_KEY); if (d) return JSON.parse(d); } catch(e){}
+  const seed = JSON.parse(JSON.stringify(ATTEND_SEED));
+  localStorage.setItem(ATTEND_KEY, JSON.stringify(seed));
+  return seed;
+}
+function saveAttendance(list) { localStorage.setItem(ATTEND_KEY, JSON.stringify(list)); }
+
+function renderAttendancePage() {
+  const tbody = document.getElementById('attendTbody');
+  if (!tbody) return;
+  const filterDate = document.getElementById('attendDateFilter')?.value || '2026.06.10';
+  const list = getAttendance().filter(a => a.date === filterDate);
+  tbody.innerHTML = list.length ? list.map(a => {
+    let hours = '—';
+    if (a.clockIn && a.clockOut) {
+      const [ih,im] = a.clockIn.split(':').map(Number);
+      const [oh,om] = a.clockOut.split(':').map(Number);
+      const diff = (oh*60+om) - (ih*60+im);
+      hours = Math.floor(diff/60) + 'h ' + (diff%60) + 'm';
+    }
+    const clockOutBadge = a.clockOut
+      ? `<span style="font-size:12px;color:#555;">${a.clockOut}</span>`
+      : `<span style="font-size:11px;padding:2px 8px;border-radius:100px;background:rgba(74,154,106,0.1);color:var(--ok);">근무중</span>`;
+    return `<tr>
+      <td><b>${a.staffName}</b></td>
+      <td style="color:#888;">${a.branch}</td>
+      <td style="color:#888;">${a.date}</td>
+      <td style="font-size:12px;color:var(--teal);">${a.clockIn}</td>
+      <td>${clockOutBadge}</td>
+      <td style="color:#888;">${hours}</td>
+      <td>${a.note||'—'}</td>
+      <td>
+        <button class="btn-act track" onclick="manualClockOut('${a.id}')">퇴근처리</button>
+      </td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="8" style="text-align:center;color:#aaa;padding:20px;">${filterDate} 근태 기록이 없습니다.</td></tr>`;
+  // Summary
+  const sumEl = document.getElementById('attendSummary');
+  if (sumEl) {
+    const total = list.length;
+    const active = list.filter(a => !a.clockOut).length;
+    const done = list.filter(a => a.clockOut).length;
+    sumEl.innerHTML = `<span style="margin-right:16px;">전체 <b>${total}명</b></span><span style="margin-right:16px;color:var(--ok);">근무중 <b>${active}명</b></span><span style="color:#888;">퇴근 <b>${done}명</b></span>`;
+  }
+}
+
+function manualClockOut(id) {
+  const time = prompt('퇴근 시간 입력 (HH:MM):', new Date().toTimeString().slice(0,5));
+  if (!time) return;
+  const list = getAttendance();
+  const a = list.find(x => x.id === id);
+  if (a) { a.clockOut = time; saveAttendance(list); renderAttendancePage(); showToast('퇴근 처리되었습니다.'); }
 }
 
 /* ── 재고 수량 업데이트 ── */
@@ -2147,6 +2617,477 @@ function submitInqReply() {
 
 renderAdminInquiries();
 
+/* ══════════════════════════════════════
+   상품 관리 (Product Management)
+══════════════════════════════════════ */
+const PRODUCT_KEY = 'seupkyul_products';
+const PRODUCT_SEED = [
+  { id:'P-001', name:'딥 리페어 앰플 100ml',        category:'클리닉',      emoji:'🌟', badge:'',         shortDesc:'딥 리페어 복합 앰플. 극손상 모발 집중 케어.',                                          detailContent:'', price:45000,  b2bPrice:30000, stock:45,  stockStatus:'원활', b2cVisible:false, b2cOrder:99, b2cCategory:'앰플/에센스',      status:'active', lastOrder:'2026.05.20' },
+  { id:'P-002', name:'케라틴 집중 트리트먼트 200ml', category:'트리트먼트',  emoji:'🌿', badge:'신상품',    shortDesc:'주 2회 사용으로 살롱 케어 효과 유지. 손상 모발 전용 고농도 트리트먼트.',                  detailContent:'', price:42000,  b2bPrice:25000, stock:8,   stockStatus:'부족', b2cVisible:true,  b2cOrder:2,  b2cCategory:'샴푸/트리트먼트',  status:'active', lastOrder:'2026.05.15' },
+  { id:'P-003', name:'두피 앰플 토닉 100ml',         category:'클리닉',      emoji:'🌱', badge:'두피케어',  shortDesc:'바이오틴 + 아데노신 복합 두피 토닉. 건강한 두피 환경 조성.',                             detailContent:'', price:45000,  b2bPrice:28000, stock:0,   stockStatus:'품절', b2cVisible:true,  b2cOrder:4,  b2cCategory:'두피케어',         status:'active', lastOrder:'2026.05.10' },
+  { id:'P-004', name:'딥 리페어 샴푸 500ml',         category:'소모품',      emoji:'🧴', badge:'베스트셀러', shortDesc:'케라틴 농축 샴푸. 세없결 클리닉 시술 효과를 집에서 유지하세요.',                          detailContent:'', price:28000,  b2bPrice:15000, stock:62,  stockStatus:'원활', b2cVisible:true,  b2cOrder:1,  b2cCategory:'샴푸/트리트먼트',  status:'active', lastOrder:'2026.05.22' },
+  { id:'P-005', name:'헤어 클리닉 마스크팩 50g',     category:'클리닉',      emoji:'💊', badge:'',         shortDesc:'고농도 케어 성분 함유 헤어 마스크팩.',                                                    detailContent:'', price:22000,  b2bPrice:12000, stock:38,  stockStatus:'원활', b2cVisible:false, b2cOrder:99, b2cCategory:'샴푸/트리트먼트',  status:'active', lastOrder:'2026.05.18' },
+  { id:'P-006', name:'프로틴 코팅제 100ml',          category:'트리트먼트',  emoji:'⚗️', badge:'',         shortDesc:'프로틴 복합 코팅 트리트먼트.',                                                           detailContent:'', price:55000,  b2bPrice:35000, stock:7,   stockStatus:'부족', b2cVisible:false, b2cOrder:99, b2cCategory:'앰플/에센스',      status:'active', lastOrder:'2026.05.12' },
+  { id:'P-007', name:'알루미늄 포일 500매',           category:'소모품',      emoji:'📦', badge:'',         shortDesc:'전문 미용 알루미늄 포일.',                                                               detailContent:'', price:12000,  b2bPrice:8000,  stock:156, stockStatus:'원활', b2cVisible:false, b2cOrder:99, b2cCategory:'',                 status:'active', lastOrder:'2026.05.25' },
+  { id:'P-008', name:'스티머 기기 1대',               category:'장비',        emoji:'💨', badge:'',         shortDesc:'전문 미용 스티머 기기.',                                                                  detailContent:'', price:280000, b2bPrice:200000,stock:3,   stockStatus:'원활', b2cVisible:false, b2cOrder:99, b2cCategory:'',                 status:'active', lastOrder:'2026.04.30' },
+  { id:'P-009', name:'모이스처 앰플 세럼 50ml',       category:'트리트먼트',  emoji:'💧', badge:'인기',     shortDesc:'히알루론산 + 세라마이드 복합 앰플. 드라이 전 모발에 발라 촉촉함 유지.',                    detailContent:'', price:36000,  b2bPrice:22000, stock:30,  stockStatus:'원활', b2cVisible:true,  b2cOrder:3,  b2cCategory:'앰플/에센스',      status:'active', lastOrder:'2026.05.20' },
+  { id:'P-010', name:'에센스 글로스 오일 60ml',       category:'소모품',      emoji:'✨', badge:'스타일링', shortDesc:'아르간 오일 기반 헤어 글로스. 열 보호 + 광택 동시 케어.',                                 detailContent:'', price:32000,  b2bPrice:20000, stock:25,  stockStatus:'원활', b2cVisible:true,  b2cOrder:5,  b2cCategory:'스타일링',         status:'active', lastOrder:'2026.05.18' },
+  { id:'P-011', name:'홈케어 풀세트',                 category:'소모품',      emoji:'🎁', badge:'스페셜',   shortDesc:'샴푸 + 트리트먼트 + 앰플 + 오일 풀세트. 정가 대비 20% 할인 구성.',                        detailContent:'', price:112000, b2bPrice:80000, stock:15,  stockStatus:'원활', b2cVisible:true,  b2cOrder:6,  b2cCategory:'세트',             status:'active', lastOrder:'2026.05.15' },
+];
+
+function getProducts() {
+  try { const d = localStorage.getItem(PRODUCT_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  const seed = JSON.parse(JSON.stringify(PRODUCT_SEED));
+  localStorage.setItem(PRODUCT_KEY, JSON.stringify(seed));
+  return seed;
+}
+function saveProducts(list) { localStorage.setItem(PRODUCT_KEY, JSON.stringify(list)); }
+
+let _productCategoryFilter = 'all';
+let _editProductId = null;
+
+function filterProductCategory(el, cat) {
+  document.querySelectorAll('#page-products .stab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  _productCategoryFilter = cat;
+  renderProductsTable();
+}
+
+function renderProductsTable() {
+  const tbody = document.getElementById('products-tbody');
+  if (!tbody) return;
+  let list = getProducts();
+  if (_productCategoryFilter !== 'all') list = list.filter(p => p.category === _productCategoryFilter);
+  const sc = { '원활':'var(--ok)', '부족':'var(--warn)', '품절':'var(--err)' };
+  const sb = { '원활':'rgba(74,154,106,0.1)', '부족':'rgba(200,146,42,0.1)', '품절':'rgba(196,82,82,0.1)' };
+  tbody.innerHTML = list.map(p => `
+    <tr>
+      <td><span class="mono" style="font-size:11px;">${p.id}</span></td>
+      <td style="text-align:center;">${p.imageData?`<img src="${p.imageData}" style="width:44px;height:44px;object-fit:cover;border-radius:10px;">`:`<span style="font-size:22px;">${p.emoji||'🛍️'}</span>`}</td>
+      <td><b>${p.name}</b>${p.badge?`<span style="margin-left:6px;font-size:10px;padding:1px 7px;border-radius:100px;background:rgba(26,26,26,0.08);color:#555;">${p.badge}</span>`:''}</td>
+      <td style="color:#888;font-size:12px;">${p.category}</td>
+      <td style="font-weight:700;color:var(--teal);">${p.price.toLocaleString()}원</td>
+      <td style="font-weight:600;color:#666;">${(p.b2bPrice||0).toLocaleString()}원</td>
+      <td><span class="status-badge2" style="background:${sb[p.stockStatus]||'#f0f0f0'};color:${sc[p.stockStatus]||'#999'};">${p.stockStatus}</span></td>
+      <td style="text-align:center;"><input class="stock-qty-input" type="number" value="${p.stock}" min="0" style="${p.stock===0?'color:var(--err)':p.stock<10?'color:var(--warn)':''}" onchange="updateProductStock('${p.id}',this.value)"></td>
+      <td style="text-align:center;">
+        <label style="position:relative;display:inline-flex;align-items:center;cursor:pointer;">
+          <input type="checkbox" ${p.b2cVisible?'checked':''} onchange="toggleProductB2c('${p.id}',this.checked)" style="width:0;height:0;opacity:0;position:absolute;">
+          <span style="display:inline-block;width:38px;height:22px;border-radius:11px;background:${p.b2cVisible?'var(--ok)':'#ccc'};position:relative;transition:.2s;flex-shrink:0;">
+            <span style="position:absolute;height:16px;width:16px;left:${p.b2cVisible?'19px':'3px'};top:3px;border-radius:50%;background:white;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></span>
+          </span>
+        </label>
+      </td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-act track" onclick="openProductModal('${p.id}')">편집</button>
+          <button class="btn-act" style="color:var(--err);background:rgba(196,82,82,0.06);border:1.5px solid rgba(196,82,82,0.15);" onclick="deleteProduct('${p.id}')">삭제</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function updateProductStock(id, qty) {
+  const list = getProducts();
+  const p = list.find(x => x.id === id);
+  if (!p) return;
+  p.stock = parseInt(qty) || 0;
+  p.stockStatus = p.stock === 0 ? '품절' : p.stock < 10 ? '부족' : '원활';
+  saveProducts(list);
+}
+
+function toggleProductB2c(id, visible) {
+  const list = getProducts();
+  const p = list.find(x => x.id === id);
+  if (!p) return;
+  p.b2cVisible = visible;
+  if (visible && p.b2cOrder === 99) {
+    const maxOrder = Math.max(0, ...list.filter(x => x.b2cVisible && x.id !== id).map(x => x.b2cOrder));
+    p.b2cOrder = maxOrder + 1;
+  }
+  saveProducts(list);
+  renderProductsTable();
+}
+
+function openProductModal(id) {
+  _editProductId = id || null;
+  const modal = document.getElementById('productModal');
+  if (!modal) return;
+  if (id) {
+    const p = getProducts().find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('pModalTitle').textContent = '상품 편집';
+    document.getElementById('pName').value       = p.name;
+    document.getElementById('pCategory').value   = p.category;
+    document.getElementById('pB2cCat').value     = p.b2cCategory || '';
+    document.getElementById('pEmoji').value      = p.emoji;
+    document.getElementById('pBadge').value      = p.badge;
+    document.getElementById('pPrice').value      = p.price;
+    document.getElementById('pB2bPrice').value   = p.b2bPrice;
+    document.getElementById('pStock').value      = p.stock;
+    document.getElementById('pShortDesc').value  = p.shortDesc;
+    document.getElementById('pB2cVisible').checked = p.b2cVisible;
+    document.getElementById('pImageData').value  = p.imageData || '';
+    const prev = document.getElementById('pImgPreview');
+    prev.innerHTML = p.imageData
+      ? `<img src="${p.imageData}" style="width:100%;height:100%;object-fit:cover;">`
+      : `<span>${p.emoji||'🛍️'}</span>`;
+  } else {
+    document.getElementById('pModalTitle').textContent = '상품 추가';
+    ['pName','pCategory','pB2cCat','pBadge','pShortDesc'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+    document.getElementById('pEmoji').value    = '🛍️';
+    document.getElementById('pPrice').value   = '';
+    document.getElementById('pB2bPrice').value = '';
+    document.getElementById('pStock').value   = '0';
+    document.getElementById('pB2cVisible').checked = false;
+    document.getElementById('pImageData').value = '';
+    document.getElementById('pImgPreview').innerHTML = '<span>🛍️</span>';
+  }
+  modal.classList.add('open');
+}
+function closeProductModal() {
+  document.getElementById('productModal').classList.remove('open');
+  _editProductId = null;
+}
+function saveProduct() {
+  const name = document.getElementById('pName').value.trim();
+  if (!name) { alert('상품명을 입력해주세요.'); return; }
+  const price = parseInt(document.getElementById('pPrice').value) || 0;
+  if (!price) { alert('B2C 가격을 입력해주세요.'); return; }
+  const list = getProducts();
+  const b2cVisible = document.getElementById('pB2cVisible').checked;
+  const stock = parseInt(document.getElementById('pStock').value) || 0;
+  const data = {
+    name,
+    category:    document.getElementById('pCategory').value || '기타',
+    b2cCategory: document.getElementById('pB2cCat').value || '',
+    emoji:       document.getElementById('pEmoji').value  || '🛍️',
+    imageData:   document.getElementById('pImageData').value || '',
+    badge:       document.getElementById('pBadge').value,
+    shortDesc:   document.getElementById('pShortDesc').value,
+    price,
+    b2bPrice:    parseInt(document.getElementById('pB2bPrice').value) || Math.round(price * 0.65),
+    stock,
+    stockStatus: stock === 0 ? '품절' : stock < 10 ? '부족' : '원활',
+    b2cVisible,
+  };
+  if (_editProductId) {
+    const p = list.find(x => x.id === _editProductId);
+    if (p) Object.assign(p, data);
+  } else {
+    const maxOrder = b2cVisible ? Math.max(0, ...list.filter(x => x.b2cVisible).map(x => x.b2cOrder)) + 1 : 99;
+    const newId = 'P-' + String(Date.now()).slice(-4);
+    list.push({ ...data, id: newId, detailContent: '', detailSections: [], b2cOrder: maxOrder, status: 'active', lastOrder: new Date().toISOString().slice(0,10).replace(/-/g,'.') });
+  }
+  saveProducts(list);
+  closeProductModal();
+  renderProductsTable();
+}
+function handleProductImageUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const data = e.target.result;
+    document.getElementById('pImageData').value = data;
+    document.getElementById('pImgPreview').innerHTML = `<img src="${data}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function deleteProduct(id) {
+  if (!confirm('이 상품을 삭제할까요?')) return;
+  saveProducts(getProducts().filter(p => p.id !== id));
+  renderProductsTable();
+}
+
+/* ── 쇼핑몰 관리 탭 ── */
+let _shopDetailEditId = null;
+
+function renderShopManagement() {
+  const container = document.getElementById('shop-mgmt-list');
+  if (!container) return;
+  const products = getProducts();
+  const visible = products.filter(p => p.b2cVisible).sort((a,b) => a.b2cOrder - b.b2cOrder);
+  const hidden  = products.filter(p => !p.b2cVisible);
+
+  const mkToggle = (p, isOn) => `
+    <label style="position:relative;display:inline-flex;align-items:center;cursor:pointer;">
+      <input type="checkbox" ${isOn?'checked':''} onchange="toggleProductB2cFromShop('${p.id}',this.checked)" style="width:0;height:0;opacity:0;position:absolute;">
+      <span style="display:inline-block;width:38px;height:22px;border-radius:11px;background:${isOn?'var(--ok)':'#ccc'};position:relative;transition:.2s;">
+        <span style="position:absolute;height:16px;width:16px;left:${isOn?'19px':'3px'};top:3px;border-radius:50%;background:white;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></span>
+      </span>
+    </label>`;
+
+  const mkItem = (p, idx, total, isVis) => `
+    <div style="background:white;border-radius:14px;padding:14px 18px;box-shadow:0 2px 10px rgba(0,0,0,0.04);display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+      <span style="font-size:26px;flex-shrink:0;">${p.emoji}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;">${p.name}${p.badge?`<span style="margin-left:6px;font-size:10px;padding:1px 7px;border-radius:100px;background:rgba(26,26,26,0.08);color:#555;">${p.badge}</span>`:''}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px;">${p.price.toLocaleString()}원 · ${p.category}${p.b2cCategory?' · '+p.b2cCategory:''}</div>
+      </div>
+      ${isVis ? `<div style="display:flex;gap:4px;">
+        <button onclick="shopMoveOrder('${p.id}',-1)" style="width:26px;height:26px;border:1.5px solid #e5e5e5;border-radius:7px;background:white;cursor:pointer;font-size:13px;${idx===0?'opacity:0.3;cursor:not-allowed;':''}">▲</button>
+        <button onclick="shopMoveOrder('${p.id}',1)" style="width:26px;height:26px;border:1.5px solid #e5e5e5;border-radius:7px;background:white;cursor:pointer;font-size:13px;${idx===total-1?'opacity:0.3;cursor:not-allowed;':''}">▼</button>
+      </div>` : ''}
+      <button onclick="openShopDetailEditor('${p.id}')" style="font-size:11px;font-weight:700;color:var(--blue);background:rgba(59,130,246,0.06);border:none;border-radius:7px;padding:5px 10px;cursor:pointer;font-family:inherit;white-space:nowrap;">상세편집</button>
+      ${mkToggle(p, isVis)}
+    </div>`;
+
+  let html = `<div style="font-size:12px;font-weight:700;color:#555;margin-bottom:10px;">🟢 B2C 노출 중 <span style="background:rgba(74,154,106,0.12);color:var(--ok);padding:2px 8px;border-radius:100px;">${visible.length}개</span></div>`;
+  if (!visible.length) html += `<div style="text-align:center;padding:24px;color:#aaa;font-size:13px;background:white;border-radius:14px;margin-bottom:16px;">노출 설정된 상품 없음</div>`;
+  else visible.forEach((p,i) => { html += mkItem(p, i, visible.length, true); });
+
+  html += `<div style="font-size:12px;font-weight:700;color:#555;margin:20px 0 10px;">⚪ 숨김 <span style="background:rgba(0,0,0,0.06);color:#888;padding:2px 8px;border-radius:100px;">${hidden.length}개</span></div>`;
+  if (!hidden.length) html += `<div style="text-align:center;padding:16px;color:#aaa;font-size:12px;">숨김 상품 없음</div>`;
+  else hidden.forEach((p,i) => { html += mkItem(p, i, hidden.length, false); });
+
+  container.innerHTML = html;
+}
+
+function toggleProductB2cFromShop(id, visible) {
+  toggleProductB2c(id, visible);
+  renderShopManagement();
+}
+
+function shopMoveOrder(id, dir) {
+  const list = getProducts();
+  const visible = list.filter(p => p.b2cVisible).sort((a,b) => a.b2cOrder - b.b2cOrder);
+  const idx = visible.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const swapIdx = idx + dir;
+  if (swapIdx < 0 || swapIdx >= visible.length) return;
+  [visible[idx].b2cOrder, visible[swapIdx].b2cOrder] = [visible[swapIdx].b2cOrder, visible[idx].b2cOrder];
+  saveProducts(list);
+  renderShopManagement();
+}
+
+let _detailSections = [];
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function openShopDetailEditor(id) {
+  _shopDetailEditId = id;
+  const p = getProducts().find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('sdModalTitle').textContent = p.name + ' — 상세 내용 편집';
+  if (p.detailSections && p.detailSections.length) {
+    _detailSections = JSON.parse(JSON.stringify(p.detailSections));
+  } else if (p.detailContent) {
+    _detailSections = [{ type:'text', content: p.detailContent.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(), imageData:'', caption:'' }];
+  } else {
+    _detailSections = [{ type:'heading', content:'', imageData:'', caption:'' }, { type:'text', content:'', imageData:'', caption:'' }];
+  }
+  renderDetailSections();
+  updateDetailPreview();
+  document.getElementById('shopDetailModal').classList.add('open');
+}
+
+function closeShopDetailModal() {
+  document.getElementById('shopDetailModal').classList.remove('open');
+  _shopDetailEditId = null;
+  _detailSections = [];
+}
+
+function renderDetailSections() {
+  const container = document.getElementById('sdSections');
+  if (!container) return;
+  const typeLabel = { heading:'제목', text:'텍스트', image:'이미지', highlight:'포인트 박스', list:'목록', divider:'구분선' };
+  container.innerHTML = _detailSections.map((s, i) => {
+    const last = _detailSections.length - 1;
+    let contentArea = '';
+    if (s.type === 'heading') {
+      contentArea = `<input type="text" value="${escHtml(s.content)}" oninput="_detailSections[${i}].content=this.value;updateDetailPreview()" style="width:100%;height:38px;border:1.5px solid #e5e5e5;border-radius:9px;padding:0 12px;font-size:15px;font-weight:700;font-family:inherit;" placeholder="섹션 제목">`;
+    } else if (s.type === 'text') {
+      contentArea = `<textarea oninput="_detailSections[${i}].content=this.value;updateDetailPreview()" style="width:100%;min-height:90px;border:1.5px solid #e5e5e5;border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;" placeholder="내용을 입력하세요...">${escHtml(s.content)}</textarea>`;
+    } else if (s.type === 'highlight') {
+      contentArea = `<textarea oninput="_detailSections[${i}].content=this.value;updateDetailPreview()" style="width:100%;min-height:70px;border:1.5px solid #e5e5e5;border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;" placeholder="강조 내용 (팁, 주의사항 등)">${escHtml(s.content)}</textarea>`;
+    } else if (s.type === 'list') {
+      contentArea = `<textarea oninput="_detailSections[${i}].content=this.value;updateDetailPreview()" style="width:100%;min-height:90px;border:1.5px solid #e5e5e5;border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;" placeholder="항목을 한 줄씩 입력 (엔터로 구분)">${escHtml(s.content)}</textarea>`;
+    } else if (s.type === 'image') {
+      const imgPrev = s.imageData ? `<img src="${s.imageData}" style="max-width:100%;max-height:150px;border-radius:10px;object-fit:cover;display:block;margin-bottom:8px;">` : '<div style="height:48px;display:flex;align-items:center;color:#aaa;font-size:12px;">이미지 없음</div>';
+      contentArea = `<div>${imgPrev}<input type="file" accept="image/*" id="sdImgFile${i}" style="display:none;" onchange="handleSectionImageUpload(this,${i})"><button type="button" onclick="document.getElementById('sdImgFile${i}').click()" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:1.5px solid rgba(26,26,26,0.1);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;margin-bottom:6px;">📷 이미지 업로드</button><br><input type="text" value="${escHtml(s.caption)}" oninput="_detailSections[${i}].caption=this.value;updateDetailPreview()" style="width:100%;height:34px;border:1.5px solid #e5e5e5;border-radius:8px;padding:0 10px;font-size:12px;font-family:inherit;margin-top:4px;" placeholder="이미지 설명 (선택사항)"></div>`;
+    } else if (s.type === 'divider') {
+      contentArea = `<div style="border-top:2px dashed #e5e5e5;margin:4px 0;pointer-events:none;"></div>`;
+    }
+    return `<div style="background:white;border:1.5px solid rgba(0,0,0,0.07);border-radius:14px;padding:14px 16px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <select onchange="_detailSections[${i}].type=this.value;_detailSections[${i}].content=_detailSections[${i}].content||'';renderDetailSections();updateDetailPreview()" style="height:30px;padding:0 8px;border:1.5px solid #e5e5e5;border-radius:8px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;background:white;">
+          ${['heading','text','image','highlight','list','divider'].map(t=>`<option value="${t}"${s.type===t?' selected':''}>${typeLabel[t]}</option>`).join('')}
+        </select>
+        <span style="flex:1;font-size:11px;color:#bbb;">#${i+1}</span>
+        <button onclick="sdMoveUp(${i})" ${i===0?'disabled':''} style="width:26px;height:26px;border-radius:6px;border:1.5px solid #e5e5e5;background:white;color:#888;cursor:pointer;font-size:12px;">↑</button>
+        <button onclick="sdMoveDown(${i})" ${i===last?'disabled':''} style="width:26px;height:26px;border-radius:6px;border:1.5px solid #e5e5e5;background:white;color:#888;cursor:pointer;font-size:12px;">↓</button>
+        <button onclick="_detailSections.splice(${i},1);renderDetailSections();updateDetailPreview()" style="width:26px;height:26px;border-radius:6px;border:none;background:rgba(196,82,82,0.08);color:var(--err);cursor:pointer;font-size:13px;">✕</button>
+      </div>
+      ${contentArea}
+    </div>`;
+  }).join('');
+}
+
+function sdMoveUp(i) {
+  if (i===0) return;
+  [_detailSections[i-1],_detailSections[i]] = [_detailSections[i],_detailSections[i-1]];
+  renderDetailSections(); updateDetailPreview();
+}
+function sdMoveDown(i) {
+  if (i>=_detailSections.length-1) return;
+  [_detailSections[i],_detailSections[i+1]] = [_detailSections[i+1],_detailSections[i]];
+  renderDetailSections(); updateDetailPreview();
+}
+function addDetailSection(type) {
+  _detailSections.push({ type: type||'text', content:'', imageData:'', caption:'' });
+  renderDetailSections(); updateDetailPreview();
+}
+function handleSectionImageUpload(input, idx) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => { _detailSections[idx].imageData = e.target.result; renderDetailSections(); updateDetailPreview(); };
+  reader.readAsDataURL(file);
+}
+function sectionsToHtml(sections) {
+  return (sections||[]).map(s => {
+    switch(s.type) {
+      case 'heading':   return `<h3 style="font-size:17px;font-weight:800;color:#1A1A1A;margin:24px 0 10px;">${escHtml(s.content)}</h3>`;
+      case 'text':      return `<p style="font-size:14px;color:#555;line-height:1.8;margin-bottom:14px;">${escHtml(s.content).replace(/\n/g,'<br>')}</p>`;
+      case 'highlight': return `<div style="background:#F5F2EC;border-left:3px solid #1A1A1A;border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0;font-size:13px;color:#444;line-height:1.7;">${escHtml(s.content).replace(/\n/g,'<br>')}</div>`;
+      case 'list':      return `<ul style="padding-left:20px;margin-bottom:14px;">${(s.content||'').split('\n').filter(x=>x.trim()).map(item=>`<li style="font-size:14px;color:#555;line-height:1.7;margin-bottom:4px;">${escHtml(item.trim())}</li>`).join('')}</ul>`;
+      case 'image':     return s.imageData ? `<div style="margin:18px 0;text-align:center;"><img src="${s.imageData}" style="max-width:100%;border-radius:14px;">${s.caption?`<div style="font-size:12px;color:#aaa;margin-top:6px;">${escHtml(s.caption)}</div>`:''}</div>` : '';
+      case 'divider':   return `<hr style="border:none;border-top:1px solid #eee;margin:22px 0;">`;
+      default: return '';
+    }
+  }).join('');
+}
+function updateDetailPreview() {
+  const prev = document.getElementById('sdPreview');
+  if (!prev) return;
+  prev.innerHTML = sectionsToHtml(_detailSections) || '<p style="color:#aaa;font-size:13px;text-align:center;padding:20px 0;">섹션을 추가해서 상세 내용을 작성하세요.</p>';
+}
+function saveShopDetail() {
+  const list = getProducts();
+  const p = list.find(x => x.id === _shopDetailEditId);
+  if (!p) return;
+  p.detailSections = JSON.parse(JSON.stringify(_detailSections));
+  p.detailContent  = sectionsToHtml(_detailSections);
+  saveProducts(list);
+  closeShopDetailModal();
+  showToast('상세 내용이 저장되었습니다.');
+}
+
+/* ── 마일리지 관리 ── */
+const MILEAGE_SETTINGS_KEY = 'seupkyul_mileage_settings';
+const MILEAGE_TX_KEY       = 'seupkyul_mileage_transactions';
+const MILEAGE_BAL_KEY      = 'seupkyul_mileage_balances';
+
+function getMileageSettings() {
+  try { const d = localStorage.getItem(MILEAGE_SETTINGS_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  const def = { earnRate:3, minEarnAmount:10000, minRedeemAmount:1000, maxRedeemRate:50 };
+  localStorage.setItem(MILEAGE_SETTINGS_KEY, JSON.stringify(def));
+  return def;
+}
+function saveMileageSettings(s) { localStorage.setItem(MILEAGE_SETTINGS_KEY, JSON.stringify(s)); }
+
+function getMileageBalances() {
+  try { const d = localStorage.getItem(MILEAGE_BAL_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  const seed = { '김민지':5400,'이수연':1080,'박서윤':3360,'강하은':960,'최예진':2520,'홍지원':840 };
+  localStorage.setItem(MILEAGE_BAL_KEY, JSON.stringify(seed));
+  return seed;
+}
+function getMileageTxs() {
+  try { const d = localStorage.getItem(MILEAGE_TX_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  const seed = [
+    { id:1, userName:'김민지', type:'earn', amount:5400,  orderId:'SC20260529-0007', date:'2026.05.29', desc:'SC20260529-0007 구매적립' },
+    { id:2, userName:'이수연', type:'earn', amount:1080,  orderId:'SC20260529-0006', date:'2026.05.29', desc:'SC20260529-0006 구매적립' },
+    { id:3, userName:'박서윤', type:'earn', amount:3360,  orderId:'SC20260528-0005', date:'2026.05.28', desc:'SC20260528-0005 구매적립' },
+    { id:4, userName:'강하은', type:'earn', amount:960,   orderId:'SC20260527-0003', date:'2026.05.27', desc:'SC20260527-0003 구매적립' },
+    { id:5, userName:'최예진', type:'earn', amount:2520,  orderId:'SC20260528-0004', date:'2026.05.28', desc:'SC20260528-0004 구매적립' },
+    { id:6, userName:'홍지원', type:'earn', amount:840,   orderId:'SC20260526-0001', date:'2026.05.26', desc:'SC20260526-0001 구매적립' },
+  ];
+  localStorage.setItem(MILEAGE_TX_KEY, JSON.stringify(seed));
+  return seed;
+}
+
+function renderMileageSettings() {
+  const s = getMileageSettings();
+  ['mileage-earn-rate','mileage-min-earn','mileage-min-redeem','mileage-max-redeem-rate'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.value = [s.earnRate, s.minEarnAmount, s.minRedeemAmount, s.maxRedeemRate][i];
+  });
+  const tbody = document.getElementById('mileage-cust-tbody');
+  if (!tbody) return;
+  const bal = getMileageBalances();
+  const txs = getMileageTxs();
+  tbody.innerHTML = Object.entries(bal).map(([name, balance]) => {
+    const earnTotal  = txs.filter(t=>t.userName===name&&t.type==='earn').reduce((s,t)=>s+t.amount,0);
+    const redeemTotal = txs.filter(t=>t.userName===name&&t.type==='redeem').reduce((s,t)=>s+t.amount,0);
+    return `<tr>
+      <td><b>${name}</b></td>
+      <td style="font-weight:800;color:var(--teal);">${balance.toLocaleString()}P</td>
+      <td style="color:var(--ok);">+${earnTotal.toLocaleString()}P</td>
+      <td style="color:${redeemTotal?'var(--err)':'#aaa'};">${redeemTotal?'-'+redeemTotal.toLocaleString()+'P':'—'}</td>
+      <td><button class="btn-act track" onclick="viewMileageHistory('${name}')">내역</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px;">데이터 없음</td></tr>';
+}
+
+function saveMileageSettingsForm() {
+  const s = {
+    earnRate:       parseInt(document.getElementById('mileage-earn-rate').value)        || 3,
+    minEarnAmount:  parseInt(document.getElementById('mileage-min-earn').value)          || 10000,
+    minRedeemAmount:parseInt(document.getElementById('mileage-min-redeem').value)        || 1000,
+    maxRedeemRate:  parseInt(document.getElementById('mileage-max-redeem-rate').value)   || 50,
+  };
+  saveMileageSettings(s);
+  alert('마일리지 설정이 저장되었습니다.');
+}
+
+function viewMileageHistory(name) {
+  const txs = getMileageTxs().filter(t => t.userName === name).slice().reverse();
+  const bal  = getMileageBalances();
+  if (!txs.length) { alert(`${name}님의 마일리지 내역이 없습니다.`); return; }
+  alert(`${name}님 잔액: ${(bal[name]||0).toLocaleString()}P\n\n` + txs.map(t => `${t.date}  ${t.type==='earn'?'+':'-'}${t.amount.toLocaleString()}P  ${t.desc}`).join('\n'));
+}
+
+function loadCustMileage() {
+  const name = document.getElementById('custDetailName').textContent;
+  const bal  = getMileageBalances();
+  const txs  = getMileageTxs().filter(t => t.userName === name).slice().reverse();
+  const balEl = document.getElementById('custMileageBal');
+  if (balEl) balEl.textContent = ((bal[name]||0).toLocaleString()) + 'P';
+  const tbody = document.getElementById('custMileageTbody');
+  if (!tbody) return;
+  tbody.innerHTML = txs.length
+    ? txs.map(t => `<tr>
+        <td style="color:#aaa;font-size:11px;">${t.date}</td>
+        <td style="font-size:12px;">${t.desc}</td>
+        <td style="font-weight:700;${t.type==='earn'?'color:var(--ok)':'color:var(--err);'}">${t.type==='earn'?'+':'-'}${t.amount.toLocaleString()}P</td>
+      </tr>`).join('')
+    : '<tr><td colspan="3" style="text-align:center;color:#aaa;padding:20px;">거래 내역 없음</td></tr>';
+}
+
+/* ── 토스트 알림 ── */
+(function() {
+  const el = document.createElement('div');
+  el.id = 'adminToast';
+  el.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);background:#1A1A1A;color:white;padding:11px 22px;border-radius:100px;font-size:13px;font-weight:700;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,0.2);transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;z-index:9999;pointer-events:none;white-space:nowrap;';
+  document.body.appendChild(el);
+})();
+let _toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('adminToast');
+  if (!el) { alert(msg); return; }
+  el.textContent = msg;
+  el.style.transform = 'translateX(-50%) translateY(0)';
+  el.style.opacity = '1';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => { el.style.transform = 'translateX(-50%) translateY(60px)'; el.style.opacity = '0'; }, 2800);
+}
+
+// 초기화
+renderProductsTable();
+
 // 모달 외부 클릭 닫기
 document.querySelectorAll('.modal-overlay, .dm-overlay').forEach(o => {
   o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
@@ -2226,6 +3167,117 @@ function toggleAdminSidebar() {
   </div>
 </div>
 
+<!-- ── 상품 추가/편집 모달 ── -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box" style="width:540px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div class="modal-title" id="pModalTitle">상품 추가</div>
+      <button onclick="closeProductModal()" style="background:none;border:none;font-size:20px;color:#aaa;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="form-group" style="grid-column:1/-1;">
+        <label class="form-label">상품명 *</label>
+        <input class="form-input" id="pName" type="text" placeholder="예: 딥 리페어 샴푸 500ml">
+      </div>
+      <div class="form-group" style="grid-column:1/-1;">
+        <label class="form-label">상품 이미지</label>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div id="pImgPreview" onclick="document.getElementById('pImgFile').click()" style="width:72px;height:72px;border-radius:14px;background:#F5F0E8;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;overflow:hidden;flex-shrink:0;"></div>
+          <div>
+            <input type="file" id="pImgFile" accept="image/*" style="display:none;" onchange="handleProductImageUpload(this)">
+            <input type="hidden" id="pImageData">
+            <button type="button" onclick="document.getElementById('pImgFile').click()" style="font-size:12px;font-weight:700;color:var(--teal);background:rgba(26,26,26,0.06);border:1.5px solid rgba(26,26,26,0.1);border-radius:9px;padding:7px 14px;cursor:pointer;font-family:inherit;display:block;margin-bottom:6px;">📷 이미지 업로드</button>
+            <div style="font-size:11px;color:#aaa;margin-bottom:6px;">이미지가 없으면 아래 이모지를 사용합니다</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;color:#888;font-weight:600;">이모지 대체:</span>
+              <input class="form-input" id="pEmoji" type="text" placeholder="🧴" style="font-size:20px;width:70px;padding:6px 10px;">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">배지 텍스트</label>
+        <input class="form-input" id="pBadge" type="text" placeholder="베스트셀러, 신상품, 인기 ...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">내부 카테고리 (재고관리용)</label>
+        <select class="form-select" id="pCategory">
+          <option>클리닉</option><option>트리트먼트</option><option>소모품</option><option>장비</option><option>기타</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">쇼핑몰 카테고리 (B2C 필터)</label>
+        <select class="form-select" id="pB2cCat">
+          <option value="">선택 안함</option>
+          <option>샴푸/트리트먼트</option><option>앰플/에센스</option><option>두피케어</option><option>스타일링</option><option>세트</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">B2C 판매 가격 (원) *</label>
+        <input class="form-input" id="pPrice" type="number" placeholder="28000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">B2B 내부 단가 (원)</label>
+        <input class="form-input" id="pB2bPrice" type="number" placeholder="자동 계산 (B2C×65%)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">초기 재고 수량</label>
+        <input class="form-input" id="pStock" type="number" value="0" min="0">
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:24px;">
+        <label class="form-label" style="margin:0;">B2C 쇼핑몰 노출</label>
+        <input type="checkbox" id="pB2cVisible" style="width:18px;height:18px;cursor:pointer;">
+      </div>
+      <div class="form-group" style="grid-column:1/-1;">
+        <label class="form-label">짧은 설명 (쇼핑몰 카드 노출)</label>
+        <textarea class="form-input" id="pShortDesc" rows="2" style="height:auto;resize:vertical;" placeholder="카드에 표시될 한두 줄 설명"></textarea>
+      </div>
+    </div>
+    <div class="modal-btns" style="margin-top:20px;">
+      <button class="btn-cancel" onclick="closeProductModal()">취소</button>
+      <button class="btn-confirm" onclick="saveProduct()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 상품 상세 내용 편집 모달 (비주얼 섹션 에디터) ── -->
+<div class="modal-overlay" id="shopDetailModal">
+  <div class="modal-box" style="width:900px;max-width:96vw;max-height:92vh;display:flex;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-shrink:0;">
+      <div class="modal-title" id="sdModalTitle">상세 내용 편집</div>
+      <button onclick="closeShopDetailModal()" style="background:none;border:none;font-size:20px;color:#aaa;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;overflow:hidden;min-height:0;">
+      <!-- 좌측: 섹션 에디터 -->
+      <div style="display:flex;flex-direction:column;overflow:hidden;">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:8px;flex-shrink:0;">✏️ 섹션 편집</div>
+        <div id="sdSections" style="flex:1;overflow-y:auto;padding-right:4px;"></div>
+        <!-- 섹션 추가 버튼들 -->
+        <div style="flex-shrink:0;padding-top:10px;border-top:1px solid #f0f0f0;margin-top:6px;">
+          <div style="font-size:11px;color:#bbb;font-weight:600;margin-bottom:6px;">+ 섹션 추가</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <button onclick="addDetailSection('heading')"   style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid #e5e5e5;background:white;cursor:pointer;font-family:inherit;">📌 제목</button>
+            <button onclick="addDetailSection('text')"      style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid #e5e5e5;background:white;cursor:pointer;font-family:inherit;">📝 텍스트</button>
+            <button onclick="addDetailSection('image')"     style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid #e5e5e5;background:white;cursor:pointer;font-family:inherit;">🖼️ 이미지</button>
+            <button onclick="addDetailSection('highlight')" style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid #e5e5e5;background:white;cursor:pointer;font-family:inherit;">💡 포인트</button>
+            <button onclick="addDetailSection('list')"      style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid #e5e5e5;background:white;cursor:pointer;font-family:inherit;">📋 목록</button>
+            <button onclick="addDetailSection('divider')"   style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid #e5e5e5;background:white;cursor:pointer;font-family:inherit;">── 구분선</button>
+          </div>
+        </div>
+      </div>
+      <!-- 우측: 미리보기 -->
+      <div style="display:flex;flex-direction:column;overflow:hidden;">
+        <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:8px;flex-shrink:0;">👁️ 미리보기</div>
+        <div id="sdPreview" style="flex:1;overflow-y:auto;border:1.5px solid #e5e5e5;border-radius:14px;padding:20px;font-size:13px;line-height:1.7;color:#333;background:#fafafa;"></div>
+      </div>
+    </div>
+    <div class="modal-btns" style="margin-top:14px;flex-shrink:0;">
+      <button class="btn-cancel" onclick="closeShopDetailModal()">취소</button>
+      <button class="btn-confirm" onclick="saveShopDetail()">💾 저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── 관리자 로그인 화면 ── -->
 <div class="admin-login-screen" id="adminLoginScreen">
   <div class="admin-login-card">
@@ -2279,6 +3331,7 @@ function toggleAdminSidebar() {
     <div class="dm-tabs">
       <button class="dm-tab active" onclick="switchDmTab(this,'custHistory')">방문/시술 이력</button>
       <button class="dm-tab" onclick="switchDmTab(this,'custOrders')">쇼핑 구매 이력</button>
+      <button class="dm-tab" onclick="switchDmTab(this,'custMileage');loadCustMileage()">마일리지</button>
     </div>
     <div class="dm-panel active" id="custHistory">
       <div class="dm-inner-table"><table>
@@ -2291,6 +3344,21 @@ function toggleAdminSidebar() {
         <thead><tr><th>주문번호</th><th>주문 상품</th><th>금액</th><th>상태</th></tr></thead>
         <tbody id="custOrderBody"></tbody>
       </table></div>
+    </div>
+    <div class="dm-panel" id="custMileage">
+      <div style="padding:16px 0;">
+        <div style="display:flex;align-items:center;gap:12px;background:#F5F2EC;border-radius:14px;padding:16px 20px;margin-bottom:16px;">
+          <div style="font-size:28px;">🪙</div>
+          <div>
+            <div style="font-size:12px;color:#888;font-weight:600;">보유 마일리지</div>
+            <div style="font-size:26px;font-weight:800;color:var(--teal);" id="custMileageBal">0P</div>
+          </div>
+        </div>
+        <div class="dm-inner-table"><table>
+          <thead><tr><th>날짜</th><th>내용</th><th>마일리지</th></tr></thead>
+          <tbody id="custMileageTbody"></tbody>
+        </table></div>
+      </div>
     </div>
   </div>
 </div>

@@ -1362,9 +1362,29 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
   .btn-white, .btn-outline { padding: 12px 24px; font-size: 13px; text-align: center; }
   .subpage-heading { font-size: clamp(24px, 7vw, 36px) !important; }
 }
+
+/* ── 브랜드 인트로 오버레이 ── */
+#brandIntro {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity .9s ease;
+}
+#brandIntro.fade-out { opacity: 0; pointer-events: none; }
+#brandIntroVideo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
 </style>
 </head>
 <body>
+
+<!-- 브랜드 인트로 영상 오버레이 -->
+<div id="brandIntro">
+  <video id="brandIntroVideo" src="seupkyul_branding.mp4" autoplay muted playsinline
+    onended="endBrandIntro()" style="display:block;"></video>
+</div>
 
 <!-- 공지 티커 바 (GNB 아래 고정) -->
 <div class="notice-ticker" id="noticeTicker" onclick="showPage('notices')">
@@ -2086,79 +2106,74 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
   </div>
   <section style="padding:80px 24px; background:white;">
     <div style="max-width:1100px;margin:0 auto;">
-      <div class="prog-filter" style="margin-bottom:40px;">
-        <button class="tab-btn active" onclick="switchTab(this)">전체</button>
-        <button class="tab-btn" onclick="switchTab(this)">샴푸/트리트먼트</button>
-        <button class="tab-btn" onclick="switchTab(this)">앰플/에센스</button>
-        <button class="tab-btn" onclick="switchTab(this)">두피 케어</button>
-        <button class="tab-btn" onclick="switchTab(this)">스타일링</button>
+      <div class="prog-filter" style="margin-bottom:40px;" id="shop-filter-tabs">
+        <button class="tab-btn active" onclick="filterShop(this,'all')">전체</button>
+        <button class="tab-btn" onclick="filterShop(this,'샴푸/트리트먼트')">샴푸/트리트먼트</button>
+        <button class="tab-btn" onclick="filterShop(this,'앰플/에센스')">앰플/에센스</button>
+        <button class="tab-btn" onclick="filterShop(this,'두피케어')">두피케어</button>
+        <button class="tab-btn" onclick="filterShop(this,'스타일링')">스타일링</button>
+        <button class="tab-btn" onclick="filterShop(this,'세트')">세트</button>
       </div>
-      <div class="shop-grid">
-        <div class="shop-card">
-          <div class="shop-img">🧴</div>
-          <div class="shop-info">
-            <span class="shop-badge">베스트셀러</span>
-            <div class="shop-name">딥 리페어 샴푸</div>
-            <div class="shop-desc">케라틴 농축 샴푸. 세없결 클리닉 시술 효과를 집에서 유지하세요. 500ml</div>
-            <div class="shop-price">28,000원</div>
-            <button class="shop-btn" onclick="requireAuth(()=>addToCart('딥 리페어 샴푸',28000))">장바구니 담기</button>
-          </div>
-        </div>
-        <div class="shop-card">
-          <div class="shop-img">🌿</div>
-          <div class="shop-info">
-            <span class="shop-badge">신상품</span>
-            <div class="shop-name">케라틴 집중 트리트먼트</div>
-            <div class="shop-desc">주 2회 사용으로 살롱 케어 효과 유지. 손상 모발 전용 고농도 트리트먼트. 200ml</div>
-            <div class="shop-price">42,000원</div>
-            <button class="shop-btn" onclick="requireAuth(()=>addToCart('케라틴 집중 트리트먼트',42000))">장바구니 담기</button>
-          </div>
-        </div>
-        <div class="shop-card">
-          <div class="shop-img">💧</div>
-          <div class="shop-info">
-            <span class="shop-badge">인기</span>
-            <div class="shop-name">모이스처 앰플 세럼</div>
-            <div class="shop-desc">히알루론산 + 세라마이드 복합 앰플. 드라이 전 모발에 발라 촉촉함 유지. 50ml</div>
-            <div class="shop-price">36,000원</div>
-            <button class="shop-btn" onclick="requireAuth(()=>addToCart('모이스처 앰플 세럼',36000))">장바구니 담기</button>
-          </div>
-        </div>
-        <div class="shop-card">
-          <div class="shop-img">🌱</div>
-          <div class="shop-info">
-            <span class="shop-badge">두피 케어</span>
-            <div class="shop-name">두피 앰플 토닉</div>
-            <div class="shop-desc">바이오틴 + 아데노신 복합 두피 토닉. 건강한 두피 환경 조성. 100ml</div>
-            <div class="shop-price">45,000원</div>
-            <button class="shop-btn" onclick="requireAuth(()=>addToCart('두피 앰플 토닉',45000))">장바구니 담기</button>
-          </div>
-        </div>
-        <div class="shop-card">
-          <div class="shop-img">✨</div>
-          <div class="shop-info">
-            <span class="shop-badge">스타일링</span>
-            <div class="shop-name">에센스 글로스 오일</div>
-            <div class="shop-desc">아르간 오일 기반 헤어 글로스. 열 보호 + 광택 동시 케어. 60ml</div>
-            <div class="shop-price">32,000원</div>
-            <button class="shop-btn" onclick="requireAuth(()=>addToCart('에센스 글로스 오일',32000))">장바구니 담기</button>
-          </div>
-        </div>
-        <div class="shop-card" style="background:linear-gradient(135deg,#1A1A1A,#3A3A3A);border:none;">
-          <div class="shop-img" style="background:rgba(255,255,255,0.05);font-size:40px;">🎁</div>
-          <div class="shop-info">
-            <span class="shop-badge" style="background:rgba(232,221,192,0.2);color:#E8DDC0;">스페셜</span>
-            <div class="shop-name" style="color:white;">홈케어 풀세트</div>
-            <div class="shop-desc" style="color:rgba(255,255,255,0.6);">샴푸 + 트리트먼트 + 앰플 + 오일 풀세트. 정가 대비 20% 할인 구성.</div>
-            <div class="shop-price" style="color:#E8DDC0;">112,000원 <span style="font-size:13px;color:rgba(255,255,255,0.4);text-decoration:line-through;">138,000원</span></div>
-            <button class="shop-btn" style="background:#E8DDC0;color:#1A1A1A;" onclick="requireAuth(()=>addToCart('홈케어 풀세트',112000))">장바구니 담기</button>
-          </div>
-        </div>
+      <div class="shop-grid" id="shop-product-grid">
+        <!-- 동적 렌더링 -->
+      </div>
+      <div id="shop-empty" style="display:none;text-align:center;padding:60px 20px;color:#aaa;">
+        <div style="font-size:40px;margin-bottom:12px;">🛍️</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:6px;">해당 카테고리 상품이 없습니다</div>
       </div>
     </div>
   </section>
   <footer class="footer"><div class="footer-inner"><div class="footer-bottom" style="border-top:none;padding-top:0;">© 2026 seupkyul. All rights reserved.</div></div></footer>
 </div><!-- /page-shop -->
+
+
+<!-- ═══ 상품 상세 PAGE ═══ -->
+<div id="page-product-detail" class="page">
+  <section style="padding:92px 24px 60px;max-width:860px;margin:0 auto;">
+    <button class="mypage-back-btn" onclick="showPage('shop')">← 쇼핑몰</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:16px;" id="pd-layout">
+      <!-- 왼쪽: 이미지 -->
+      <div>
+        <div id="pd-img" style="width:100%;aspect-ratio:1/1;border-radius:24px;background:#F5F0E8;display:flex;align-items:center;justify-content:center;font-size:80px;"></div>
+        <div id="pd-badge-wrap" style="margin-top:14px;"></div>
+      </div>
+      <!-- 오른쪽: 정보 -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div>
+          <div id="pd-name" style="font-size:26px;font-weight:800;color:#1A1A1A;letter-spacing:-0.5px;line-height:1.3;"></div>
+          <div id="pd-short-desc" style="font-size:14px;color:#777;margin-top:8px;line-height:1.6;"></div>
+        </div>
+        <div id="pd-price" style="font-size:28px;font-weight:800;color:#1A1A1A;"></div>
+        <!-- 마일리지 적립 예정 -->
+        <div id="pd-mileage-preview" style="display:none;background:#F5F2EC;border-radius:12px;padding:10px 16px;font-size:13px;color:#888;">
+          🪙 이 상품 구매 시 <b id="pd-mileage-amt" style="color:#1A1A1A;"></b> 적립 예정
+        </div>
+        <!-- 수량 선택 -->
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-size:14px;font-weight:600;color:#555;">수량</span>
+          <div style="display:flex;align-items:center;gap:0;border:1.5px solid #E0E0E0;border-radius:12px;overflow:hidden;">
+            <button onclick="changeDetailQty(-1)" style="width:40px;height:40px;background:white;border:none;font-size:20px;cursor:pointer;color:#555;">−</button>
+            <span id="pd-qty" style="width:48px;text-align:center;font-size:16px;font-weight:700;border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;line-height:40px;">1</span>
+            <button onclick="changeDetailQty(1)" style="width:40px;height:40px;background:white;border:none;font-size:20px;cursor:pointer;color:#555;">+</button>
+          </div>
+          <span id="pd-total-price" style="font-size:15px;font-weight:700;color:#1A1A1A;"></span>
+        </div>
+        <!-- 품절 표시 -->
+        <div id="pd-out-of-stock" style="display:none;background:rgba(196,82,82,0.08);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--err);font-weight:600;">현재 품절된 상품입니다</div>
+        <!-- 담기 버튼 -->
+        <div style="display:flex;gap:12px;">
+          <button id="pd-cart-btn" onclick="addDetailToCart()" style="flex:1;height:52px;background:var(--teal);color:white;font-size:15px;font-weight:700;border:none;border-radius:14px;cursor:pointer;font-family:inherit;transition:background .2s;">장바구니 담기</button>
+        </div>
+      </div>
+    </div>
+    <!-- 상세 내용 -->
+    <div style="margin-top:48px;padding-top:40px;border-top:1px solid #F0EDE8;">
+      <div style="font-size:18px;font-weight:800;color:#1A1A1A;margin-bottom:20px;">상품 상세 정보</div>
+      <div id="pd-detail-content" style="font-size:14px;color:#333;line-height:1.9;"></div>
+    </div>
+  </section>
+  <footer class="footer"><div class="footer-inner"><div class="footer-bottom" style="border-top:none;padding-top:0;">© 2026 seupkyul. All rights reserved.</div></div></footer>
+</div><!-- /page-product-detail -->
 
 
 <!-- ── 마이페이지 ── -->
@@ -2168,6 +2183,17 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
     <div class="mypage-username" id="mypage-username-txt">고객님</div>
     <span class="mypage-grade-tag" id="mypage-grade-txt">일반 회원</span>
   </div>
+  <!-- 마일리지 잔액 카드 -->
+  <div style="margin:0 0 20px;padding:20px 24px;background:linear-gradient(135deg,#1A1A1A,#3A3A3A);border-radius:20px;display:flex;align-items:center;gap:16px;max-width:520px;margin-left:auto;margin-right:auto;">
+    <div style="font-size:36px;">🪙</div>
+    <div style="flex:1;">
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);font-weight:600;margin-bottom:4px;">보유 마일리지</div>
+      <div style="font-size:28px;font-weight:800;color:#E8DDC0;" id="mypage-mileage-bal">0P</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;">구매 금액의 3% 자동 적립</div>
+    </div>
+    <div onclick="viewMyMileageHistory()" style="font-size:12px;font-weight:700;color:rgba(232,221,192,0.7);cursor:pointer;padding:6px 12px;border:1px solid rgba(232,221,192,0.2);border-radius:100px;">내역 보기 →</div>
+  </div>
+
   <div class="mypage-grid">
     <div class="mypage-card" onclick="showPage('cart')">
       <div class="mypage-card-ico">🛒</div>
@@ -2242,10 +2268,27 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
         </div>
       </div>
       <div class="cart-summary" id="cart-total-section" style="display:none;">
+        <!-- 마일리지 사용 -->
+        <div id="cart-mileage-section" style="background:#F5F2EC;border-radius:14px;padding:14px 18px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:13px;font-weight:700;color:#1A1A1A;">🪙 마일리지 사용</div>
+            <div style="font-size:12px;color:#888;">보유: <b id="cart-mileage-avail" style="color:#1A1A1A;">0P</b></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="number" id="cart-mileage-input" placeholder="사용할 마일리지 입력" min="0"
+              style="flex:1;height:38px;border:1.5px solid #E0E0E0;border-radius:10px;padding:0 12px;font-size:13px;font-family:inherit;"
+              oninput="applyMileage()">
+            <button onclick="useMaxMileage()" style="height:38px;padding:0 14px;background:#1A1A1A;color:white;font-size:12px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;white-space:nowrap;">전액 사용</button>
+            <button onclick="clearMileage()" style="height:38px;padding:0 12px;background:#e5e5e5;color:#555;font-size:12px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">취소</button>
+          </div>
+          <div id="cart-mileage-msg" style="font-size:11px;color:#888;margin-top:6px;"></div>
+        </div>
         <div class="cart-summary-row"><span>상품 금액</span><span id="cart-subtotal">0원</span></div>
+        <div class="cart-summary-row" id="cart-mileage-row" style="display:none;"><span style="color:var(--ok);">마일리지 할인</span><span id="cart-mileage-deduct" style="color:var(--ok);">-0원</span></div>
         <div class="cart-summary-row"><span>배송비</span><span>무료</span></div>
         <div class="cart-summary-total"><span>결제 금액</span><span id="cart-total-amount">0원</span></div>
-        <button class="cart-checkout-btn" onclick="alert('결제 페이지로 이동합니다.\n실제 구현 시 포트원 결제 모듈이 실행됩니다.')">결제하기</button>
+        <div id="cart-earn-preview" style="text-align:center;font-size:12px;color:#888;margin-bottom:10px;"></div>
+        <button class="cart-checkout-btn" onclick="doCheckout()">결제하기</button>
       </div>
     </div>
     <div style="margin-top:24px;text-align:center;">
@@ -2776,6 +2819,25 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
 </div>
 
 <script>
+/* ── 브랜드 인트로 ── */
+(function() {
+  const intro = document.getElementById('brandIntro');
+  const video = document.getElementById('brandIntroVideo');
+  if (!intro || !video) return;
+  // 영상 로드 실패 시 자동 스킵
+  video.addEventListener('error', endBrandIntro);
+  // body 스크롤 잠금
+  document.body.style.overflow = 'hidden';
+})();
+
+function endBrandIntro() {
+  const intro = document.getElementById('brandIntro');
+  if (!intro || intro.classList.contains('fade-out')) return;
+  document.body.style.overflow = '';
+  intro.classList.add('fade-out');
+  setTimeout(() => { if (intro.parentNode) intro.parentNode.removeChild(intro); }, 950);
+}
+
 /* ── 장바구니 상태 ── */
 const cart = [];
 function addToCart(name, price) {
@@ -2986,6 +3048,7 @@ function showPage(name) {
     const aEl = document.getElementById('mypage-avatar-ico');
     if (uEl) uEl.textContent = auth.user.name + '님';
     if (aEl) aEl.textContent = initials;
+    setTimeout(updateMypageMileage, 0);
   }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
@@ -2994,6 +3057,7 @@ function showPage(name) {
   });
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (name === 'cart')    renderCartPage();
+  if (name === 'shop')    renderShopPage();
   if (name === 'notices') renderNoticesPage();
   if (name === 'inquiry') renderCustomerInquiryHistory();
   const ffWrap = document.getElementById('franchiseFloat');
@@ -3304,6 +3368,341 @@ function toggleNoticeItem(id) {
 // 초기화 (notices 페이지도 미리 렌더링)
 initNotices();
 renderNoticesPage();
+
+/* ══════════════════════════════════════
+   쇼핑몰 상품 관리 (B2C)
+══════════════════════════════════════ */
+const B2C_PRODUCT_KEY = 'seupkyul_products';
+const B2C_PRODUCT_FALLBACK = [
+  { id:'P-004', name:'딥 리페어 샴푸 500ml',         emoji:'🧴', badge:'베스트셀러', shortDesc:'케라틴 농축 샴푸. 세없결 클리닉 시술 효과를 집에서 유지하세요.', detailContent:'', price:28000,  stockStatus:'원활', b2cVisible:true, b2cOrder:1, b2cCategory:'샴푸/트리트먼트' },
+  { id:'P-002', name:'케라틴 집중 트리트먼트 200ml', emoji:'🌿', badge:'신상품',    shortDesc:'주 2회 사용으로 살롱 케어 효과 유지. 손상 모발 전용 고농도 트리트먼트.', detailContent:'', price:42000,  stockStatus:'부족', b2cVisible:true, b2cOrder:2, b2cCategory:'샴푸/트리트먼트' },
+  { id:'P-009', name:'모이스처 앰플 세럼 50ml',       emoji:'💧', badge:'인기',     shortDesc:'히알루론산 + 세라마이드 복합 앰플. 드라이 전 모발에 발라 촉촉함 유지.', detailContent:'', price:36000,  stockStatus:'원활', b2cVisible:true, b2cOrder:3, b2cCategory:'앰플/에센스' },
+  { id:'P-003', name:'두피 앰플 토닉 100ml',         emoji:'🌱', badge:'두피케어',  shortDesc:'바이오틴 + 아데노신 복합 두피 토닉. 건강한 두피 환경 조성.', detailContent:'', price:45000,  stockStatus:'품절', b2cVisible:true, b2cOrder:4, b2cCategory:'두피케어' },
+  { id:'P-010', name:'에센스 글로스 오일 60ml',       emoji:'✨', badge:'스타일링', shortDesc:'아르간 오일 기반 헤어 글로스. 열 보호 + 광택 동시 케어.', detailContent:'', price:32000,  stockStatus:'원활', b2cVisible:true, b2cOrder:5, b2cCategory:'스타일링' },
+  { id:'P-011', name:'홈케어 풀세트',                 emoji:'🎁', badge:'스페셜',   shortDesc:'샴푸 + 트리트먼트 + 앰플 + 오일 풀세트. 정가 대비 20% 할인 구성.', detailContent:'', price:112000, stockStatus:'원활', b2cVisible:true, b2cOrder:6, b2cCategory:'세트' },
+];
+
+function b2cGetProducts() {
+  try { const d = localStorage.getItem(B2C_PRODUCT_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  return JSON.parse(JSON.stringify(B2C_PRODUCT_FALLBACK));
+}
+
+let _shopFilter = 'all';
+let _currentProductId = null;
+let _detailQty = 1;
+
+function renderShopPage() {
+  const grid  = document.getElementById('shop-product-grid');
+  const empty = document.getElementById('shop-empty');
+  if (!grid) return;
+  const all = b2cGetProducts().filter(p => p.b2cVisible).sort((a,b) => (a.b2cOrder||99)-(b.b2cOrder||99));
+  const list = _shopFilter === 'all' ? all : all.filter(p => p.b2cCategory === _shopFilter);
+  if (!list.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  const isSpecial = p => p.badge === '스페셜';
+  grid.innerHTML = list.map(p => {
+    const sp = isSpecial(p);
+    const imgHtml = p.imageData
+      ? `<img src="${p.imageData}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`
+      : `<span style="font-size:40px;">${p.emoji||'🛍️'}</span>`;
+    return `<div class="shop-card" style="${sp?'background:linear-gradient(135deg,#1A1A1A,#3A3A3A);border:none;':''}">
+      <div class="shop-img" style="${sp?'background:rgba(255,255,255,0.05);':''}display:flex;align-items:center;justify-content:center;">${imgHtml}</div>
+      <div class="shop-info">
+        ${p.badge?`<span class="shop-badge" style="${sp?'background:rgba(232,221,192,0.2);color:#E8DDC0;':''}">${p.badge}</span>`:''}
+        <div class="shop-name" style="${sp?'color:white;':''}">${p.name}</div>
+        <div class="shop-desc" style="${sp?'color:rgba(255,255,255,0.6);':''}">${p.shortDesc}</div>
+        <div class="shop-price" style="${sp?'color:#E8DDC0;':''}">${p.price.toLocaleString()}원</div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button class="shop-btn" style="${sp?'background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);flex:1;':'flex:1;'}" onclick="showProductDetail('${p.id}')">상세보기</button>
+          <button class="shop-btn" style="${sp?'background:#E8DDC0;color:#1A1A1A;':''}${p.stockStatus==='품절'?'opacity:0.45;cursor:not-allowed;':''}" onclick="${p.stockStatus!=='품절'?`requireAuth(()=>addToCartById('${p.id}'))`:''}">
+            ${p.stockStatus==='품절'?'품절':'담기'}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterShop(el, cat) {
+  document.querySelectorAll('#shop-filter-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  _shopFilter = cat;
+  renderShopPage();
+}
+
+function addToCartById(id) {
+  const p = b2cGetProducts().find(x => x.id === id);
+  if (!p) return;
+  if (p.stockStatus === '품절') { showToast('품절된 상품입니다.'); return; }
+  addToCart(p.name, p.price, p.id, p.emoji);
+}
+
+function showProductDetail(id) {
+  const p = b2cGetProducts().find(x => x.id === id);
+  if (!p) return;
+  _currentProductId = id;
+  _detailQty = 1;
+  const pdImg = document.getElementById('pd-img');
+  if (p.imageData) {
+    pdImg.innerHTML = `<img src="${p.imageData}" style="width:100%;height:100%;object-fit:cover;border-radius:24px;">`;
+    pdImg.style.fontSize = '';
+  } else {
+    pdImg.textContent = p.emoji || '🛍️';
+    pdImg.style.fontSize = '80px';
+  }
+  document.getElementById('pd-name').textContent   = p.name;
+  document.getElementById('pd-short-desc').textContent = p.shortDesc;
+  document.getElementById('pd-price').textContent  = p.price.toLocaleString() + '원';
+  document.getElementById('pd-qty').textContent    = '1';
+  document.getElementById('pd-total-price').textContent = p.price.toLocaleString() + '원';
+  const badgeWrap = document.getElementById('pd-badge-wrap');
+  badgeWrap.innerHTML = p.badge ? `<span style="display:inline-block;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;background:rgba(26,26,26,0.08);color:#555;">${p.badge}</span>` : '';
+  const oosEl = document.getElementById('pd-out-of-stock');
+  const cartBtn = document.getElementById('pd-cart-btn');
+  if (p.stockStatus === '품절') {
+    oosEl.style.display = 'block';
+    cartBtn.disabled = true;
+    cartBtn.style.opacity = '0.4';
+  } else {
+    oosEl.style.display = 'none';
+    cartBtn.disabled = false;
+    cartBtn.style.opacity = '1';
+  }
+  const ms = b2cGetMileageSettings();
+  const earn = p.price >= ms.minEarnAmount ? Math.floor(p.price * ms.earnRate / 100) : 0;
+  const prevEl = document.getElementById('pd-mileage-preview');
+  const amtEl  = document.getElementById('pd-mileage-amt');
+  if (earn > 0) {
+    prevEl.style.display = 'block';
+    amtEl.textContent = earn.toLocaleString() + 'P';
+  } else { prevEl.style.display = 'none'; }
+  const detailEl = document.getElementById('pd-detail-content');
+  detailEl.innerHTML = p.detailContent || `<p style="color:#aaa;">이 상품의 상세 설명이 곧 업데이트될 예정입니다.</p>`;
+  showPage('product-detail');
+}
+
+function changeDetailQty(delta) {
+  const p = b2cGetProducts().find(x => x.id === _currentProductId);
+  if (!p) return;
+  _detailQty = Math.max(1, _detailQty + delta);
+  document.getElementById('pd-qty').textContent = _detailQty;
+  document.getElementById('pd-total-price').textContent = (p.price * _detailQty).toLocaleString() + '원';
+  const ms = b2cGetMileageSettings();
+  const earn = p.price * _detailQty >= ms.minEarnAmount ? Math.floor(p.price * _detailQty * ms.earnRate / 100) : 0;
+  const amtEl = document.getElementById('pd-mileage-amt');
+  if (amtEl && earn > 0) amtEl.textContent = earn.toLocaleString() + 'P';
+}
+
+function addDetailToCart() {
+  const p = b2cGetProducts().find(x => x.id === _currentProductId);
+  if (!p) return;
+  requireAuth(() => {
+    for (let i = 0; i < _detailQty; i++) addToCart(p.name, p.price, p.id, p.emoji);
+    showToast(`${p.name} ${_detailQty}개 장바구니에 담겼습니다 🛒`);
+  });
+}
+
+/* ── 마일리지 시스템 (B2C) ── */
+const B2C_MILEAGE_SETTINGS_KEY = 'seupkyul_mileage_settings';
+const B2C_MILEAGE_BAL_KEY      = 'seupkyul_mileage_balances';
+const B2C_MILEAGE_TX_KEY       = 'seupkyul_mileage_transactions';
+
+function b2cGetMileageSettings() {
+  try { const d = localStorage.getItem(B2C_MILEAGE_SETTINGS_KEY); if (d) return JSON.parse(d); } catch(e) {}
+  return { earnRate:3, minEarnAmount:10000, minRedeemAmount:1000, maxRedeemRate:50 };
+}
+function b2cGetMilBalance(name) {
+  try { const d = localStorage.getItem(B2C_MILEAGE_BAL_KEY); if (d) { const o = JSON.parse(d); return o[name] || 0; } } catch(e) {}
+  return 0;
+}
+function b2cSaveMilBalance(name, bal) {
+  let obj = {};
+  try { const d = localStorage.getItem(B2C_MILEAGE_BAL_KEY); if (d) obj = JSON.parse(d); } catch(e) {}
+  obj[name] = Math.max(0, bal);
+  localStorage.setItem(B2C_MILEAGE_BAL_KEY, JSON.stringify(obj));
+}
+function b2cAddMilTx(tx) {
+  let txs = [];
+  try { const d = localStorage.getItem(B2C_MILEAGE_TX_KEY); if (d) txs = JSON.parse(d); } catch(e) {}
+  txs.push({ id: Date.now(), ...tx });
+  localStorage.setItem(B2C_MILEAGE_TX_KEY, JSON.stringify(txs));
+}
+
+let _cartMileageUsed = 0;
+
+function syncCart() {
+  const total = cart.reduce((s,i)=>s+i.qty, 0);
+  document.querySelectorAll('.cart-gnb-badge').forEach(b => {
+    b.textContent = total;
+    b.style.display = total > 0 ? 'flex' : 'none';
+  });
+  const lbl = document.getElementById('cart-count-label');
+  if (lbl) lbl.textContent = total + '개 상품';
+  renderCartPage();
+}
+
+function renderCartPage() {
+  const listEl = document.getElementById('cart-items-list');
+  const totalSection = document.getElementById('cart-total-section');
+  if (!listEl) return;
+  if (cart.length === 0) {
+    listEl.innerHTML = '<div class="cart-empty"><div class="cart-empty-ico">🛒</div><div class="cart-empty-msg">장바구니가 비어있습니다</div><div style="font-size:13px;color:#bbb;margin-top:6px;">쇼핑몰에서 상품을 추가해보세요</div></div>';
+    if (totalSection) totalSection.style.display = 'none';
+    _cartMileageUsed = 0;
+    return;
+  }
+  if (totalSection) totalSection.style.display = 'block';
+  listEl.innerHTML = cart.map((item, idx) => `
+    <div class="cart-item">
+      <div class="cart-item-img">${item.emoji || '🛒'}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${(item.price * item.qty).toLocaleString()}원</div>
+      </div>
+      <div class="cart-item-qty">
+        <button class="cart-qty-btn" onclick="changeCartQty(${idx},-1)">−</button>
+        <span class="cart-qty-num">${item.qty}</span>
+        <button class="cart-qty-btn" onclick="changeCartQty(${idx},1)">+</button>
+        <button class="cart-delete-btn" onclick="removeCartItem(${idx})" title="삭제">🗑</button>
+      </div>
+    </div>`).join('');
+  updateCartTotals();
+  // 마일리지 잔액 표시
+  if (auth.user) {
+    const bal = b2cGetMilBalance(auth.user.name);
+    const balEl = document.getElementById('cart-mileage-avail');
+    if (balEl) balEl.textContent = bal.toLocaleString() + 'P';
+  }
+}
+
+function updateCartTotals() {
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const total = Math.max(0, subtotal - _cartMileageUsed);
+  const ms = b2cGetMileageSettings();
+  const earn = total >= ms.minEarnAmount ? Math.floor(total * ms.earnRate / 100) : 0;
+  document.getElementById('cart-subtotal').textContent = subtotal.toLocaleString() + '원';
+  document.getElementById('cart-total-amount').textContent = total.toLocaleString() + '원';
+  const mRow = document.getElementById('cart-mileage-row');
+  const mDeduct = document.getElementById('cart-mileage-deduct');
+  if (_cartMileageUsed > 0) {
+    if (mRow) mRow.style.display = 'flex';
+    if (mDeduct) mDeduct.textContent = '-' + _cartMileageUsed.toLocaleString() + '원';
+  } else {
+    if (mRow) mRow.style.display = 'none';
+  }
+  const earnEl = document.getElementById('cart-earn-preview');
+  if (earnEl) earnEl.innerHTML = earn > 0 ? `🪙 이번 주문으로 <b style="color:#1A1A1A;">${earn.toLocaleString()}P</b> 적립 예정` : '';
+}
+
+function applyMileage() {
+  if (!auth.user) return;
+  const input = document.getElementById('cart-mileage-input');
+  const val = parseInt(input.value) || 0;
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const ms = b2cGetMileageSettings();
+  const bal = b2cGetMilBalance(auth.user.name);
+  const maxUsable = Math.min(bal, Math.floor(subtotal * ms.maxRedeemRate / 100));
+  const msgEl = document.getElementById('cart-mileage-msg');
+  if (val < ms.minRedeemAmount && val > 0) {
+    if (msgEl) msgEl.textContent = `최소 ${ms.minRedeemAmount.toLocaleString()}P 이상부터 사용 가능합니다.`;
+    _cartMileageUsed = 0;
+  } else if (val > maxUsable) {
+    if (msgEl) msgEl.textContent = `최대 ${maxUsable.toLocaleString()}P까지 사용 가능합니다. (결제금액의 ${ms.maxRedeemRate}% 한도)`;
+    _cartMileageUsed = maxUsable;
+    input.value = maxUsable;
+  } else {
+    if (msgEl) msgEl.textContent = val > 0 ? `${val.toLocaleString()}P 적용됩니다.` : '';
+    _cartMileageUsed = val;
+  }
+  updateCartTotals();
+}
+
+function useMaxMileage() {
+  if (!auth.user) { showToast('로그인 후 마일리지를 사용할 수 있습니다.'); return; }
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const ms = b2cGetMileageSettings();
+  const bal = b2cGetMilBalance(auth.user.name);
+  const maxUsable = Math.min(bal, Math.floor(subtotal * ms.maxRedeemRate / 100));
+  document.getElementById('cart-mileage-input').value = maxUsable;
+  _cartMileageUsed = maxUsable;
+  const msgEl = document.getElementById('cart-mileage-msg');
+  if (msgEl) msgEl.textContent = maxUsable > 0 ? `${maxUsable.toLocaleString()}P 전액 적용됩니다.` : '사용 가능한 마일리지가 없습니다.';
+  updateCartTotals();
+}
+
+function clearMileage() {
+  _cartMileageUsed = 0;
+  const input = document.getElementById('cart-mileage-input');
+  if (input) input.value = '';
+  const msgEl = document.getElementById('cart-mileage-msg');
+  if (msgEl) msgEl.textContent = '';
+  updateCartTotals();
+}
+
+function doCheckout() {
+  if (!auth.user) { openAuthModal('login'); return; }
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const total = Math.max(0, subtotal - _cartMileageUsed);
+  const ms = b2cGetMileageSettings();
+  // 마일리지 차감
+  if (_cartMileageUsed > 0) {
+    const cur = b2cGetMilBalance(auth.user.name);
+    b2cSaveMilBalance(auth.user.name, cur - _cartMileageUsed);
+    b2cAddMilTx({ userName: auth.user.name, type:'redeem', amount:_cartMileageUsed, orderId:'', date: _todayStr(), desc:'장바구니 결제 사용' });
+  }
+  // 마일리지 적립
+  const earn = total >= ms.minEarnAmount ? Math.floor(total * ms.earnRate / 100) : 0;
+  if (earn > 0) {
+    const cur = b2cGetMilBalance(auth.user.name);
+    b2cSaveMilBalance(auth.user.name, cur + earn);
+    b2cAddMilTx({ userName: auth.user.name, type:'earn', amount:earn, orderId:'', date:_todayStr(), desc:'쇼핑몰 구매 적립' });
+  }
+  // 카트 초기화
+  cart.splice(0, cart.length);
+  _cartMileageUsed = 0;
+  syncCart();
+  const msg = earn > 0
+    ? `결제가 완료되었습니다!\n실제 구현 시 포트원 결제 모듈이 실행됩니다.\n\n🪙 ${earn.toLocaleString()}P 적립되었습니다!`
+    : '결제가 완료되었습니다!\n실제 구현 시 포트원 결제 모듈이 실행됩니다.';
+  alert(msg);
+  updateMypageMileage();
+}
+
+function updateMypageMileage() {
+  const el = document.getElementById('mypage-mileage-bal');
+  if (!el || !auth.user) return;
+  el.textContent = b2cGetMilBalance(auth.user.name).toLocaleString() + 'P';
+}
+
+// 기존 addToCart 오버라이드 (emoji 파라미터 추가)
+// (기존 함수와 충돌 방지 — 기존 함수는 아래에서 재정의)
+function addToCart(name, price, id, emoji) {
+  const existing = cart.find(i => i.name === name);
+  if (existing) { existing.qty++; }
+  else { cart.push({ name, price, qty:1, id: id||'', emoji: emoji||'🛒' }); }
+  syncCart();
+}
+
+function viewMyMileageHistory() {
+  if (!auth.user) { openAuthModal('login'); return; }
+  const name = auth.user.name;
+  let txs = [];
+  try { const d = localStorage.getItem(B2C_MILEAGE_TX_KEY); if (d) txs = JSON.parse(d); } catch(e) {}
+  const mine = txs.filter(t => t.userName === name).slice().reverse();
+  const bal  = b2cGetMilBalance(name);
+  if (!mine.length) {
+    showToast('마일리지 거래 내역이 없습니다.');
+    return;
+  }
+  const lines = mine.slice(0,20).map(t => `${t.date}  ${t.type==='earn'?'🟢 +':' 🔴 -'}${t.amount.toLocaleString()}P  ${t.desc}`).join('\n');
+  alert(`${name}님 마일리지 현황\n잔액: ${bal.toLocaleString()}P\n\n─────────────────\n${lines}`);
+}
+
+// 쇼핑몰 페이지 초기 렌더
+renderShopPage();
 
 // ── 스크롤 리빌 (IntersectionObserver) ──
 (function() {
