@@ -288,23 +288,19 @@ body {
 /* ── 폰 프레임 반응형 ────────────────────────────────
    390px 폰이 화면보다 클 때 스케일 축소
    ───────────────────────────────────────────────── */
-@media (max-width: 440px) {
-  body { padding: 16px 8px; gap: 16px; }
-  .phone-frame { width: 100%; max-width: 390px; }
-}
-
-@media (max-width: 400px) {
-  .phone-shell {
-    border-radius: 32px;
-    padding: 10px;
-  }
+@media (max-width: 480px) {
+  body { padding: 0; gap: 0; justify-content: flex-start; align-items: flex-start; }
+  .phone-frame { width: 100%; max-width: 100%; }
+  .phone-label { display: none; }
+  .phone-shell { background: transparent; border-radius: 0; padding: 0; box-shadow: none; }
+  .phone-notch { display: none; }
   .phone-screen {
-    border-radius: 26px;
-    /* 기기 높이에 맞게 동적 조절 */
-    height: calc(100dvh - 80px);
-    min-height: 580px;
-    max-height: 740px;
+    border-radius: 0 !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
   }
+  .info-panel { display: none !important; }
 }
 
 /* ── 스크린 전환 & 카드 개선 ─────────────────── */
@@ -340,6 +336,9 @@ body {
   -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
   border-top: 1px solid rgba(0,0,0,0.06) !important;
 }
+/* 점주 7탭 — 아이콘·라벨 소형화 */
+#franTabBar .tab-icon { font-size: 18px; }
+#franTabBar .tab-label { font-size: 9px; }
 </style>
 </head>
 <body>
@@ -382,18 +381,15 @@ body {
           </div>
           <!-- 직원 로그인 폼 -->
           <div id="staffLoginForm" style="display:none;flex-direction:column;gap:10px;">
-            <select id="staffBranchSel" onchange="populateStaffNameSel()" style="height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;padding:0 16px;font-size:14px;color:white;font-family:inherit;outline:none;">
-              <option value="강남점" style="color:#000;">강남점</option>
-              <option value="홍대점" style="color:#000;">홍대점</option>
-              <option value="분당점" style="color:#000;">분당점</option>
-              <option value="신촌점" style="color:#000;">신촌점</option>
-              <option value="잠실점" style="color:#000;">잠실점</option>
-            </select>
-            <select id="staffNameSel" style="height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;padding:0 16px;font-size:14px;color:white;font-family:inherit;outline:none;">
-              <option value="" style="color:#000;">이름 선택</option>
-            </select>
-            <div id="staffLoginError" style="display:none;font-size:12px;color:#ff8585;padding:2px 4px;">직원을 선택해주세요.</div>
+            <input id="staffPhone" type="tel" placeholder="핸드폰 번호 (아이디)"
+              style="height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;padding:0 16px;font-size:14px;color:white;font-family:inherit;outline:none;-webkit-text-fill-color:white;">
+            <input id="staffPassword" type="password" placeholder="비밀번호"
+              style="height:52px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;padding:0 16px;font-size:14px;color:white;font-family:inherit;outline:none;-webkit-text-fill-color:white;">
+            <div id="staffLoginError" style="display:none;font-size:12px;color:#ff8585;padding:2px 4px;">핸드폰 번호 또는 비밀번호가 올바르지 않습니다.</div>
             <button onclick="doStaffLogin()" style="height:54px;background:var(--beige);color:#1A1A1A;font-size:16px;font-weight:800;border:none;border-radius:16px;cursor:pointer;font-family:inherit;letter-spacing:-0.3px;margin-top:4px;">직원 로그인</button>
+            <div style="margin-top:4px;background:rgba(255,255,255,0.06);border-radius:12px;padding:10px 14px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.9;">
+              테스트 계정: 010-1234-5678 / 1234
+            </div>
           </div>
         </div>
       </div>
@@ -897,7 +893,8 @@ body {
           <div style="display:flex;flex-direction:column;gap:8px;">
             <input id="nsName" placeholder="이름" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
             <input id="nsPosition" placeholder="직책 (예: 디자이너)" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
-            <input id="nsPhone" placeholder="연락처" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+            <input id="nsPhone" placeholder="핸드폰 번호 (로그인 ID)" type="tel" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+            <input id="nsPassword" placeholder="초기 비밀번호" type="password" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
             <div style="display:flex;gap:8px;">
               <button onclick="closeAddStaffPanel()" style="flex:1;height:44px;background:rgba(0,0,0,0.06);color:#555;font-size:13px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">취소</button>
               <button onclick="saveNewStaffFromPwa()" style="flex:2;height:44px;background:var(--teal);color:white;font-size:13px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">저장</button>
@@ -911,7 +908,7 @@ body {
         </div>
       </div>
 
-      <!-- 탭 바 (점주용) -->
+      <!-- 탭 바 (점주용 7탭) -->
       <div class="tab-bar" id="franTabBar" style="display:none;">
         <button class="tab-btn2 active" id="tab-home" onclick="switchScreen('home')">
           <span class="tab-icon">🏠</span>
@@ -924,6 +921,14 @@ body {
         <button class="tab-btn2" id="tab-order" onclick="switchScreen('order')">
           <span class="tab-icon">📦</span>
           <span class="tab-label">발주</span>
+        </button>
+        <button class="tab-btn2" id="tab-revenue" onclick="switchScreen('revenue')">
+          <span class="tab-icon">💰</span>
+          <span class="tab-label">매출</span>
+        </button>
+        <button class="tab-btn2" id="tab-history" onclick="switchScreen('history')">
+          <span class="tab-icon">📋</span>
+          <span class="tab-label">이력</span>
         </button>
         <button class="tab-btn2" id="tab-attendance" onclick="switchScreen('attendance')">
           <span class="tab-icon">⏰</span>
@@ -987,12 +992,12 @@ const STAFF_KEY  = 'seupkyul_staff';
 const ATTEND_KEY = 'seupkyul_attendance';
 const RESV_KEY   = 'seupkyul_reservations';
 const STAFF_SEED = [
-  {id:1,name:'박지현',branch:'강남점',position:'수석 디자이너'},
-  {id:2,name:'최유진',branch:'강남점',position:'디자이너'},
-  {id:3,name:'이하늘',branch:'홍대점',position:'디자이너'},
-  {id:4,name:'김소영',branch:'분당점',position:'수석 디자이너'},
-  {id:5,name:'오지현',branch:'신촌점',position:'디자이너'},
-  {id:6,name:'박민준',branch:'잠실점',position:'디자이너'},
+  {id:1,name:'박지현',branch:'강남점',position:'수석 디자이너',phone:'010-1234-5678',password:'1234'},
+  {id:2,name:'최유진',branch:'강남점',position:'디자이너',     phone:'010-2345-6789',password:'1234'},
+  {id:3,name:'이하늘',branch:'홍대점',position:'디자이너',     phone:'010-3456-7890',password:'1234'},
+  {id:4,name:'김소영',branch:'분당점',position:'수석 디자이너',phone:'010-4567-8901',password:'1234'},
+  {id:5,name:'오지현',branch:'신촌점',position:'디자이너',     phone:'010-5678-9012',password:'1234'},
+  {id:6,name:'박민준',branch:'잠실점',position:'디자이너',     phone:'010-6789-0123',password:'1234'},
 ];
 
 let _role      = 'owner';
@@ -1015,34 +1020,22 @@ function selectRole(r) {
     sb.style.cssText += ';background:var(--beige);color:#1A1A1A;border-color:var(--beige);';
     ob.style.cssText += ';background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2);';
     sf.style.display = 'flex'; of.style.display = 'none';
-    populateStaffNameSel();
   }
-}
-
-function populateStaffNameSel() {
-  const branch = document.getElementById('staffBranchSel').value;
-  const sel = document.getElementById('staffNameSel');
-  let list = [];
-  try { list = JSON.parse(localStorage.getItem(STAFF_KEY)) || []; } catch(e) {}
-  if (!list.length) { list = STAFF_SEED; try { localStorage.setItem(STAFF_KEY, JSON.stringify(list)); } catch(e){} }
-  const filtered = list.filter(s => s.branch === branch);
-  sel.innerHTML = '<option value="">이름 선택</option>' +
-    filtered.map(s => `<option value="${s.id}">${s.name} (${s.position||'직원'})</option>`).join('');
 }
 
 /* ── 직원 로그인 ── */
 function doStaffLogin() {
-  const branch  = document.getElementById('staffBranchSel').value;
-  const staffId = document.getElementById('staffNameSel').value;
-  const errEl   = document.getElementById('staffLoginError');
-  if (!staffId) { errEl.style.display = 'block'; return; }
-  errEl.style.display = 'none';
+  const phone = document.getElementById('staffPhone').value.trim();
+  const pw    = document.getElementById('staffPassword').value;
+  const errEl = document.getElementById('staffLoginError');
+  if (!phone || !pw) { errEl.style.display = 'block'; return; }
   let list = [];
   try { list = JSON.parse(localStorage.getItem(STAFF_KEY)) || []; } catch(e) {}
-  if (!list.length) list = STAFF_SEED;
-  const s = list.find(x => String(x.id) === String(staffId));
+  if (!list.length) { list = STAFF_SEED; try { localStorage.setItem(STAFF_KEY, JSON.stringify(list)); } catch(e){} }
+  const s = list.find(x => x.phone === phone && x.password === pw);
   if (!s) { errEl.style.display = 'block'; return; }
-  _role = 'staff'; _branch = branch; _staffInfo = s;
+  errEl.style.display = 'none';
+  _role = 'staff'; _branch = s.branch; _staffInfo = s;
   try { localStorage.setItem('pwa_current_staff', JSON.stringify(s)); } catch(e) {}
   switchScreen('staff-home');
 }
@@ -1265,19 +1258,23 @@ function renderStaffMgmtPwa() {
 
 function openAddStaffPanel() {
   document.getElementById('addStaffPanel').style.display = 'block';
-  ['nsName','nsPosition','nsPhone'].forEach(id => document.getElementById(id).value='');
+  ['nsName','nsPosition','nsPhone','nsPassword'].forEach(id => document.getElementById(id).value='');
 }
 function closeAddStaffPanel() { document.getElementById('addStaffPanel').style.display='none'; }
 function saveNewStaffFromPwa() {
   const name = document.getElementById('nsName').value.trim();
   const pos  = document.getElementById('nsPosition').value.trim();
   const ph   = document.getElementById('nsPhone').value.trim();
+  const pw2  = document.getElementById('nsPassword').value.trim();
   if (!name) { alert('이름을 입력해주세요.'); return; }
+  if (!ph)   { alert('핸드폰 번호(ID)를 입력해주세요.'); return; }
+  if (!pw2)  { alert('초기 비밀번호를 입력해주세요.'); return; }
   let list = [];
   try { list = JSON.parse(localStorage.getItem(STAFF_KEY)) || []; } catch(e) {}
   if (!list.length) list = [...STAFF_SEED];
+  if (list.find(s => s.phone === ph)) { alert('이미 등록된 핸드폰 번호입니다.'); return; }
   const maxId = list.reduce((m,s) => Math.max(m,s.id||0), 0);
-  list.push({id:maxId+1, name, position:pos||'직원', phone:ph, branch:_branch});
+  list.push({id:maxId+1, name, position:pos||'직원', phone:ph, password:pw2, branch:_branch});
   try { localStorage.setItem(STAFF_KEY, JSON.stringify(list)); } catch(e) {}
   closeAddStaffPanel();
   renderStaffMgmtPwa();
