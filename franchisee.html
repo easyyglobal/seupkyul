@@ -563,9 +563,17 @@ body {
       <!-- 발주 화면 -->
       <div class="screen" id="screen-order">
         <div class="app-header">
-          <div><h1>발주하기</h1></div>
-          <div class="header-icon" style="font-size:14px;font-weight:800;color:var(--teal);">🛒<span style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--err);border-radius:50%;font-size:9px;color:white;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg);">2</span></div>
+          <div><h1>발주</h1></div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;background:rgba(26,26,26,0.08);border-radius:10px;padding:3px;gap:2px;">
+              <button id="orderViewBtn" onclick="switchOrderView('order',this)" style="padding:5px 12px;border-radius:7px;border:none;background:var(--teal);color:white;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;">발주</button>
+              <button id="historyViewBtn" onclick="switchOrderView('history',this)" style="padding:5px 12px;border-radius:7px;border:none;background:transparent;color:#888;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;">이력</button>
+            </div>
+            <div class="header-icon" style="font-size:14px;font-weight:800;color:var(--teal);">🛒<span style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--err);border-radius:50%;font-size:9px;color:white;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg);">2</span></div>
+          </div>
         </div>
+        <!-- 발주 섹션 -->
+        <div id="order-product-section">
         <!-- 카테고리 탭 -->
         <div style="display:flex;gap:8px;padding:8px 20px;overflow-x:auto;">
           <button style="flex-shrink:0;padding:6px 18px;border-radius:100px;font-size:13px;font-weight:700;border:none;background:var(--teal);color:white;font-family:inherit;cursor:pointer;">전체</button>
@@ -625,16 +633,32 @@ body {
           </div>
         </div>
         <!-- 결제 하단 고정 -->
-        <div style="position:absolute;bottom:72px;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,0.06);padding:12px 20px;">
+        <div id="order-cart-bar" style="position:absolute;bottom:72px;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,0.06);padding:12px 20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <span style="font-size:13px;color:#666;">장바구니 2개 상품</span>
             <span style="font-size:16px;font-weight:800;color:var(--teal);">90,000원</span>
           </div>
           <button onclick="alert('결제 확인 페이지로 이동합니다.')" style="width:100%;min-height:50px;background:var(--teal);color:white;font-size:15px;font-weight:800;border:none;border-radius:16px;cursor:pointer;font-family:inherit;">결제하기</button>
         </div>
+        </div><!-- /order-product-section -->
+        <!-- 이력 섹션 (발주 탭 내부) -->
+        <div id="order-history-section" style="display:none;padding:16px 20px;display:none;flex-direction:column;gap:10px;">
+          <div class="gcard order-hist-card">
+            <div class="hist-top"><div><div class="hist-no">O20240528-0001</div><span class="status-badge delivery">배송중</span></div><span style="font-size:15px;font-weight:800;color:var(--teal);">320,000원</span></div>
+            <div class="hist-bottom"><span class="hist-date">2024년 5월 28일</span><button class="btn-reorder">그대로 재주문</button></div>
+          </div>
+          <div class="gcard order-hist-card">
+            <div class="hist-top"><div><div class="hist-no">O20240520-0002</div><span class="status-badge done2">도착완료</span></div><span style="font-size:15px;font-weight:800;color:var(--teal);">180,000원</span></div>
+            <div class="hist-bottom"><span class="hist-date">2024년 5월 20일</span><button class="btn-reorder">그대로 재주문</button></div>
+          </div>
+          <div class="gcard order-hist-card">
+            <div class="hist-top"><div><div class="hist-no">O20240512-0003</div><span class="status-badge done2">도착완료</span></div><span style="font-size:15px;font-weight:800;color:var(--teal);">450,000원</span></div>
+            <div class="hist-bottom"><span class="hist-date">2024년 5월 12일</span><button class="btn-reorder">그대로 재주문</button></div>
+          </div>
+        </div>
       </div>
 
-      <!-- 이력 화면 -->
+      <!-- 이력 화면 (탭바에서 제거됨 - 발주 탭 내부로 통합) -->
       <div class="screen" id="screen-history">
         <div class="app-header"><div><h1>발주 이력</h1></div></div>
         <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px;">
@@ -908,7 +932,62 @@ body {
         </div>
       </div>
 
-      <!-- 탭 바 (점주용 7탭) -->
+      <!-- 운영 관리 화면 (점주 전용: 근태+직원 통합) -->
+      <div class="screen" id="screen-ops">
+        <div class="app-header">
+          <div><h1>운영 관리</h1><p class="sub" id="opsBranchSub">강남점</p></div>
+          <button id="opsAddBtn" onclick="openOpsAddStaff()" style="display:none;height:34px;padding:0 14px;background:var(--teal);color:white;font-size:12px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">+ 등록</button>
+        </div>
+        <!-- 서브 탭 -->
+        <div style="display:flex;border-bottom:1px solid rgba(0,0,0,0.06);padding:0 20px;">
+          <button id="opstab-attend" onclick="switchOpsTab('attend',this)" style="flex:1;height:44px;font-size:13px;font-weight:700;color:var(--teal);border:none;border-bottom:2px solid var(--teal);background:transparent;font-family:inherit;cursor:pointer;">근태</button>
+          <button id="opstab-staff"  onclick="switchOpsTab('staff',this)"  style="flex:1;height:44px;font-size:13px;font-weight:600;color:#aaa;border:none;border-bottom:2px solid transparent;background:transparent;font-family:inherit;cursor:pointer;">직원</button>
+        </div>
+        <!-- 근태 뷰 -->
+        <div id="ops-attend-view" class="screen-body">
+          <div class="gcard" style="padding:0;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;">
+              <div style="padding:14px 10px;text-align:center;border-right:1px solid rgba(0,0,0,0.05);">
+                <div id="opsAIn" style="font-size:20px;font-weight:800;color:var(--ok);">0</div>
+                <div style="font-size:10px;color:#888;margin-top:2px;">출근</div>
+              </div>
+              <div style="padding:14px 10px;text-align:center;border-right:1px solid rgba(0,0,0,0.05);">
+                <div id="opsAOut" style="font-size:20px;font-weight:800;color:var(--teal);">0</div>
+                <div style="font-size:10px;color:#888;margin-top:2px;">퇴근완료</div>
+              </div>
+              <div style="padding:14px 10px;text-align:center;">
+                <div id="opsAAbsent" style="font-size:20px;font-weight:800;color:var(--err);">0</div>
+                <div style="font-size:10px;color:#888;margin-top:2px;">미출근</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="sec-head"><span class="sec-title" id="opsADateLabel">오늘 근태</span></div>
+            <div id="opsAttendList" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+        <!-- 직원 뷰 -->
+        <div id="ops-staff-view" style="display:none;">
+          <div id="opsAddPanel" style="display:none;margin:12px 20px 0;background:rgba(26,26,26,0.04);border-radius:16px;padding:16px;">
+            <div style="font-size:13px;font-weight:800;margin-bottom:12px;">새 직원 등록</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <input id="onsName"     placeholder="이름"                    style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+              <input id="onsPosition" placeholder="직책 (예: 디자이너)"     style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+              <input id="onsPhone"    placeholder="핸드폰 번호 (로그인 ID)" type="tel" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+              <input id="onsPassword" placeholder="초기 비밀번호"            type="password" style="height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,0.12);padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+              <div style="display:flex;gap:8px;">
+                <button onclick="closeOpsAddStaff()" style="flex:1;height:44px;background:rgba(0,0,0,0.06);color:#555;font-size:13px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">취소</button>
+                <button onclick="saveOpsNewStaff()"  style="flex:2;height:44px;background:var(--teal);color:white;font-size:13px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:inherit;">저장</button>
+              </div>
+            </div>
+          </div>
+          <div class="screen-body" style="padding-top:12px;">
+            <div id="opsStaffList" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 탭 바 (점주용 5탭) -->
       <div class="tab-bar" id="franTabBar" style="display:none;">
         <button class="tab-btn2 active" id="tab-home" onclick="switchScreen('home')">
           <span class="tab-icon">🏠</span>
@@ -926,17 +1005,9 @@ body {
           <span class="tab-icon">💰</span>
           <span class="tab-label">매출</span>
         </button>
-        <button class="tab-btn2" id="tab-history" onclick="switchScreen('history')">
-          <span class="tab-icon">📋</span>
-          <span class="tab-label">이력</span>
-        </button>
-        <button class="tab-btn2" id="tab-attendance" onclick="switchScreen('attendance')">
-          <span class="tab-icon">⏰</span>
-          <span class="tab-label">근태</span>
-        </button>
-        <button class="tab-btn2" id="tab-staff-mgmt" onclick="switchScreen('staff-mgmt')">
-          <span class="tab-icon">👤</span>
-          <span class="tab-label">직원</span>
+        <button class="tab-btn2" id="tab-ops" onclick="switchScreen('ops')">
+          <span class="tab-icon">🏢</span>
+          <span class="tab-label">운영</span>
         </button>
       </div>
 
@@ -962,12 +1033,12 @@ body {
   <p>점주와 직원이 함께 쓰는 통합 PWA. 직원 근태·발주·예약을 하나의 앱에서, 역할에 따라 다른 화면이 펼쳐집니다.</p>
 
   <div class="screen-nav">
-    <button class="nav-chip active" onclick="_role='owner';switchScreen('home');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">홈 (점주)</button>
-    <button class="nav-chip" onclick="_role='owner';switchScreen('booking');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">예약 관리</button>
-    <button class="nav-chip" onclick="_role='owner';switchScreen('order');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">발주하기</button>
-    <button class="nav-chip" onclick="_role='owner';_branch='강남점';switchScreen('attendance');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">근태 관리</button>
-    <button class="nav-chip" onclick="_role='owner';_branch='강남점';switchScreen('staff-mgmt');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">직원 관리</button>
-    <button class="nav-chip" onclick="_role='staff';_staffInfo={id:1,name:'박지현',branch:'강남점',position:'수석 디자이너'};_branch='강남점';switchScreen('staff-home');this.parentNode.querySelectorAll('.nav-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">홈 (직원)</button>
+    <span class="nav-chip active">점주 대시보드</span>
+    <span class="nav-chip">예약 관리</span>
+    <span class="nav-chip">발주 · 이력</span>
+    <span class="nav-chip">매출 분석</span>
+    <span class="nav-chip">운영 (근태/직원)</span>
+    <span class="nav-chip">직원 로그인</span>
   </div>
 
   <ul class="feature-list">
@@ -1031,7 +1102,7 @@ function doStaffLogin() {
   if (!phone || !pw) { errEl.style.display = 'block'; return; }
   let list = [];
   try { list = JSON.parse(localStorage.getItem(STAFF_KEY)) || []; } catch(e) {}
-  if (!list.length) { list = STAFF_SEED; try { localStorage.setItem(STAFF_KEY, JSON.stringify(list)); } catch(e){} }
+  if (!list.length || !list[0].phone) { list = STAFF_SEED; try { localStorage.setItem(STAFF_KEY, JSON.stringify(list)); } catch(e){} }
   const s = list.find(x => x.phone === phone && x.password === pw);
   if (!s) { errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
@@ -1091,6 +1162,128 @@ function switchScreen(name) {
   if (name === 'staff-home') renderStaffHome();
   if (name === 'attendance')  renderAttendancePwa();
   if (name === 'staff-mgmt')  renderStaffMgmtPwa();
+  if (name === 'ops')         renderOpsPage();
+}
+
+/* ── 발주/이력 토글 ── */
+let _orderView = 'order';
+function switchOrderView(view) {
+  _orderView = view;
+  const os = document.getElementById('order-product-section');
+  const hs = document.getElementById('order-history-section');
+  const cb = document.getElementById('order-cart-bar');
+  const ob = document.getElementById('orderViewBtn');
+  const hb = document.getElementById('historyViewBtn');
+  if (view === 'order') {
+    os.style.display=''; hs.style.display='none'; if(cb)cb.style.display='';
+    ob.style.background='var(--teal)'; ob.style.color='white';
+    hb.style.background='transparent'; hb.style.color='#888';
+  } else {
+    os.style.display='none'; hs.style.display='flex'; if(cb)cb.style.display='none';
+    hb.style.background='var(--teal)'; hb.style.color='white';
+    ob.style.background='transparent'; ob.style.color='#888';
+  }
+}
+
+/* ── 운영 관리 (근태+직원 통합) ── */
+let _opsTab = 'attend';
+function renderOpsPage() {
+  document.getElementById('opsBranchSub').textContent = _branch;
+  if (_opsTab === 'attend') renderOpsAttend();
+  else { renderOpsStaff(); document.getElementById('opsAddBtn').style.display=''; }
+}
+function switchOpsTab(tab, el) {
+  _opsTab = tab;
+  ['attend','staff'].forEach(t => {
+    const btn = document.getElementById('opstab-'+t);
+    btn.style.color = t===tab ? 'var(--teal)' : '#aaa';
+    btn.style.borderBottom = t===tab ? '2px solid var(--teal)' : '2px solid transparent';
+    btn.style.fontWeight = t===tab ? '700' : '600';
+  });
+  document.getElementById('ops-attend-view').style.display = tab==='attend' ? '' : 'none';
+  document.getElementById('ops-staff-view').style.display  = tab==='staff'  ? '' : 'none';
+  document.getElementById('opsAddBtn').style.display = tab==='staff' ? '' : 'none';
+  if (tab==='attend') renderOpsAttend();
+  else renderOpsStaff();
+}
+function renderOpsAttend() {
+  document.getElementById('opsADateLabel').textContent = '오늘 근태 · ' + new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric'});
+  let staffList = [];
+  try { staffList = JSON.parse(localStorage.getItem(STAFF_KEY)) || []; } catch(e) {}
+  if (!staffList.length) staffList = STAFF_SEED;
+  const branchStaff = staffList.filter(s => s.branch === _branch);
+  let attendList = [];
+  try { attendList = JSON.parse(localStorage.getItem(ATTEND_KEY)) || []; } catch(e) {}
+  const today = new Date().toISOString().slice(0,10);
+  let cntIn=0, cntOut=0, cntAbsent=0;
+  const rows = branchStaff.map(s => {
+    const rec = attendList.find(r => r.staffId===s.id && r.date===today);
+    if (!rec)          { cntAbsent++; return {s,rec,status:'absent'}; }
+    if (!rec.clockOut) { cntIn++;     return {s,rec,status:'in'}; }
+    cntOut++;          return {s,rec,status:'out'};
+  });
+  document.getElementById('opsAIn').textContent     = cntIn;
+  document.getElementById('opsAOut').textContent    = cntOut;
+  document.getElementById('opsAAbsent').textContent = cntAbsent;
+  const listEl = document.getElementById('opsAttendList');
+  if (!rows.length) { listEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">등록된 직원 없음</div>'; return; }
+  listEl.innerHTML = rows.map(({s,rec,status}) => {
+    const stxt = status==='absent'?'미출근':status==='in'?'근무중':'퇴근완료';
+    const scol = status==='absent'?'var(--err)':status==='in'?'var(--ok)':'var(--teal)';
+    const tinfo= rec?`${rec.clockIn}${rec.clockOut?' → '+rec.clockOut:''}`:'–';
+    const manBtn = (status==='in')?`<button onclick="opsManualClockOut(${s.id})" style="font-size:10px;font-weight:700;color:var(--teal);border:1.5px solid rgba(26,26,26,0.25);border-radius:8px;padding:4px 10px;background:transparent;cursor:pointer;font-family:inherit;">퇴근처리</button>`:'';
+    return `<div class="gcard" style="padding:14px 16px;"><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(26,26,26,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:800;">${s.name}</div><div style="font-size:11px;color:#888;margin-top:2px;">${s.position||'직원'} · ${tinfo}</div></div><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(0,0,0,0.06);color:${scol};">${stxt}</span>${manBtn}</div></div></div>`;
+  }).join('');
+}
+function opsManualClockOut(staffId) {
+  let list = [];
+  try { list = JSON.parse(localStorage.getItem(ATTEND_KEY)) || []; } catch(e) {}
+  const today = new Date().toISOString().slice(0,10);
+  const now   = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});
+  const rec   = list.find(r => r.staffId===staffId && r.date===today);
+  if (rec && !rec.clockOut) { rec.clockOut = now; }
+  try { localStorage.setItem(ATTEND_KEY, JSON.stringify(list)); } catch(e) {}
+  renderOpsAttend();
+}
+function renderOpsStaff() {
+  let staffList = [];
+  try { staffList = JSON.parse(localStorage.getItem(STAFF_KEY)) || []; } catch(e) {}
+  if (!staffList.length) staffList = STAFF_SEED;
+  const branchStaff = staffList.filter(s => s.branch === _branch);
+  const listEl = document.getElementById('opsStaffList');
+  if (!branchStaff.length) { listEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">등록된 직원 없음</div>'; return; }
+  listEl.innerHTML = branchStaff.map(s => `
+    <div class="gcard" style="padding:14px 16px;"><div style="display:flex;align-items:center;gap:12px;"><div style="width:44px;height:44px;border-radius:50%;background:rgba(26,26,26,0.08);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👤</div><div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:800;">${s.name}</div><div style="font-size:11px;color:#888;margin-top:2px;">${s.position||'직원'} · ${s.branch}</div>${s.phone?`<div style="font-size:11px;color:#aaa;margin-top:1px;">${s.phone}</div>`:''}</div><button onclick="deleteOpsStaff(${s.id})" style="width:32px;height:32px;border-radius:50%;background:rgba(239,68,68,0.1);color:var(--err);font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button></div></div>`).join('');
+}
+function openOpsAddStaff() {
+  document.getElementById('opsAddPanel').style.display='block';
+  ['onsName','onsPosition','onsPhone','onsPassword'].forEach(id=>document.getElementById(id).value='');
+}
+function closeOpsAddStaff() { document.getElementById('opsAddPanel').style.display='none'; }
+function saveOpsNewStaff() {
+  const name=document.getElementById('onsName').value.trim();
+  const pos=document.getElementById('onsPosition').value.trim();
+  const ph=document.getElementById('onsPhone').value.trim();
+  const pw=document.getElementById('onsPassword').value.trim();
+  if(!name){alert('이름을 입력해주세요.');return;}
+  if(!ph){alert('핸드폰 번호를 입력해주세요.');return;}
+  if(!pw){alert('초기 비밀번호를 입력해주세요.');return;}
+  let list=[];
+  try{list=JSON.parse(localStorage.getItem(STAFF_KEY))||[];}catch(e){}
+  if(!list.length)list=[...STAFF_SEED];
+  if(list.find(s=>s.phone===ph)){alert('이미 등록된 번호입니다.');return;}
+  const maxId=list.reduce((m,s)=>Math.max(m,s.id||0),0);
+  list.push({id:maxId+1,name,position:pos||'직원',phone:ph,password:pw,branch:_branch});
+  try{localStorage.setItem(STAFF_KEY,JSON.stringify(list));}catch(e){}
+  closeOpsAddStaff(); renderOpsStaff();
+}
+function deleteOpsStaff(id) {
+  if(!confirm('이 직원을 삭제하시겠습니까?'))return;
+  let list=[];
+  try{list=JSON.parse(localStorage.getItem(STAFF_KEY))||[];}catch(e){}
+  list=list.filter(s=>s.id!==id);
+  try{localStorage.setItem(STAFF_KEY,JSON.stringify(list));}catch(e){}
+  renderOpsStaff();
 }
 
 /* ── 자동 로그인 ── */

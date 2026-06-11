@@ -1366,7 +1366,7 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
 /* ── 브랜드 인트로 오버레이 ── */
 #brandIntro {
   position: fixed; inset: 0; z-index: 9999;
-  background: #000;
+  background: #ffffff;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   transition: opacity .9s ease;
 }
@@ -1386,7 +1386,8 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
 <!-- 브랜드 인트로 영상 오버레이 -->
 <div id="brandIntro">
   <video id="brandIntroVideo" src="seupkyul_branding.mp4" autoplay muted playsinline
-    onended="endBrandIntro()" style="display:block;"></video>
+    disablePictureInPicture controlsList="nodownload nofullscreen noplaybackrate"
+    onended="endBrandIntro()" style="display:block;pointer-events:none;"></video>
 </div>
 
 <!-- 공지 티커 바 (GNB 아래 고정) -->
@@ -1467,13 +1468,14 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
     </div>
     <div class="hero-card">
       <div class="hero-card-title">🔍 가까운 지점 찾기</div>
-      <select class="region-select">
-        <option>지역 선택</option>
-        <option>서울</option>
-        <option>경기</option>
-        <option>부산</option>
+      <select class="region-select" id="branchRegionSel">
+        <option value="">지역 선택</option>
+        <option value="서울">서울</option>
+        <option value="경기">경기</option>
+        <option value="부산">부산</option>
       </select>
-      <button class="btn-find">예약 가능 지점 보기</button>
+      <button class="btn-find" onclick="findNearbyBranches()">예약 가능 지점 보기</button>
+      <div id="branchResults" style="display:none;margin-top:12px;display:none;flex-direction:column;gap:8px;max-height:160px;overflow-y:auto;"></div>
       <div class="hero-stats">
         <div class="hero-stat"><div class="hero-stat-val">2019</div><div class="hero-stat-label">창립연도</div></div>
         <div class="hero-stat"><div class="hero-stat-val">12만</div><div class="hero-stat-label">누적 고객</div></div>
@@ -2132,7 +2134,7 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
 
 <!-- ═══ 상품 상세 PAGE ═══ -->
 <div id="page-product-detail" class="page">
-  <section style="padding:92px 24px 60px;max-width:860px;margin:0 auto;">
+  <section style="padding:120px 24px 60px;max-width:860px;margin:0 auto;">
     <button class="mypage-back-btn" onclick="showPage('shop')">← 쇼핑몰</button>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:16px;" id="pd-layout">
       <!-- 왼쪽: 이미지 -->
@@ -2822,6 +2824,33 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
 </div>
 
 <script>
+/* ── 지점 데이터 ── */
+const BRANCHES = [
+  { name:'강남점',  region:'서울', addr:'서울 강남구 테헤란로 123', phone:'02-1234-5678', hours:'10:00~20:00' },
+  { name:'홍대점',  region:'서울', addr:'서울 마포구 홍익로 45',    phone:'02-2345-6789', hours:'10:00~21:00' },
+  { name:'신촌점',  region:'서울', addr:'서울 서대문구 신촌로 67',  phone:'02-3456-7890', hours:'10:00~20:00' },
+  { name:'잠실점',  region:'서울', addr:'서울 송파구 올림픽로 89',  phone:'02-4567-8901', hours:'10:00~20:00' },
+  { name:'분당점',  region:'경기', addr:'경기 성남시 분당구 판교로 12', phone:'031-5678-9012', hours:'10:00~20:00' },
+];
+function findNearbyBranches() {
+  const region = document.getElementById('branchRegionSel').value;
+  const resultsEl = document.getElementById('branchResults');
+  if (!region) { resultsEl.style.display='none'; alert('지역을 선택해주세요.'); return; }
+  const matches = BRANCHES.filter(b => b.region === region);
+  if (!matches.length) {
+    resultsEl.style.display='flex';
+    resultsEl.innerHTML = `<div style="font-size:12px;color:#888;padding:8px 0;">해당 지역에 지점이 없습니다.</div>`;
+    return;
+  }
+  resultsEl.style.display='flex';
+  resultsEl.innerHTML = matches.map(b => `
+    <div style="background:rgba(26,26,26,0.04);border-radius:10px;padding:10px 12px;">
+      <div style="font-size:13px;font-weight:800;color:#1A1A1A;margin-bottom:4px;">📍 ${b.name}</div>
+      <div style="font-size:11px;color:#555;line-height:1.7;">${b.addr}<br>${b.phone} · ${b.hours}</div>
+      <button onclick="requireAuth(()=>showPage('booking'))" style="margin-top:8px;width:100%;height:32px;background:#1A1A1A;color:white;font-size:11px;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">이 지점 예약하기</button>
+    </div>`).join('');
+}
+
 /* ── 브랜드 인트로 ── */
 (function() {
   const intro = document.getElementById('brandIntro');
@@ -3412,17 +3441,16 @@ function renderShopPage() {
     const imgHtml = p.imageData
       ? `<img src="${p.imageData}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`
       : `<span style="font-size:40px;">${p.emoji||'🛍️'}</span>`;
-    return `<div class="shop-card" style="${sp?'background:linear-gradient(135deg,#1A1A1A,#3A3A3A);border:none;':''}">
+    return `<div class="shop-card" style="cursor:pointer;${sp?'background:linear-gradient(135deg,#1A1A1A,#3A3A3A);border:none;':''}" onclick="showProductDetail('${p.id}')">
       <div class="shop-img" style="${sp?'background:rgba(255,255,255,0.05);':''}display:flex;align-items:center;justify-content:center;">${imgHtml}</div>
       <div class="shop-info">
         ${p.badge?`<span class="shop-badge" style="${sp?'background:rgba(232,221,192,0.2);color:#E8DDC0;':''}">${p.badge}</span>`:''}
         <div class="shop-name" style="${sp?'color:white;':''}">${p.name}</div>
         <div class="shop-desc" style="${sp?'color:rgba(255,255,255,0.6);':''}">${p.shortDesc}</div>
         <div class="shop-price" style="${sp?'color:#E8DDC0;':''}">${p.price.toLocaleString()}원</div>
-        <div style="display:flex;gap:8px;margin-top:10px;">
-          <button class="shop-btn" style="${sp?'background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);flex:1;':'flex:1;'}" onclick="showProductDetail('${p.id}')">상세보기</button>
-          <button class="shop-btn" style="${sp?'background:#E8DDC0;color:#1A1A1A;':''}${p.stockStatus==='품절'?'opacity:0.45;cursor:not-allowed;':''}" onclick="${p.stockStatus!=='품절'?`requireAuth(()=>addToCartById('${p.id}'))`:''}">
-            ${p.stockStatus==='품절'?'품절':'담기'}</button>
+        <div style="margin-top:10px;" onclick="event.stopPropagation()">
+          <button class="shop-btn" style="width:100%;${sp?'background:#E8DDC0;color:#1A1A1A;':''}${p.stockStatus==='품절'?'opacity:0.45;cursor:not-allowed;':''}" onclick="${p.stockStatus!=='품절'?`requireAuth(()=>addToCartById('${p.id}'))`:''}">
+            ${p.stockStatus==='품절'?'품절':'장바구니 담기'}</button>
         </div>
       </div>
     </div>`;

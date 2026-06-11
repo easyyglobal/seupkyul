@@ -631,6 +631,9 @@ tr:hover td { background: rgba(26,26,26,0.02); }
   .sb-group-header { display: none; }
   .sb-group-body { max-height: none !important; overflow: visible; }
 }
+/* 그룹 내 아이템 이모지 숨김 (확장 상태) */
+.sb-group-body .sb-icon { display: none !important; }
+.sidebar.collapsed .sb-group-body .sb-icon { display: inline-block !important; }
 
 /* 프로그레스 바 진입 애니메이션 */
 .prog-fill { transform-origin: left; animation: progReveal 1.2s cubic-bezier(0.16,1,0.3,1) both 0.4s; }
@@ -1805,9 +1808,12 @@ function getReservations() {
 }
 function saveReservations(list) { localStorage.setItem(RESV_KEY, JSON.stringify(list)); }
 
+let _lastNaverSync = 0;
 function renderReservations() {
   const tbody = document.getElementById('resvTbody');
   if (!tbody) return;
+  const now = Date.now();
+  if (now - _lastNaverSync > 60000) { syncNaverReservations(true); _lastNaverSync = now; }
   let list = getReservations();
   if (_resvSourceFilter !== 'all') list = list.filter(r => r.source === _resvSourceFilter);
   if (_resvBranchFilter !== 'all') list = list.filter(r => r.branch === _resvBranchFilter);
@@ -1875,17 +1881,18 @@ function filterResvBranch(el, branch) {
   renderReservations();
 }
 
-function syncNaverReservations() {
+function syncNaverReservations(silent) {
   const list = getReservations();
-  const now = Date.now();
+  const today = new Date().toISOString().slice(0,10).replace(/-/g,'.');
   const newItems = [
-    { id:'N-'+now,   source:'naver', custName:'김다은',  custPhone:'010-9191-2020', branch:'강남점', service:'딥클리닉 케어',  staff:'박지현', datetime:'2026.06.10 13:00', status:'pending' },
-    { id:'N-'+(now+1), source:'naver', custName:'이준서', custPhone:'010-4040-5050', branch:'홍대점', service:'두피 앰플 케어', staff:'이하늘', datetime:'2026.06.10 15:00', status:'pending' },
+    { id:'N-AUTO-001', source:'naver', custName:'김다은',  custPhone:'010-9191-2020', branch:'강남점', service:'딥클리닉 케어',  staff:'박지현', datetime:'2026.06.10 13:00', status:'pending', date:'2026.06.10' },
+    { id:'N-AUTO-002', source:'naver', custName:'이준서', custPhone:'010-4040-5050', branch:'홍대점', service:'두피 앰플 케어', staff:'이하늘', datetime:'2026.06.10 15:00', status:'pending', date:'2026.06.10' },
+    { id:'N-AUTO-003', source:'naver', custName:'박채원', custPhone:'010-7070-8080', branch:'강남점', service:'케라틴 코팅',    staff:'최유진', datetime:'2026.06.10 16:30', status:'pending', date:'2026.06.10' },
   ];
-  newItems.forEach(n => { if (!list.find(r=>r.id===n.id)) list.push(n); });
-  saveReservations(list);
-  renderReservations();
-  showToast('✅ 네이버 예약 2건이 동기화되었습니다.');
+  let added = 0;
+  newItems.forEach(n => { if (!list.find(r=>r.id===n.id)) { list.push(n); added++; } });
+  if (added > 0) { saveReservations(list); renderReservations(); }
+  if (!silent) showToast(added>0 ? `✅ 네이버 예약 ${added}건이 동기화되었습니다.` : '이미 최신 상태입니다.');
 }
 
 function openNewResvModal() {
@@ -2642,7 +2649,35 @@ function getProducts() {
   localStorage.setItem(PRODUCT_KEY, JSON.stringify(seed));
   return seed;
 }
-function saveProducts(list) { localStorage.setItem(PRODUCT_KEY, JSON.stringify(list)); }
+function saveProducts(list) {
+  try {
+    localStorage.setItem(PRODUCT_KEY, JSON.stringify(list));
+  } catch(e) {
+    if (e && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.code === 22)) {
+      showToast('⚠️ 저장 공간 초과. 이미지 크기를 줄이거나 다른 상품 이미지를 삭제해주세요.');
+    } else {
+      showToast('⚠️ 저장 중 오류가 발생했습니다.');
+    }
+  }
+}
+
+function compressImage(file, maxPx, quality, cb) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 
 let _productCategoryFilter = 'all';
 let _editProductId = null;
@@ -2783,17 +2818,15 @@ function saveProduct() {
   saveProducts(list);
   closeProductModal();
   renderProductsTable();
+  showToast('✅ 상품이 저장되었습니다.');
 }
 function handleProductImageUpload(input) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const data = e.target.result;
+  compressImage(file, 800, 0.78, data => {
     document.getElementById('pImageData').value = data;
     document.getElementById('pImgPreview').innerHTML = `<img src="${data}" style="width:100%;height:100%;object-fit:cover;">`;
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 function deleteProduct(id) {
@@ -2944,9 +2977,11 @@ function addDetailSection(type) {
 }
 function handleSectionImageUpload(input, idx) {
   const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => { _detailSections[idx].imageData = e.target.result; renderDetailSections(); updateDetailPreview(); };
-  reader.readAsDataURL(file);
+  compressImage(file, 1200, 0.82, data => {
+    _detailSections[idx].imageData = data;
+    renderDetailSections();
+    updateDetailPreview();
+  });
 }
 function sectionsToHtml(sections) {
   return (sections||[]).map(s => {
