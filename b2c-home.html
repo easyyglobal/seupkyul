@@ -2856,10 +2856,26 @@ function findNearbyBranches() {
   const intro = document.getElementById('brandIntro');
   const video = document.getElementById('brandIntroVideo');
   if (!intro || !video) return;
+
   // 영상 로드 실패 시 자동 스킵
   video.addEventListener('error', endBrandIntro);
+
+  // 안전망: 느린 네트워크나 버퍼링 멈춤 시 최대 8초 후 강제 스킵
+  const fallback = setTimeout(endBrandIntro, 8000);
+  video.addEventListener('ended', function() { clearTimeout(fallback); });
+
   // body 스크롤 잠금
   document.body.style.overflow = 'hidden';
+
+  // 모바일은 autoplay 속성만으로 재생이 안 될 수 있어 명시적으로 play() 호출
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(function() {
+      // 브라우저 자동재생 정책에 막혔을 때 즉시 스킵
+      clearTimeout(fallback);
+      endBrandIntro();
+    });
+  }
 })();
 
 function endBrandIntro() {
