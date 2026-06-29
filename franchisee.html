@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>세없결 — 가맹점주 PWA 미리보기</title>
+<title>세없결 — 가맹점주 포털</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A1A1A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="세없결">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -403,7 +410,7 @@ body {
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div class="header-icon">🔔<span class="notif-dot"></span></div>
-            <div class="header-icon" style="font-size:13px;font-weight:700;color:var(--teal);width:auto;padding:0 10px;border-radius:12px;" onclick="if(confirm('로그아웃 하시겠습니까?')){localStorage.removeItem('fran_email');localStorage.removeItem('fran_pw');switchScreen('login');}">로그아웃</div>
+            <div class="header-icon" style="font-size:13px;font-weight:700;color:var(--teal);width:auto;padding:0 10px;border-radius:12px;" onclick="doFranLogout()">로그아웃</div>
           </div>
         </div>
         <div class="screen-body">
@@ -1483,6 +1490,349 @@ function deleteStaffFromPwa(id) {
 
 document.querySelectorAll('.btn-quick').forEach(btn => {
   btn.addEventListener('click', () => alert('결제 확인 페이지로 이동합니다.'));
+});
+</script>
+
+<!-- ════════════════════════════════════════════
+     세없결 가맹점주 PWA — Supabase 실서버 연동
+════════════════════════════════════════════ -->
+<script>
+(function() {
+  const _URL = 'https://yemxddkzgqzmmicnfakl.supabase.co';
+  const _KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllbXhkZGt6Z3F6bW1pY25mYWtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjUyNTAsImV4cCI6MjA5Nzk0MTI1MH0.tqTJQOIPKSNm17Braej1aFQodC6nlflGZn78poZakrQ';
+  window.db = supabase.createClient(_URL, _KEY);
+})();
+
+/* ── 지점 ID 캐시 ── */
+let _branchId = null;
+async function _getBranchId() {
+  if (_branchId) return _branchId;
+  if (!_branch) return null;
+  const { data } = await window.db.from('branches').select('id').eq('name', _branch).maybeSingle();
+  _branchId = data?.id || null;
+  return _branchId;
+}
+
+/* ── 점주 로그아웃 (Supabase) ── */
+async function doFranLogout() {
+  if (!confirm('로그아웃 하시겠습니까?')) return;
+  await window.db.auth.signOut();
+  localStorage.removeItem('fran_email');
+  localStorage.removeItem('fran_pw');
+  _branch = ''; _role = 'owner'; _staffInfo = null; _branchId = null;
+  switchScreen('login');
+}
+
+/* ── 점주 로그인 (Supabase Auth) ── */
+async function doFranLogin() {
+  const email = document.getElementById('franEmail')?.value?.trim() || '';
+  const pw    = document.getElementById('franPw')?.value || '';
+  const errEl = document.getElementById('franLoginError');
+  if (!email || !pw) { if(errEl) errEl.style.display='block'; return; }
+  const { data, error } = await window.db.auth.signInWithPassword({ email, password: pw });
+  if (error) { if(errEl) errEl.style.display='block'; return; }
+  if(errEl) errEl.style.display='none';
+  /* 역할 확인 */
+  const { data: userRow } = await window.db.from('users').select('role').eq('id', data.user.id).single();
+  const role = userRow?.role || 'branch_admin';
+  if (role !== 'super_admin' && role !== 'branch_admin') {
+    await window.db.auth.signOut(); if(errEl) errEl.style.display='block'; return;
+  }
+  /* 지점 찾기: user_metadata.branch_id 우선, 없으면 첫번째 지점 */
+  const branchIdMeta = data.user.user_metadata?.branch_id;
+  const { data: branches } = await window.db.from('branches').select('id, name').eq('is_active', true).order('name');
+  if (branchIdMeta) {
+    const matched = (branches||[]).find(b => b.id === branchIdMeta);
+    _branch   = matched?.name || (branches?.[0]?.name) || '';
+    _branchId = matched?.id   || (branches?.[0]?.id)   || null;
+  } else {
+    _branch   = branches?.[0]?.name || '';
+    _branchId = branches?.[0]?.id   || null;
+  }
+  _role = 'owner';
+  const auto = document.getElementById('franAutoLogin')?.checked;
+  if (auto) { localStorage.setItem('fran_email', email); localStorage.setItem('fran_pw', pw); }
+  else       { localStorage.removeItem('fran_email'); localStorage.removeItem('fran_pw'); }
+  document.getElementById('franBranchName').textContent = _branch;
+  switchScreen('home');
+}
+
+/* ── 직원 로그인 — 전화번호로 DB 조회 ── */
+async function doStaffLogin() {
+  const phone = document.getElementById('staffPhone')?.value?.trim() || '';
+  const pw    = document.getElementById('staffPassword')?.value || '';
+  const errEl = document.getElementById('staffLoginError');
+  if (!phone) { if(errEl) errEl.style.display='block'; return; }
+  const { data, error } = await window.db.from('staff')
+    .select('id, name, role, branch_id, branches:branch_id(name)')
+    .eq('phone', phone).eq('is_active', true).maybeSingle();
+  if (error || !data) { if(errEl) errEl.style.display='block'; return; }
+  if(errEl) errEl.style.display='none';
+  _role      = 'staff';
+  _branch    = data.branches?.name || '';
+  _staffInfo = { id: data.id, name: data.name, branch: _branch, branchId: data.branch_id, role: data.role || '디자이너' };
+  localStorage.setItem('pwa_current_staff', JSON.stringify(_staffInfo));
+  switchScreen('staff-home');
+  renderStaffHome();
+}
+
+/* ── 출퇴근 (Supabase) ── */
+async function doClock(type) {
+  if (!_staffInfo) return;
+  const today = new Date().toISOString().slice(0,10);
+  const nowTs = new Date().toISOString();
+  const fmtT  = iso => { const d=new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; };
+
+  const { data: existing } = await window.db.from('attendance')
+    .select('*').eq('staff_id', _staffInfo.id).eq('date', today).maybeSingle();
+
+  if (type === 'in') {
+    if (existing) return;
+    const { error } = await window.db.from('attendance').insert({
+      staff_id: _staffInfo.id, branch_id: _staffInfo.branchId || null, date: today, clock_in: nowTs
+    });
+    if (error) { console.error(error); return; }
+  } else {
+    if (!existing || existing.clock_out) return;
+    const { error } = await window.db.from('attendance').update({ clock_out: nowTs }).eq('id', existing.id);
+    if (error) { console.error(error); return; }
+  }
+  renderStaffHome();
+}
+
+/* ── 직원 홈 렌더 (Supabase) ── */
+async function renderStaffHome() {
+  if (!_staffInfo) return;
+  document.getElementById('staffHomeName').textContent  = _staffInfo.name;
+  document.getElementById('staffHomeBranch').textContent = _staffInfo.branch + ' 직원';
+  if (_clockTimer) clearInterval(_clockTimer);
+  const tick = () => { const el=document.getElementById('staffClock'); if(el) el.textContent=new Date().toLocaleTimeString('ko-KR',{hour12:false}); };
+  tick(); _clockTimer = setInterval(tick, 1000);
+
+  const today = new Date().toISOString().slice(0,10);
+  const fmtT  = iso => { if(!iso) return '—'; const d=new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; };
+  const { data: rec } = await window.db.from('attendance')
+    .select('*').eq('staff_id', _staffInfo.id).eq('date', today).maybeSingle();
+
+  const statusEl = document.getElementById('clockStatus');
+  const btnIn    = document.getElementById('btnClockIn');
+  const btnOut   = document.getElementById('btnClockOut');
+  if (!rec) {
+    statusEl.innerHTML = '<span style="font-size:13px;color:#888;">오늘 출근을 기록해주세요</span>';
+    btnIn.disabled=false;  btnIn.style.background='var(--ok)';  btnIn.style.cursor='pointer';  btnIn.style.color='white';
+    btnOut.disabled=true;  btnOut.style.background='rgba(26,26,26,0.1)'; btnOut.style.cursor='not-allowed'; btnOut.style.color='#aaa';
+  } else if (!rec.clock_out) {
+    statusEl.innerHTML = `<span style="font-size:13px;font-weight:700;color:var(--ok);">✓ 출근 완료 · ${fmtT(rec.clock_in)}</span>`;
+    btnIn.disabled=true;   btnIn.style.background='rgba(76,154,106,0.15)'; btnIn.style.cursor='not-allowed'; btnIn.style.color='var(--ok)';
+    btnOut.disabled=false; btnOut.style.background='var(--err)'; btnOut.style.cursor='pointer'; btnOut.style.color='white';
+  } else {
+    statusEl.innerHTML = `<span style="font-size:13px;font-weight:700;color:var(--teal);">출근 ${fmtT(rec.clock_in)} · 퇴근 ${fmtT(rec.clock_out)}</span>`;
+    btnIn.disabled=true;   btnIn.style.background='rgba(26,26,26,0.1)'; btnIn.style.cursor='not-allowed'; btnIn.style.color='#aaa';
+    btnOut.disabled=true;  btnOut.style.background='rgba(26,26,26,0.1)'; btnOut.style.cursor='not-allowed'; btnOut.style.color='#aaa';
+  }
+
+  /* 오늘 예약 */
+  const { data: resvList } = await window.db.from('reservations')
+    .select('customer_name, slot_start, status, programs:program_id(name)')
+    .eq('slot_date', today)
+    .eq('staff_id', _staffInfo.id);
+  const listEl = document.getElementById('staffResvList');
+  const mine = resvList || [];
+  if (!mine.length) {
+    listEl.innerHTML = '<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">오늘 예약 없음</div>';
+  } else {
+    listEl.innerHTML = mine.map(r => {
+      const sc = r.status==='done'?'var(--ok)':r.status==='pending'?'var(--warn)':'var(--teal)';
+      const sl = r.status==='done'?'완료':r.status==='pending'?'예정':'진행중';
+      return `<div class="gcard" style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <span style="font-size:13px;font-weight:800;">${r.customer_name||'고객'}</span>
+          <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(0,0,0,0.06);color:${sc};">${sl}</span>
+        </div>
+        <div style="font-size:11px;color:#888;">${(r.slot_start||'').slice(0,5)} · ${r.programs?.name||'시술'}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+/* ── 근태 현황 렌더 (Supabase) ── */
+async function renderAttendancePwa() {
+  document.getElementById('attendBranchSub').textContent  = _branch;
+  document.getElementById('attendDateLabel').textContent  = '오늘 근태 · ' + new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric'});
+  const today = new Date().toISOString().slice(0,10);
+  const fmtT  = iso => { if(!iso) return '—'; const d=new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; };
+  /* 지점 ID 조회 */
+  const { data: branchRow } = await window.db.from('branches').select('id').eq('name', _branch).maybeSingle();
+  if (!branchRow) return;
+  /* 이 지점 직원 */
+  const { data: staffList } = await window.db.from('staff').select('id, name').eq('branch_id', branchRow.id).eq('is_active', true);
+  /* 오늘 근태 */
+  const { data: attendList } = await window.db.from('attendance').select('*').eq('date', today);
+  const rows = (staffList||[]).map(s => {
+    const rec = (attendList||[]).find(r => r.staff_id === s.id);
+    if (!rec)          return { s, rec, status:'absent' };
+    if (!rec.clock_out)return { s, rec, status:'in' };
+    return { s, rec, status:'out' };
+  });
+  let cntIn=0, cntOut=0, cntAbsent=0;
+  rows.forEach(r => { if(r.status==='in') cntIn++; else if(r.status==='out') cntOut++; else cntAbsent++; });
+  document.getElementById('attendCntIn').textContent     = cntIn;
+  document.getElementById('attendCntOut').textContent    = cntOut;
+  document.getElementById('attendCntAbsent').textContent = cntAbsent;
+  const listEl = document.getElementById('attendList');
+  if (!rows.length) { listEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">등록된 직원 없음</div>'; return; }
+  const stxt = s => s==='absent'?'미출근':s==='in'?'근무중':'퇴근완료';
+  const sc   = s => s==='absent'?'var(--err)':s==='in'?'var(--ok)':'var(--teal-mid)';
+  listEl.innerHTML = rows.map(({s,rec,status}) => `
+    <div class="gcard" style="padding:12px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:14px;font-weight:800;">${s.name}</span>
+        <span style="font-size:11px;font-weight:700;color:${sc(status)};">${stxt(status)}</span>
+      </div>
+      <div style="font-size:11px;color:#888;">출근 ${fmtT(rec?.clock_in)} · 퇴근 ${fmtT(rec?.clock_out)}</div>
+    </div>`).join('');
+}
+
+/* ── 직원 관리 (점주) Supabase 버전 ── */
+async function renderStaffMgmtPwa() {
+  document.getElementById('staffMgmtBranchSub').textContent = _branch;
+  const branchId = await _getBranchId();
+  if (!branchId) return;
+  const { data: staffList } = await window.db.from('staff')
+    .select('id, name, role, phone, code').eq('branch_id', branchId).eq('is_active', true).order('name');
+  const listEl = document.getElementById('staffMgmtList');
+  if (!staffList?.length) { listEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">등록된 직원 없음</div>'; return; }
+  listEl.innerHTML = staffList.map(s => `
+    <div class="gcard" style="padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(26,26,26,0.08);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👤</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:800;">${s.name}</div>
+          <div style="font-size:11px;color:#888;margin-top:2px;">${s.role||'직원'} · ${_branch}</div>
+          ${s.phone?`<div style="font-size:11px;color:#aaa;margin-top:1px;">${s.phone}</div>`:''}
+        </div>
+        <button onclick="deleteStaffFromPwa('${s.id}')" style="width:32px;height:32px;border-radius:50%;background:rgba(239,68,68,0.1);color:var(--err);font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+      </div>
+    </div>`).join('');
+}
+async function saveNewStaffFromPwa() {
+  const name  = document.getElementById('nsName')?.value?.trim();
+  const pos   = document.getElementById('nsPosition')?.value?.trim();
+  const ph    = document.getElementById('nsPhone')?.value?.trim();
+  if (!name) { alert('이름을 입력해주세요.'); return; }
+  if (!ph)   { alert('핸드폰 번호(ID)를 입력해주세요.'); return; }
+  const branchId = await _getBranchId();
+  if (!branchId) { alert('지점 정보를 불러올 수 없습니다.'); return; }
+  const code = 'S-' + String(Date.now()).slice(-4);
+  const { error } = await window.db.from('staff').insert({ branch_id: branchId, name, role: pos||'designer', phone: ph, code });
+  if (error) { alert('저장 중 오류가 발생했습니다: ' + error.message); return; }
+  closeAddStaffPanel();
+  renderStaffMgmtPwa();
+}
+async function deleteStaffFromPwa(staffId) {
+  if (!confirm('이 직원을 삭제하시겠습니까?')) return;
+  await window.db.from('staff').update({ is_active: false }).eq('id', staffId);
+  renderStaffMgmtPwa();
+}
+
+/* ── 운영 관리 (근태 + 직원 통합) Supabase 버전 ── */
+async function renderOpsAttend() {
+  document.getElementById('opsADateLabel').textContent = '오늘 근태 · ' + new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric'});
+  const branchId = await _getBranchId();
+  if (!branchId) return;
+  const today = new Date().toISOString().slice(0,10);
+  const fmtT = iso => { if(!iso) return '–'; const d=new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; };
+  const { data: staffList } = await window.db.from('staff').select('id, name, role').eq('branch_id', branchId).eq('is_active', true);
+  const { data: attendList } = await window.db.from('attendance').select('*').eq('date', today);
+  const rows = (staffList||[]).map(s => {
+    const rec = (attendList||[]).find(r => r.staff_id === s.id);
+    if (!rec)           return { s, rec, status:'absent' };
+    if (!rec.clock_out) return { s, rec, status:'in' };
+    return { s, rec, status:'out' };
+  });
+  let cntIn=0, cntOut=0, cntAbsent=0;
+  rows.forEach(r => { if(r.status==='in') cntIn++; else if(r.status==='out') cntOut++; else cntAbsent++; });
+  document.getElementById('opsAIn').textContent     = cntIn;
+  document.getElementById('opsAOut').textContent    = cntOut;
+  document.getElementById('opsAAbsent').textContent = cntAbsent;
+  const listEl = document.getElementById('opsAttendList');
+  if (!rows.length) { listEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">등록된 직원 없음</div>'; return; }
+  const stxt = s => s==='absent'?'미출근':s==='in'?'근무중':'퇴근완료';
+  const scol = s => s==='absent'?'var(--err)':s==='in'?'var(--ok)':'var(--teal)';
+  listEl.innerHTML = rows.map(({s,rec,status}) => {
+    const tinfo = rec ? `${fmtT(rec.clock_in)}${rec.clock_out?' → '+fmtT(rec.clock_out):''}` : '–';
+    const manBtn = (status==='in') ? `<button onclick="opsManualClockOut('${s.id}')" style="font-size:10px;font-weight:700;color:var(--teal);border:1.5px solid rgba(26,26,26,0.25);border-radius:8px;padding:4px 10px;background:transparent;cursor:pointer;font-family:inherit;">퇴근처리</button>` : '';
+    return `<div class="gcard" style="padding:14px 16px;"><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(26,26,26,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div><div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:800;">${s.name}</div><div style="font-size:11px;color:#888;margin-top:2px;">${s.role||'직원'} · ${tinfo}</div></div><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(0,0,0,0.06);color:${scol(status)};">${stxt(status)}</span>${manBtn}</div></div></div>`;
+  }).join('');
+}
+async function opsManualClockOut(staffId) {
+  if (!confirm('강제 퇴근 처리하시겠습니까?')) return;
+  const today = new Date().toISOString().slice(0,10);
+  const nowTs = new Date().toISOString();
+  const { data: rec } = await window.db.from('attendance').select('id').eq('staff_id', staffId).eq('date', today).maybeSingle();
+  if (!rec) return;
+  await window.db.from('attendance').update({ clock_out: nowTs }).eq('id', rec.id);
+  renderOpsAttend();
+}
+async function ownerManualClockOut(staffId) {
+  if (!confirm('강제 퇴근 처리하시겠습니까?')) return;
+  const today = new Date().toISOString().slice(0,10);
+  const nowTs = new Date().toISOString();
+  const { data: rec } = await window.db.from('attendance').select('id').eq('staff_id', staffId).eq('date', today).maybeSingle();
+  if (!rec) return;
+  await window.db.from('attendance').update({ clock_out: nowTs }).eq('id', rec.id);
+  renderAttendancePwa();
+}
+async function renderOpsStaff() {
+  const branchId = await _getBranchId();
+  if (!branchId) return;
+  const { data: staffList } = await window.db.from('staff')
+    .select('id, name, role, phone').eq('branch_id', branchId).eq('is_active', true).order('name');
+  const listEl = document.getElementById('opsStaffList');
+  if (!staffList?.length) { listEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;font-size:13px;">등록된 직원 없음</div>'; return; }
+  listEl.innerHTML = staffList.map(s => `
+    <div class="gcard" style="padding:14px 16px;"><div style="display:flex;align-items:center;gap:12px;"><div style="width:44px;height:44px;border-radius:50%;background:rgba(26,26,26,0.08);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👤</div><div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:800;">${s.name}</div><div style="font-size:11px;color:#888;margin-top:2px;">${s.role||'직원'} · ${_branch}</div>${s.phone?`<div style="font-size:11px;color:#aaa;margin-top:1px;">${s.phone}</div>`:''}</div><button onclick="deleteOpsStaff('${s.id}')" style="width:32px;height:32px;border-radius:50%;background:rgba(239,68,68,0.1);color:var(--err);font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button></div></div>`).join('');
+}
+async function saveOpsNewStaff() {
+  const name = document.getElementById('onsName')?.value?.trim();
+  const pos  = document.getElementById('onsPosition')?.value?.trim();
+  const ph   = document.getElementById('onsPhone')?.value?.trim();
+  if (!name) { alert('이름을 입력해주세요.'); return; }
+  if (!ph)   { alert('핸드폰 번호를 입력해주세요.'); return; }
+  const branchId = await _getBranchId();
+  if (!branchId) { alert('지점 정보를 불러올 수 없습니다.'); return; }
+  const code = 'S-' + String(Date.now()).slice(-4);
+  const { error } = await window.db.from('staff').insert({ branch_id: branchId, name, role: pos||'designer', phone: ph, code });
+  if (error) { alert('저장 중 오류: ' + error.message); return; }
+  closeOpsAddStaff();
+  renderOpsStaff();
+}
+async function deleteOpsStaff(staffId) {
+  if (!confirm('이 직원을 삭제하시겠습니까?')) return;
+  await window.db.from('staff').update({ is_active: false }).eq('id', staffId);
+  renderOpsStaff();
+}
+
+/* 기존 세션으로 자동 로그인 */
+window.db.auth.getSession().then(async ({ data: { session } }) => {
+  if (session?.user) {
+    const { data: userRow } = await window.db.from('users').select('role').eq('id', session.user.id).single();
+    if (['super_admin','branch_admin'].includes(userRow?.role)) {
+      _role = 'owner';
+      const branchIdMeta = session.user.user_metadata?.branch_id;
+      const { data: branches } = await window.db.from('branches').select('id, name').eq('is_active', true).order('name');
+      if (branchIdMeta) {
+        const matched = (branches||[]).find(b => b.id === branchIdMeta);
+        _branch   = matched?.name || (branches?.[0]?.name) || '';
+        _branchId = matched?.id   || (branches?.[0]?.id)   || null;
+      } else {
+        _branch   = branches?.[0]?.name || '';
+        _branchId = branches?.[0]?.id   || null;
+      }
+      document.getElementById('franBranchName').textContent = _branch;
+      switchScreen('home');
+    }
+  }
 });
 </script>
 </body>
