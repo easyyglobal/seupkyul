@@ -2799,13 +2799,6 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
         <label for="signupPhone">휴대폰 번호</label>
         <div class="auth-error-msg">올바른 휴대폰 번호를 입력해주세요</div>
       </div>
-      <div class="auth-field" id="field-signupEmail">
-        <input type="email" id="signupEmail"
-          oninput="authFieldInput(this,'field-signupEmail')"
-          onfocus="authFieldFocus('field-signupEmail')"
-          onblur="authFieldBlur(this,'field-signupEmail')">
-        <label for="signupEmail">이메일 주소 (선택)</label>
-      </div>
       <div class="auth-field" id="field-signupPw">
         <input type="password" id="signupPw"
           oninput="authFieldInput(this,'field-signupPw')"
@@ -3862,12 +3855,18 @@ window.db.auth.getSession().then(({ data: { session } }) => {
 });
 
 /* ── Auth 오버라이드 ── */
+function _toE164(raw) {
+  const digits = raw.replace(/\D/g,'');
+  return digits.startsWith('0') ? '+82' + digits.slice(1) : '+82' + digits;
+}
+
 async function doLogin() {
-  const phone = (document.getElementById('loginPhone')?.value || '').replace(/-/g,'').trim();
-  const pw    = document.getElementById('loginPw')?.value || '';
-  if (!phone) { document.getElementById('field-loginPhone')?.classList.add('has-error'); return; }
-  if (!pw)    { document.getElementById('field-loginPw')?.classList.add('has-error'); return; }
-  const { error } = await window.db.auth.signInWithPassword({ email: phone + '@m.seupkyul.co', password: pw });
+  const raw = (document.getElementById('loginPhone')?.value || '').trim();
+  const pw  = document.getElementById('loginPw')?.value || '';
+  if (!raw) { document.getElementById('field-loginPhone')?.classList.add('has-error'); return; }
+  if (!pw)  { document.getElementById('field-loginPw')?.classList.add('has-error'); return; }
+  const phone = _toE164(raw);
+  const { error } = await window.db.auth.signInWithPassword({ phone, password: pw });
   if (error) {
     showToast('전화번호 또는 비밀번호를 확인해주세요.');
     document.getElementById('field-loginPw')?.classList.add('has-error');
@@ -3879,17 +3878,18 @@ async function doLogin() {
 
 async function doSignup() {
   const name  = document.getElementById('signupName')?.value?.trim()  || '';
-  const phone = (document.getElementById('signupPhone')?.value || '').replace(/-/g,'').trim();
+  const raw   = (document.getElementById('signupPhone')?.value || '').trim();
   const pw    = document.getElementById('signupPw')?.value  || '';
   const pw2   = document.getElementById('signupPw2')?.value || '';
   if (!name)         { document.getElementById('field-signupName')?.classList.add('has-error'); return; }
-  if (!phone)        { document.getElementById('field-signupPhone')?.classList.add('has-error'); return; }
+  if (!raw)          { document.getElementById('field-signupPhone')?.classList.add('has-error'); return; }
   if (!pw || pw.length < 8) { document.getElementById('field-signupPw')?.classList.add('has-error'); return; }
   if (pw !== pw2)    { document.getElementById('field-signupPw2')?.classList.add('has-error'); return; }
+  const phone = _toE164(raw);
   const { error } = await window.db.auth.signUp({
-    email: phone + '@m.seupkyul.co',
+    phone,
     password: pw,
-    options: { data: { name, phone, role: 'customer' } }
+    options: { data: { name, phone: raw.replace(/\D/g,''), role: 'customer' } }
   });
   if (error) {
     showToast(error.message.includes('already') ? '이미 가입된 번호입니다. 로그인해주세요.' : '가입 중 오류: ' + error.message);

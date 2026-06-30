@@ -2294,11 +2294,11 @@ function togglePerm(btn) {
 
 /* ── 관리자 로그인 ── */
 function doAdminLogin() {
-  const email = document.getElementById('adminEmail').value;
+  const id = document.getElementById('adminId').value;
   const pw = document.getElementById('adminPw').value;
-  if (!email || !pw) { alert('이메일과 비밀번호를 입력하세요.'); return; }
-  const isHQ = (email === 'admin@seupkyul.com' && pw === 'admin1234');
-  const isBranch = (email === 'gangnam@seupkyul.com' && pw === 'branch1234');
+  if (!id || !pw) { alert('아이디와 비밀번호를 입력하세요.'); return; }
+  const isHQ = (id === 'admin' && pw === 'admin1234');
+  const isBranch = (id === 'gangnam' && pw === 'branch1234');
   if (isHQ || isBranch) {
     document.getElementById('adminLoginScreen').classList.add('gone');
     if (isBranch) {
@@ -3321,13 +3321,13 @@ function toggleAdminSidebar() {
     <div class="adm-logo">seupkyul admin</div>
     <div class="adm-sub">통합 어드민에 오신 것을 환영합니다</div>
     <div class="adm-form">
-      <input type="email" id="adminEmail" placeholder="관리자 이메일" value="admin@seupkyul.com">
+      <input type="text" id="adminId" placeholder="관리자 아이디" value="admin">
       <input type="password" id="adminPw" placeholder="비밀번호" value="admin1234">
       <div id="adminLoginError" style="display:none;font-size:12px;color:var(--err);text-align:center;padding:4px 0;">이메일 또는 비밀번호가 올바르지 않습니다.</div>
       <button class="adm-btn" onclick="doAdminLogin()">로그인</button>
     </div>
     <div class="adm-hint">
-      <p>🏢 본사: admin@seupkyul.com / admin1234<br>📍 지점: gangnam@seupkyul.com / branch1234</p>
+      <p>🏢 본사: admin / admin1234<br>📍 지점: gangnam / branch1234</p>
     </div>
   </div>
 </div>
@@ -3426,10 +3426,11 @@ function toggleAdminSidebar() {
 
 /* ── 관리자 로그인 (Supabase Auth) ── */
 async function doAdminLogin() {
-  const email = document.getElementById('adminEmail')?.value?.trim() || '';
+  const id    = document.getElementById('adminId')?.value?.trim() || '';
   const pw    = document.getElementById('adminPw')?.value || '';
   const errEl = document.getElementById('adminLoginError');
-  if (!email || !pw) { alert('이메일과 비밀번호를 입력하세요.'); return; }
+  if (!id || !pw) { alert('아이디와 비밀번호를 입력하세요.'); return; }
+  const email = id + '@seupkyul.local';
   const { data, error } = await window.db.auth.signInWithPassword({ email, password: pw });
   if (error) {
     if (errEl) errEl.style.display = 'block';
@@ -3439,7 +3440,7 @@ async function doAdminLogin() {
   /* 역할 확인 */
   const { data: userRow } = await window.db.from('users').select('role, name').eq('id', data.user.id).single();
   const role = userRow?.role || 'branch_admin';
-  const name = userRow?.name || email.split('@')[0];
+  const name = userRow?.name || id;
   document.getElementById('adminLoginScreen').classList.add('gone');
   /* 역할에 따른 사이드바 조정 */
   if (role !== 'super_admin') {
