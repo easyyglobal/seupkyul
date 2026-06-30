@@ -1750,6 +1750,7 @@ function switchPage(name, el) {
   if (name === 'reservations') renderReservations();
   if (name === 'staff')        renderStaffPage();
   if (name === 'attendance')   renderAttendancePage();
+  if (name === 'inquiries') { renderInquiriesPage('customer'); renderInquiriesPage('franchise'); }
 }
 function filterTab(el, status) {
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
@@ -3622,13 +3623,6 @@ async function replyInquiry(id) {
   showToast('답변이 등록되었습니다.');
   renderInquiriesPage('customer');
   renderInquiriesPage('franchise');
-}
-
-/* ── switchPage 확장 (문의 페이지 지원) ── */
-const _origSwitchPage = switchPage;
-function switchPage(name, el) {
-  _origSwitchPage(name, el);
-  if (name === 'inquiries') { renderInquiriesPage('customer'); renderInquiriesPage('franchise'); }
 }
 
 /* 기존 세션 확인 */
