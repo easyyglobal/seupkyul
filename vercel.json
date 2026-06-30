@@ -4,8 +4,7 @@
     { "source": "/",           "destination": "/b2c-home.html" },
     { "source": "/admin",      "destination": "/admin.html" },
     { "source": "/franchisee", "destination": "/franchisee.html" },
-    { "source": "/staff",      "destination": "/staff-pwa.html" },
-    { "source": "/preview",    "destination": "/index.html" }
+    { "source": "/staff",      "destination": "/staff-pwa.html" }
   ],
   "headers": [
     {
