@@ -11,19 +11,20 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:          #07070D;
-  --bg-2:        #0D0D18;
-  --bg-3:        #111120;
-  --surface:     rgba(255,255,255,0.03);
-  --surface-2:   rgba(255,255,255,0.06);
-  --gold:        #C9A87C;
-  --gold-light:  #E4C99A;
-  --gold-pale:   rgba(201,168,124,0.12);
-  --white:       #F2F0ED;
-  --gray:        #8A8A9A;
-  --gray-light:  #B8B8C8;
-  --border:      rgba(255,255,255,0.07);
-  --border-gold: rgba(201,168,124,0.25);
+  --bg:          #F9F7F4;
+  --bg-2:        #F3F0EA;
+  --bg-3:        #EDE9E1;
+  --surface:     rgba(0,0,0,0.03);
+  --surface-2:   rgba(0,0,0,0.06);
+  --gold:        #A07232;
+  --gold-light:  #C99030;
+  --gold-pale:   rgba(160,114,50,0.10);
+  --text:        #12100D;
+  --white:       #F9F7F4;
+  --gray:        #7A7570;
+  --gray-light:  #4D4843;
+  --border:      rgba(0,0,0,0.09);
+  --border-gold: rgba(160,114,50,0.28);
   --radius:      16px;
   --radius-lg:   24px;
 }
@@ -33,7 +34,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
   background: var(--bg);
-  color: var(--white);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
   overflow-x: hidden;
@@ -52,7 +53,7 @@ body {
   transition: all 0.4s ease;
 }
 .nav.scrolled {
-  background: rgba(7,7,13,0.85);
+  background: rgba(249,247,244,0.92);
   backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
   border-bottom: 1px solid var(--border);
@@ -64,7 +65,7 @@ body {
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.nav-logo span { font-weight: 300; -webkit-text-fill-color: rgba(242,240,237,0.5); }
+.nav-logo span { font-weight: 300; -webkit-text-fill-color: rgba(18,16,13,0.35); }
 .nav-links {
   display: flex; gap: 36px; list-style: none;
 }
@@ -100,15 +101,15 @@ body {
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,168,124,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 80% at 10% 80%, rgba(100,80,160,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 70% 30%, rgba(160,114,50,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(160,114,50,0.04) 0%, transparent 50%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
 }
 .hero-grid {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 100% 100% at 50% 0%, black 30%, transparent 70%);
 }
@@ -191,7 +192,7 @@ body {
 .hero-stat-num {
   font-size: clamp(32px, 4vw, 48px); font-weight: 800;
   letter-spacing: -0.04em; line-height: 1;
-  background: linear-gradient(135deg, var(--white), var(--gold-light));
+  background: linear-gradient(135deg, var(--text), var(--gold));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -886,8 +887,12 @@ footer {
     padding: 9px 18px; border-radius: 100px;
     text-decoration: none;
   }
-  .hero { padding: 100px 24px 60px; }
-  .hero-stats { gap: 32px; }
+  .hero-split { grid-template-columns: 1fr; padding: 0 24px; }
+  .hero-left { padding: 120px 0 40px; text-align: center; }
+  .hero-right { display: none; }
+  .hero-status-bar { padding: 14px 24px; gap: 12px; }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; gap: 32px; }
   .brand-grid, .revenue-header, .cost-grid,
   .market-highlight { grid-template-columns: 1fr; }
   .market-grid, .support-grid, .test-grid { grid-template-columns: 1fr; }
@@ -915,6 +920,120 @@ footer {
   .feature-panel-card { padding: 28px; }
   .feature-panel-stats { grid-template-columns: 1fr 1fr; }
 }
+
+/* ══════════════════════════════════════
+   LIGHT THEME — LAYOUT & OVERRIDES
+══════════════════════════════════════ */
+
+/* ── Hero 2-column layout ── */
+.hero { padding: 0; }
+.hero-status-bar {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 16px 60px;
+  display: flex; align-items: center; gap: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gray);
+  border-bottom: 1px solid var(--border);
+  z-index: 2;
+}
+.hero-status-dot { color: rgba(0,0,0,0.18); font-size: 16px; line-height: 1; }
+.hero-status-live {
+  color: var(--gold);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.hero-status-live::before {
+  content: '';
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(160,114,50,0.6);
+  animation: pulse 2s ease infinite;
+  flex-shrink: 0;
+}
+
+.hero-split {
+  display: grid; grid-template-columns: 55% 45%;
+  min-height: 100vh; align-items: center;
+  max-width: 1360px; margin: 0 auto;
+  padding: 0 60px;
+  position: relative; z-index: 1;
+  width: 100%;
+}
+.hero-left {
+  padding: 140px 60px 100px 0;
+  text-align: left;
+}
+.hero-right {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+  padding: 120px 0 80px;
+}
+.hero-actions { justify-content: flex-start; }
+.hero-stats {
+  margin-top: 60px;
+  justify-content: flex-start;
+  gap: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Helix canvas ── */
+.hero-helix-wrap {
+  position: relative;
+  width: 320px; height: 580px;
+}
+.hero-helix-canvas {
+  width: 100%; height: 100%; display: block;
+}
+.hero-helix-label {
+  position: absolute; bottom: -28px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gray);
+  white-space: nowrap; opacity: 0.5;
+}
+
+/* ── Hardcoded dark-transparent overrides ── */
+.market-source-item { background: rgba(0,0,0,0.03); }
+.rev-bar-track { background: rgba(0,0,0,0.08); }
+.support-num { color: rgba(0,0,0,0.055); }
+.cost-badge.standard { background: rgba(0,0,0,0.06); color: var(--gray); }
+.form-input, .form-select, .form-textarea {
+  background: rgba(0,0,0,0.04);
+  color: var(--text);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--gold); background: rgba(160,114,50,0.05);
+}
+.form-select option { background: #F3F0EA; color: var(--text); }
+
+/* ── Statement section → dark contrast block ── */
+.statement-section { background: #100E0B; }
+.statement-eyebrow { color: rgba(240,237,232,0.38); }
+.statement-quote { color: #EDE9E2; }
+.statement-quote em { color: var(--gold-light); }
+.statement-divider { background: rgba(240,237,232,0.15); }
+.statement-cta { color: #EDE9E2; border-bottom-color: rgba(240,237,232,0.3); }
+.statement-cta:hover { border-color: #EDE9E2; gap: 16px; }
+
+/* ── Test quote strong ── */
+.test-quote strong { color: var(--text); }
+
+/* ── Footer (stays dark) ── */
+.footer-links-title { color: rgba(240,237,232,0.85); }
+.footer-tagline { color: rgba(240,237,232,0.42); }
+.footer-links a { color: rgba(240,237,232,0.42); }
+.footer-links a:hover { color: var(--gold-light); }
+.footer-bottom { color: rgba(240,237,232,0.35); }
+.footer-bottom a { color: rgba(240,237,232,0.35); }
+
+/* ── Float bar inputs (float-bar stays dark) ── */
+.float-bar-inputs input {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border-color: rgba(255,255,255,0.14);
+}
+.float-bar-inputs input::placeholder { color: rgba(255,255,255,0.38); }
+.float-bar-close:hover { color: #fff; }
 </style>
 </head>
 <body>
@@ -939,48 +1058,71 @@ footer {
   <div class="hero-bg">
     <div class="hero-grid"></div>
   </div>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <span></span> 2025 신규 가맹 모집 중
-    </div>
-    <h1 class="hero-headline">
-      두피·모발 케어의<br>
-      <em>새로운 기준</em>을<br>
-      함께 만드세요
-    </h1>
-    <p class="hero-sub">
-      새없결은 검증된 시스템과 완전한 본사 지원으로<br>
-      예비 창업자의 성공을 함께 설계합니다.
-    </p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">
-        <iconify-icon icon="solar:arrow-right-bold"></iconify-icon>
-        지금 가맹 문의하기
-      </a>
-      <a href="#brand" class="btn-ghost">
-        <iconify-icon icon="solar:play-circle-outline"></iconify-icon>
-        브랜드 알아보기
-      </a>
+
+  <!-- 상단 상태 바 -->
+  <div class="hero-status-bar">
+    <span>새없결 FRANCHISE</span>
+    <span class="hero-status-dot">·</span>
+    <span>STATUS: <span class="hero-status-live">OPEN</span></span>
+    <span class="hero-status-dot">·</span>
+    <span>EST. 2022</span>
+  </div>
+
+  <!-- 2칼럼 레이아웃 -->
+  <div class="hero-split">
+
+    <!-- 왼쪽: 텍스트 -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span></span> 2025 신규 가맹 모집 중
+      </div>
+      <h1 class="hero-headline">
+        두피·모발 케어의<br>
+        <em>새로운 기준</em>을<br>
+        함께 만드세요
+      </h1>
+      <p class="hero-sub">
+        새없결은 검증된 시스템과 완전한 본사 지원으로<br>
+        예비 창업자의 성공을 함께 설계합니다.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          <iconify-icon icon="solar:arrow-right-bold"></iconify-icon>
+          지금 가맹 문의하기
+        </a>
+        <a href="#brand" class="btn-ghost">
+          <iconify-icon icon="solar:play-circle-outline"></iconify-icon>
+          브랜드 알아보기
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span class="cnum" data-to="3">0</span><span>년+</span></div>
+          <div class="hero-stat-label">브랜드 운영 연수</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span class="cnum" data-to="98">0</span><span>%</span></div>
+          <div class="hero-stat-label">재방문율</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span class="cnum" data-to="4.9" data-decimal="1">0.0</span><span>★</span></div>
+          <div class="hero-stat-label">고객 평균 평점</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span class="cnum" data-to="30">0</span><span>일</span></div>
+          <div class="hero-stat-label">오픈 지원 기간</div>
+        </div>
+      </div>
     </div>
 
-    <div class="hero-stats">
-      <div class="hero-stat-item">
-        <div class="hero-stat-num"><span class="cnum" data-to="3">0</span><span>년+</span></div>
-        <div class="hero-stat-label">브랜드 운영 연수</div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-num"><span class="cnum" data-to="98">0</span><span>%</span></div>
-        <div class="hero-stat-label">재방문율</div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-num"><span class="cnum" data-to="4.9" data-decimal="1">0.0</span><span>★</span></div>
-        <div class="hero-stat-label">고객 평균 평점</div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-num"><span class="cnum" data-to="30">0</span><span>일</span></div>
-        <div class="hero-stat-label">오픈 지원 기간</div>
+    <!-- 오른쪽: 헬릭스 애니메이션 -->
+    <div class="hero-right">
+      <div class="hero-helix-wrap">
+        <canvas class="hero-helix-canvas" id="helixCanvas"></canvas>
+        <div class="hero-helix-label">SCALP CARE SYSTEM // 두피 케어 시스템</div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -2011,6 +2153,99 @@ if (revenueModel) barObserver.observe(revenueModel);
   }, { threshold: 0.5, rootMargin: '-15% 0px -15% 0px' });
 
   panels.forEach(p => fp.observe(p));
+})();
+
+/* ── 두피 케어 헬릭스 캔버스 애니메이션 ── */
+(function() {
+  const canvas = document.getElementById('helixCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let phase = 0;
+  let W = 0, H = 0;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    W = canvas.offsetWidth;
+    H = canvas.offsetHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const cx   = W / 2;
+    const amp  = W * 0.31;
+    const steps = 90;
+    const loops = 3.8;
+
+    /* 두 가닥 좌표 계산 */
+    const pts1 = [], pts2 = [];
+    for (let i = 0; i <= steps; i++) {
+      const y     = (i / steps) * H;
+      const angle = (i / steps) * loops * Math.PI * 2 + phase;
+      const s     = Math.sin(angle);
+      pts1.push({ x: cx + s * amp, y, s });
+      pts2.push({ x: cx - s * amp, y, s: -s });
+    }
+
+    /* 교차 연결선 */
+    for (let i = 0; i <= steps; i++) {
+      if (Math.abs(pts1[i].s) < 0.16) {
+        ctx.beginPath();
+        ctx.moveTo(pts1[i].x, pts1[i].y);
+        ctx.lineTo(pts2[i].x, pts2[i].y);
+        ctx.strokeStyle = 'rgba(160,114,50,0.18)';
+        ctx.lineWidth   = 0.8;
+        ctx.stroke();
+      }
+    }
+
+    /* 가닥 1 — solid */
+    ctx.beginPath();
+    pts1.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.setLineDash([]);
+    ctx.strokeStyle = 'rgba(160,114,50,0.62)';
+    ctx.lineWidth   = 1.6;
+    ctx.stroke();
+
+    /* 가닥 2 — dashed */
+    ctx.beginPath();
+    pts2.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    ctx.setLineDash([4, 7]);
+    ctx.strokeStyle = 'rgba(160,114,50,0.28)';
+    ctx.lineWidth   = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    /* 가닥 1 — 깊이 인식 점 */
+    for (let i = 0; i <= steps; i += 2) {
+      const { x, y, s } = pts1[i];
+      const depth = (s + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.5 + depth * 3.8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(160,114,50,${(0.18 + depth * 0.82).toFixed(2)})`;
+      ctx.fill();
+    }
+
+    /* 가닥 2 — 더 연한 점 */
+    for (let i = 0; i <= steps; i += 2) {
+      const { x, y, s } = pts2[i];
+      const depth = (s + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 1 + depth * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(160,114,50,${(0.07 + depth * 0.38).toFixed(2)})`;
+      ctx.fill();
+    }
+
+    phase += 0.007;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
 })();
 </script>
 </body>
