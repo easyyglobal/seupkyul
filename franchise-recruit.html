@@ -660,6 +660,93 @@ footer {
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
 
+/* ─────────────────── FEATURE SCROLL ─────────────────── */
+.feature-scroll-section { background: var(--bg-2); padding: 120px 40px; }
+.feature-scroll-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+}
+.feature-scroll-left { position: sticky; top: 120px; }
+.feature-scroll-head { margin-bottom: 44px; }
+.feature-scroll-head h2 {
+  font-size: 34px; font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1.25; margin: 16px 0 14px;
+}
+.feature-scroll-head h2 em { font-style: normal; color: var(--gold-light); }
+.feature-scroll-head p { font-size: 15px; color: var(--gray-light); line-height: 1.75; }
+
+.feature-cat-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.feature-cat-item {
+  display: flex; align-items: center; gap: 18px;
+  padding: 14px 18px; border-radius: 12px; cursor: pointer;
+  transition: all 0.35s ease; border-left: 2px solid transparent;
+}
+.feature-cat-item:hover { background: var(--surface); }
+.feature-cat-item.active { background: var(--gold-pale); border-left-color: var(--gold); }
+.feature-cat-num {
+  font-size: 12px; font-weight: 800; color: var(--gray);
+  min-width: 22px; transition: color 0.35s;
+}
+.feature-cat-item.active .feature-cat-num { color: var(--gold); }
+.feature-cat-title {
+  font-size: 16px; font-weight: 700; color: var(--gray);
+  transition: color 0.35s;
+}
+.feature-cat-item.active .feature-cat-title,
+.feature-cat-item:hover .feature-cat-title { color: var(--white); }
+
+.feature-scroll-right { display: flex; flex-direction: column; }
+.feature-panel { min-height: 420px; display: flex; align-items: center; padding: 40px 0; }
+.feature-panel-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 44px; width: 100%;
+  transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+  position: relative; overflow: hidden;
+}
+.feature-panel-card::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(201,168,124,0.14) 0%, transparent 70%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.feature-panel-card.panel-active {
+  border-color: var(--border-gold);
+  background: rgba(201,168,124,0.04);
+  box-shadow: 0 0 48px rgba(201,168,124,0.06);
+}
+.feature-panel-card.panel-active::before { opacity: 1; }
+.feature-panel-icon {
+  width: 60px; height: 60px; border-radius: 16px;
+  background: var(--gold-pale); border: 1px solid var(--border-gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; color: var(--gold); margin-bottom: 24px;
+}
+.feature-panel-num {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+  color: var(--gold); margin-bottom: 10px; text-transform: uppercase;
+}
+.feature-panel-title {
+  font-size: 24px; font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1.3; margin-bottom: 16px;
+}
+.feature-panel-desc {
+  font-size: 14px; color: var(--gray-light); line-height: 1.85; margin-bottom: 24px;
+}
+.feature-panel-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.feature-panel-tag {
+  font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 100px;
+  background: var(--gold-pale); color: var(--gold-light);
+  border: 1px solid var(--border-gold);
+}
+.feature-panel-stats {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  padding-top: 24px; border-top: 1px solid var(--border);
+}
+.feature-panel-stat-val {
+  font-size: 26px; font-weight: 900; letter-spacing: -0.04em; color: var(--gold-light);
+}
+.feature-panel-stat-label { font-size: 12px; color: var(--gray); margin-top: 4px; }
+
 /* ─────────────────── MOBILE ─────────────────── */
 @media (max-width: 768px) {
   section { padding: 80px 24px; }
@@ -688,6 +775,15 @@ footer {
   .form-grid { grid-template-columns: 1fr; }
   .market-note { text-align: left; }
   .revenue-note { text-align: left; }
+  .feature-scroll-section { padding: 80px 24px; }
+  .feature-scroll-inner { grid-template-columns: 1fr; gap: 40px; }
+  .feature-scroll-left { position: static; }
+  .feature-cat-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .feature-cat-item { padding: 10px 14px; }
+  .feature-cat-title { font-size: 14px; }
+  .feature-panel { min-height: auto; padding: 20px 0; }
+  .feature-panel-card { padding: 28px; }
+  .feature-panel-stats { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -813,6 +909,167 @@ footer {
             </div>
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURE SCROLL ─── -->
+<section class="feature-scroll-section">
+  <div class="container">
+    <div class="feature-scroll-inner">
+
+      <!-- 왼쪽 sticky 카테고리 리스트 -->
+      <div class="feature-scroll-left">
+        <div class="feature-scroll-head">
+          <span class="section-label">WHY 새없결</span>
+          <h2>선택받는<br><em>6가지 이유</em></h2>
+          <p>수많은 프랜차이즈 중 새없결이 특별한 이유,<br>직접 확인해보세요.</p>
+        </div>
+        <ul class="feature-cat-list">
+          <li class="feature-cat-item active" data-target="fp-0">
+            <span class="feature-cat-num">01</span>
+            <span class="feature-cat-title">탁월한 기술력</span>
+          </li>
+          <li class="feature-cat-item" data-target="fp-1">
+            <span class="feature-cat-num">02</span>
+            <span class="feature-cat-title">체계적 교육 시스템</span>
+          </li>
+          <li class="feature-cat-item" data-target="fp-2">
+            <span class="feature-cat-num">03</span>
+            <span class="feature-cat-title">완전한 마케팅 지원</span>
+          </li>
+          <li class="feature-cat-item" data-target="fp-3">
+            <span class="feature-cat-num">04</span>
+            <span class="feature-cat-title">스마트 운영 플랫폼</span>
+          </li>
+          <li class="feature-cat-item" data-target="fp-4">
+            <span class="feature-cat-num">05</span>
+            <span class="feature-cat-title">검증된 수익 모델</span>
+          </li>
+          <li class="feature-cat-item" data-target="fp-5">
+            <span class="feature-cat-num">06</span>
+            <span class="feature-cat-title">전담 본사 컨설팅</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 오른쪽 스크롤 패널들 -->
+      <div class="feature-scroll-right">
+
+        <div class="feature-panel" id="fp-0">
+          <div class="feature-panel-card panel-active">
+            <div class="feature-panel-icon"><iconify-icon icon="solar:diploma-bold"></iconify-icon></div>
+            <div class="feature-panel-num">01 / 탁월한 기술력</div>
+            <h3 class="feature-panel-title">업계 유일 특허 출원<br>두피 케어 프로그램</h3>
+            <p class="feature-panel-desc">새없결은 수년간의 R&D를 통해 개발된 독자적인 두피·모발 케어 프로토콜을 보유합니다. 딥 클리닉, 탈모 집중 케어, 모발 처방전 시스템 등 어디서도 경험할 수 없는 차별화된 기술력이 고객을 다시 찾게 만듭니다.</p>
+            <div class="feature-panel-tags">
+              <span class="feature-panel-tag">딥 클리닉</span>
+              <span class="feature-panel-tag">탈모 집중 케어</span>
+              <span class="feature-panel-tag">모발 처방전</span>
+              <span class="feature-panel-tag">두피 마이크로바이옴</span>
+            </div>
+            <div class="feature-panel-stats">
+              <div><div class="feature-panel-stat-val">98%</div><div class="feature-panel-stat-label">고객 재방문율</div></div>
+              <div><div class="feature-panel-stat-val">4.9★</div><div class="feature-panel-stat-label">평균 고객 평점</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="fp-1">
+          <div class="feature-panel-card">
+            <div class="feature-panel-icon"><iconify-icon icon="solar:users-group-two-rounded-bold"></iconify-icon></div>
+            <div class="feature-panel-num">02 / 체계적 교육 시스템</div>
+            <h3 class="feature-panel-title">경험 없어도 괜찮아요<br>3단계 집중 트레이닝</h3>
+            <p class="feature-panel-desc">미용 경력이 없어도, 처음 창업해도 걱정 없습니다. 이론·실습·현장 3단계 교육 프로그램으로 누구나 새없결의 기술을 완벽하게 습득할 수 있습니다. 오픈 후에도 본사 트레이너가 직접 현장 지원에 나섭니다.</p>
+            <div class="feature-panel-tags">
+              <span class="feature-panel-tag">이론 교육 1주</span>
+              <span class="feature-panel-tag">실습 트레이닝 2주</span>
+              <span class="feature-panel-tag">현장 OJT</span>
+              <span class="feature-panel-tag">온라인 복습 콘텐츠</span>
+            </div>
+            <div class="feature-panel-stats">
+              <div><div class="feature-panel-stat-val">3주</div><div class="feature-panel-stat-label">집중 교육 기간</div></div>
+              <div><div class="feature-panel-stat-val">100%</div><div class="feature-panel-stat-label">교육 이수율</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="fp-2">
+          <div class="feature-panel-card">
+            <div class="feature-panel-icon"><iconify-icon icon="solar:megaphone-bold"></iconify-icon></div>
+            <div class="feature-panel-num">03 / 완전한 마케팅 지원</div>
+            <h3 class="feature-panel-title">마케팅은 본사가<br>전부 책임집니다</h3>
+            <p class="feature-panel-desc">SNS 콘텐츠 제작부터 지역 타겟 광고 집행, 네이버 플레이스 최적화, 오픈 이벤트 기획까지 — 가맹점주는 케어에만 집중하세요. 본사 마케팅팀이 디지털 채널을 완벽하게 관리합니다.</p>
+            <div class="feature-panel-tags">
+              <span class="feature-panel-tag">SNS 콘텐츠 제작</span>
+              <span class="feature-panel-tag">지역 광고</span>
+              <span class="feature-panel-tag">네이버 플레이스</span>
+              <span class="feature-panel-tag">오픈 이벤트</span>
+            </div>
+            <div class="feature-panel-stats">
+              <div><div class="feature-panel-stat-val">월 30+</div><div class="feature-panel-stat-label">SNS 콘텐츠 제공</div></div>
+              <div><div class="feature-panel-stat-val">+45%</div><div class="feature-panel-stat-label">오픈 첫달 신규 고객</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="fp-3">
+          <div class="feature-panel-card">
+            <div class="feature-panel-icon"><iconify-icon icon="solar:smartphone-bold"></iconify-icon></div>
+            <div class="feature-panel-num">04 / 스마트 운영 플랫폼</div>
+            <h3 class="feature-panel-title">예약·결제·재고·정산<br>하나의 앱으로</h3>
+            <p class="feature-panel-desc">새없결 전용 통합 관리 플랫폼은 예약 스케줄, 고객 관리, 재고 주문, 매출 정산을 하나로 연결합니다. 실시간 대시보드로 매장 현황을 언제 어디서나 확인하고, 본사와 데이터를 공유해 맞춤 컨설팅을 받으세요.</p>
+            <div class="feature-panel-tags">
+              <span class="feature-panel-tag">실시간 예약 관리</span>
+              <span class="feature-panel-tag">고객 CRM</span>
+              <span class="feature-panel-tag">재고 자동발주</span>
+              <span class="feature-panel-tag">매출 대시보드</span>
+            </div>
+            <div class="feature-panel-stats">
+              <div><div class="feature-panel-stat-val">-40%</div><div class="feature-panel-stat-label">운영 행정 시간 절감</div></div>
+              <div><div class="feature-panel-stat-val">99.9%</div><div class="feature-panel-stat-label">시스템 가동률</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="fp-4">
+          <div class="feature-panel-card">
+            <div class="feature-panel-icon"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></div>
+            <div class="feature-panel-num">05 / 검증된 수익 모델</div>
+            <h3 class="feature-panel-title">객단가 5~8만원<br>안정적 고수익 구조</h3>
+            <p class="feature-panel-desc">일반 헤어샵 대비 3~4배 높은 객단가와 정기 케어로 이어지는 재방문 구조가 안정적인 매출을 만듭니다. 평균 월매출 1,500만원 이상, 수익률 35~45%로 검증된 수익 모델을 직접 확인하세요.</p>
+            <div class="feature-panel-tags">
+              <span class="feature-panel-tag">객단가 5~8만원</span>
+              <span class="feature-panel-tag">정기 구독 모델</span>
+              <span class="feature-panel-tag">부가 상품 판매</span>
+            </div>
+            <div class="feature-panel-stats">
+              <div><div class="feature-panel-stat-val">1,500만+</div><div class="feature-panel-stat-label">평균 월 매출</div></div>
+              <div><div class="feature-panel-stat-val">35~45%</div><div class="feature-panel-stat-label">순이익률</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-panel" id="fp-5">
+          <div class="feature-panel-card">
+            <div class="feature-panel-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
+            <div class="feature-panel-num">06 / 전담 본사 컨설팅</div>
+            <h3 class="feature-panel-title">오픈부터 성장까지<br>전담 MD 1:1 파트너</h3>
+            <p class="feature-panel-desc">계약 체결부터 개점, 그리고 운영 안정화까지 전담 MD가 처음부터 끝까지 함께합니다. 월별 매출 분석 리포트, 분기별 현장 방문, 24시간 긴급 대응 채널로 점주 혼자가 아닌 본사와 함께 성장합니다.</p>
+            <div class="feature-panel-tags">
+              <span class="feature-panel-tag">전담 MD 배정</span>
+              <span class="feature-panel-tag">월별 매출 리포트</span>
+              <span class="feature-panel-tag">분기 현장 방문</span>
+              <span class="feature-panel-tag">24h 긴급 채널</span>
+            </div>
+            <div class="feature-panel-stats">
+              <div><div class="feature-panel-stat-val">48h</div><div class="feature-panel-stat-label">긴급 이슈 대응 시간</div></div>
+              <div><div class="feature-panel-stat-val">100%</div><div class="feature-panel-stat-label">가맹점 전담 배정률</div></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1478,6 +1735,40 @@ const barObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 const revenueModel = document.querySelector('.revenue-model');
 if (revenueModel) barObserver.observe(revenueModel);
+
+/* ── 피처 스크롤 인터랙션 ── */
+(function() {
+  const catItems = document.querySelectorAll('.feature-cat-item');
+  const panels   = document.querySelectorAll('.feature-panel');
+  const cards    = document.querySelectorAll('.feature-panel-card');
+  if (!catItems.length) return;
+
+  function activate(idx) {
+    catItems.forEach((el, i) => el.classList.toggle('active', i === idx));
+    cards.forEach((el, i)    => el.classList.toggle('panel-active', i === idx));
+  }
+
+  /* 카테고리 클릭 시 해당 패널로 스크롤 */
+  catItems.forEach((item, idx) => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      activate(idx);
+    });
+  });
+
+  /* 스크롤로 패널 진입 시 자동 하이라이트 */
+  const fp = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(panels).indexOf(entry.target);
+        if (idx !== -1) activate(idx);
+      }
+    });
+  }, { threshold: 0.5, rootMargin: '-15% 0px -15% 0px' });
+
+  panels.forEach(p => fp.observe(p));
+})();
 </script>
 </body>
 </html>
