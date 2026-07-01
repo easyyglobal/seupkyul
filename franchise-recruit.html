@@ -3,1443 +3,822 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>새없결 가맹모집 — 프리미엄 두피·모발 케어 프랜차이즈</title>
-<meta name="description" content="새없결과 함께 프리미엄 두피·모발 케어 시장을 선점하세요. 검증된 시스템, 완전한 본사 지원, 높은 수익성.">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@iconify/iconify@3/dist/iconify.min.js"></script>
+<title>새없결 프랜차이즈 창업 — 지금 가장 빠르게 성장하는 두피·모발 케어 브랜드</title>
+<meta name="description" content="새없결 프랜차이즈로 검증된 수익 모델과 전폭적인 본사 지원을 경험하세요. 오픈 6개월 내 BEP 달성률 92%.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:          #F8F7F5;
-  --bg-2:        #F2F1EE;
-  --bg-3:        #ECEAE6;
-  --surface:     rgba(0,0,0,0.03);
-  --surface-2:   rgba(0,0,0,0.055);
-  --gold:        #1E5C4A;
-  --gold-light:  #257A60;
-  --gold-pale:   rgba(30,92,74,0.08);
+  --green:       #1E5C4A;
+  --green-d:     #164438;
+  --green-l:     #2D8B6A;
+  --green-pale:  #E8F5F0;
+  --green-mid:   #F0FAF6;
+  --white:       #FFFFFF;
+  --cream:       #FAFAF8;
   --text:        #111210;
-  --white:       #F8F7F5;
-  --gray:        #7A7875;
-  --gray-light:  #4A4845;
-  --border:      rgba(0,0,0,0.09);
-  --border-gold: rgba(30,92,74,0.22);
-  --radius:      16px;
-  --radius-lg:   24px;
-  --sidebar-w:   252px;
+  --text-2:      #3A3835;
+  --text-3:      #6A6865;
+  --border:      rgba(0,0,0,0.08);
+  --shadow:      0 2px 16px rgba(0,0,0,0.06);
+  --shadow-lg:   0 16px 56px rgba(0,0,0,0.10);
+  --r:           16px;
+  --r-lg:        28px;
+  --nav-h:       68px;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
-  background: var(--bg);
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--white);
   color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  word-break: keep-all;
+  font-size: 17px;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-/* ─────────────────── SCROLLBAR ─────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+/* ─────── NAV ─────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 900;
+  display: flex; align-items: center;
+  padding: 0 48px; gap: 32px;
+  background: rgba(255,255,255,0);
+  border-bottom: 1px solid transparent;
+  transition: background .35s, border-color .35s, backdrop-filter .35s;
+}
+.nav.on {
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-color: var(--border);
+}
+.nav-logo {
+  font-weight: 900; font-size: 21px; color: var(--text);
+  text-decoration: none; letter-spacing: -0.5px; margin-right: 12px;
+  flex-shrink: 0;
+}
+.nav-links { display: flex; gap: 2px; flex: 1; }
+.nav-a {
+  font-size: 14px; color: var(--text-3); font-weight: 500;
+  text-decoration: none; padding: 6px 11px; border-radius: 8px;
+  transition: color .15s, background .15s; white-space: nowrap;
+}
+.nav-a:hover { color: var(--text); background: rgba(0,0,0,0.04); }
+.nav-cta {
+  flex-shrink: 0; background: var(--green); color: #fff;
+  padding: 10px 22px; border-radius: 100px; font-size: 14px; font-weight: 700;
+  text-decoration: none; transition: background .2s, transform .2s;
+  box-shadow: 0 4px 16px rgba(30,92,74,.25);
+}
+.nav-cta:hover { background: var(--green-l); transform: translateY(-1px); }
 
-/* ─────────────────── SIDEBAR ─────────────────── */
-.sidebar {
-  position: fixed; top: 0; left: 0; bottom: 0;
-  width: var(--sidebar-w); z-index: 999;
-  background: var(--bg);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  padding: 36px 28px 32px;
-  overflow-y: auto;
+/* Mobile nav */
+.mob-bar {
+  display: none; position: fixed; top: 0; left: 0; right: 0;
+  height: 58px; z-index: 900; background: rgba(255,255,255,.95);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+  align-items: center; padding: 0 20px; justify-content: space-between;
 }
-.sidebar-logo {
-  display: block; text-decoration: none;
-  margin-bottom: 10px;
+.mob-logo { font-weight: 900; font-size: 18px; color: var(--text); text-decoration: none; }
+.mob-ham { background: none; border: none; cursor: pointer; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
+.mob-ham span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
+.mob-drawer {
+  display: none; position: fixed; top: 58px; left: 0; right: 0; bottom: 0;
+  background: #fff; z-index: 899; overflow-y: auto;
+  padding: 16px 20px 40px; flex-direction: column; gap: 2px;
 }
-.sidebar-logo-main {
-  font-size: 20px; font-weight: 800; letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; display: block;
+.mob-drawer.open { display: flex; }
+.mob-drawer a {
+  display: block; padding: 14px 12px; font-size: 16px; color: var(--text);
+  text-decoration: none; border-bottom: 1px solid var(--border); font-weight: 500;
 }
-.sidebar-logo-sub {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gray); display: block; margin-top: 3px;
-}
-.sidebar-status {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--gray);
-  padding: 20px 0; margin-bottom: 4px;
-  border-bottom: 1px solid var(--border);
-}
-.sidebar-status-dot {
-  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-  background: var(--gold);
-  box-shadow: 0 0 8px rgba(30,92,74,0.5);
-  animation: pulse 2s ease infinite;
-}
-.sidebar-nav-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--gray);
-  padding: 20px 10px 8px;
-}
-.sidebar-nav {
-  display: flex; flex-direction: column; gap: 1px;
-  flex: 1;
-}
-.sidebar-nav-link {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 10px; border-radius: 8px;
-  font-size: 13px; font-weight: 500; color: var(--gray-light);
-  text-decoration: none; letter-spacing: 0.01em;
-  border-left: 2px solid transparent;
-  transition: all 0.2s;
-}
-.sidebar-nav-link:hover {
-  background: var(--surface); color: var(--text);
-}
-.sidebar-nav-link.active {
-  background: var(--gold-pale); color: var(--gold);
-  border-left-color: var(--gold); font-weight: 700;
-}
-.sidebar-footer {
-  margin-top: 24px; padding-top: 20px;
-  border-top: 1px solid var(--border);
-}
-.sidebar-cta {
-  display: block; width: 100%;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  color: #fff; font-weight: 700; font-size: 13px;
-  padding: 12px 16px; border-radius: 10px; border: none;
-  cursor: pointer; text-decoration: none; text-align: center;
-  letter-spacing: 0.02em; transition: opacity 0.2s, transform 0.2s;
-  margin-bottom: 14px;
-}
-.sidebar-cta:hover { opacity: 0.88; transform: translateY(-1px); }
-.sidebar-contact {
-  font-size: 11px; color: var(--gray); line-height: 1.7; text-align: center;
-}
-.sidebar-contact a { color: var(--gray); text-decoration: none; }
-
-/* ─────────────────── MAIN WRAPPER ─────────────────── */
-.main-wrapper {
-  margin-left: var(--sidebar-w);
-  min-height: 100vh;
+.mob-cta-btn {
+  margin-top: 16px; background: var(--green) !important; color: #fff !important;
+  text-align: center; border-radius: 12px; font-weight: 700 !important;
+  border-bottom: none !important;
 }
 
-/* ─────────────────── MOBILE TOP BAR ─────────────────── */
-.mobile-top-bar {
-  display: none;
-  position: fixed; top: 0; left: 0; right: 0; z-index: 998;
-  background: rgba(248,247,245,0.96);
-  backdrop-filter: blur(20px) saturate(1.6);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 20px;
-  justify-content: space-between; align-items: center;
+/* ─────── HERO ─────── */
+#home {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: calc(var(--nav-h) + 64px) 48px 80px;
+  gap: 64px; position: relative; overflow: hidden;
+  background: var(--cream);
 }
-.mobile-logo {
-  font-size: 18px; font-weight: 800; letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; text-decoration: none;
+.hero-bg-blob {
+  position: absolute; pointer-events: none;
+  border-radius: 50%; filter: blur(80px);
 }
-.mobile-menu-btn {
-  background: none; border: none; cursor: pointer;
-  display: flex; flex-direction: column; gap: 5px; padding: 6px;
+.hero-bg-blob.b1 {
+  width: 700px; height: 700px;
+  top: -200px; right: -100px;
+  background: radial-gradient(circle, rgba(30,92,74,.11) 0%, transparent 70%);
 }
-.mobile-menu-btn span {
-  display: block; width: 20px; height: 2px;
-  background: var(--text); border-radius: 2px;
-  transition: all 0.3s;
+.hero-bg-blob.b2 {
+  width: 400px; height: 400px;
+  bottom: -100px; left: 200px;
+  background: radial-gradient(circle, rgba(30,92,74,.07) 0%, transparent 70%);
 }
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0; z-index: 997;
-  background: rgba(0,0,0,0.25); opacity: 0;
-  transition: opacity 0.3s;
-}
-.sidebar-overlay.visible { opacity: 1; }
-
-/* ─────────────────── HERO ─────────────────── */
-.hero {
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-  padding: 120px 40px 80px;
-}
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-}
-.hero-bg::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 60% at 70% 30%, rgba(160,114,50,0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 10% 80%, rgba(160,114,50,0.04) 0%, transparent 50%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-}
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 100% 100% at 50% 0%, black 30%, transparent 70%);
-}
-.hero-content {
-  position: relative; z-index: 1;
-  max-width: 900px; margin: 0 auto;
-  text-align: center;
-}
+.hero-left { flex: 1; max-width: 600px; position: relative; z-index: 1; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--gold-pale);
-  border: 1px solid var(--border-gold);
-  padding: 8px 18px; border-radius: 100px;
-  font-size: 13px; font-weight: 600; color: var(--gold-light);
-  letter-spacing: 0.06em; text-transform: uppercase;
-  margin-bottom: 36px;
-  animation: fadeUp 0.8s ease both;
+  background: var(--green-pale); color: var(--green);
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 13px; font-weight: 700; margin-bottom: 36px;
 }
-.hero-badge::before {
-  content: '';
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 8px var(--gold);
-  animation: pulse 2s ease infinite;
+.badge-dot {
+  width: 7px; height: 7px; background: var(--green);
+  border-radius: 50%; animation: blink 2s infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+@keyframes blink {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:.4; transform:scale(1.4); }
 }
-.hero-headline {
-  font-size: clamp(42px, 6vw, 80px);
-  font-weight: 800; line-height: 1.1; letter-spacing: -0.04em;
-  margin-bottom: 28px;
-  animation: fadeUp 0.8s 0.1s ease both;
+.hero-h1 {
+  font-size: clamp(52px, 6.5vw, 92px);
+  font-weight: 900; letter-spacing: -3px; line-height: 1.04;
+  color: var(--text); margin-bottom: 28px;
 }
-.hero-headline em {
-  font-style: normal;
-  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #134438 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.hero-h1 em { color: var(--green); font-style: normal; }
 .hero-sub {
-  font-size: clamp(16px, 2vw, 20px); font-weight: 400;
-  color: var(--gray-light); line-height: 1.7;
-  max-width: 600px; margin: 0 auto 52px;
-  animation: fadeUp 0.8s 0.2s ease both;
+  font-size: 18px; color: var(--text-2); line-height: 1.75;
+  max-width: 480px; margin-bottom: 48px;
 }
-.hero-actions {
-  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-  animation: fadeUp 0.8s 0.3s ease both;
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-g {
+  background: var(--green); color: #fff;
+  padding: 17px 36px; border-radius: 100px; font-size: 16px; font-weight: 700;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: 0 6px 24px rgba(30,92,74,.3);
+  transition: background .2s, transform .2s, box-shadow .2s;
 }
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  color: #fff; font-weight: 700; font-size: 16px;
-  padding: 16px 40px; border-radius: 100px; border: none;
-  cursor: pointer; text-decoration: none; letter-spacing: 0.02em;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: inline-flex; align-items: center; gap: 10px;
+.btn-g:hover { background: var(--green-l); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(30,92,74,.38); }
+.btn-w {
+  border: 1.5px solid rgba(0,0,0,.12); color: var(--text);
+  padding: 17px 36px; border-radius: 100px; font-size: 16px; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.7);
+  transition: border-color .2s, color .2s, transform .2s;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(30,92,74,0.4); }
-.btn-ghost {
-  background: transparent;
-  color: var(--gray-light); font-weight: 600; font-size: 16px;
-  padding: 16px 32px; border-radius: 100px;
-  border: 1px solid var(--border);
-  cursor: pointer; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 10px;
-  transition: border-color 0.2s, color 0.2s;
+.btn-w:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+.hero-right {
+  flex: 0 0 400px; position: relative; z-index: 1;
 }
-.btn-ghost:hover { border-color: var(--border-gold); color: var(--gold-light); }
-
-.hero-stats {
-  margin-top: 80px;
-  display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;
-  animation: fadeUp 0.8s 0.4s ease both;
-  padding-top: 60px;
-  border-top: 1px solid var(--border);
+.canvas-card {
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(30,92,74,.14);
+  border-radius: var(--r-lg); padding: 32px 32px 24px;
+  box-shadow: 0 28px 80px rgba(30,92,74,.13);
 }
-.hero-stat-item { text-align: center; }
-.hero-stat-num {
-  font-size: clamp(32px, 4vw, 48px); font-weight: 800;
-  letter-spacing: -0.04em; line-height: 1;
-  background: linear-gradient(135deg, var(--text), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+#helixCanvas { display: block; width: 100%; border-radius: 12px; }
+.canvas-foot {
+  margin-top: 18px; display: flex; justify-content: space-between; align-items: center;
 }
-.hero-stat-num span { font-size: 0.55em; font-weight: 600; margin-left: 2px; }
-.hero-stat-label { font-size: 13px; color: var(--gray); margin-top: 8px; letter-spacing: 0.02em; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ─────────────────── SECTION COMMON ─────────────────── */
-section { padding: 120px 40px; }
-.container { max-width: 1140px; margin: 0 auto; }
-.section-label {
-  display: inline-block;
-  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 20px;
-}
-.section-title {
-  font-size: clamp(28px, 4vw, 48px); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.2;
-  margin-bottom: 20px;
-}
-.section-title em {
-  font-style: normal; color: var(--gold-light);
-}
-.section-desc {
-  font-size: 17px; color: var(--gray-light); line-height: 1.8;
-  max-width: 560px;
-}
-
-/* ─────────────────── BRAND INTRO ─────────────────── */
-.brand-section { background: var(--bg-2); }
-.brand-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-}
-.brand-visual {
-  position: relative;
-}
-.brand-card-main {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 40px;
-  position: relative; overflow: hidden;
-}
-.brand-card-main::before {
-  content: '';
-  position: absolute; top: -1px; left: 20px; right: 20px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.brand-number {
-  font-size: 80px; font-weight: 900; letter-spacing: -0.06em; line-height: 1;
-  background: linear-gradient(135deg, rgba(30,92,74,0.15), rgba(30,92,74,0.04));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: absolute; top: 20px; right: 30px;
-}
-.brand-icon-row {
-  display: flex; gap: 12px; margin-bottom: 24px;
-}
-.brand-icon-box {
-  width: 48px; height: 48px; border-radius: 12px;
-  background: var(--gold-pale); border: 1px solid var(--border-gold);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--gold); font-size: 22px;
-}
-.brand-card-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
-.brand-card-desc { font-size: 15px; color: var(--gray-light); line-height: 1.7; }
-
-.brand-pills {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
-}
-.brand-pill {
-  padding: 6px 16px; border-radius: 100px;
-  border: 1px solid var(--border-gold);
-  font-size: 13px; font-weight: 600; color: var(--gold-light);
-  background: var(--gold-pale);
-}
-
-.brand-list { list-style: none; display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
-.brand-list-item {
-  display: flex; gap: 20px; align-items: flex-start;
-}
-.brand-list-icon {
-  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-  background: var(--gold-pale); border: 1px solid var(--border-gold);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--gold); font-size: 20px;
-}
-.brand-list-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-.brand-list-desc { font-size: 14px; color: var(--gray-light); line-height: 1.6; }
-
-/* ─────────────────── MARKET ─────────────────── */
-.market-section { background: var(--bg); }
-.market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
-.market-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 40px 32px;
-  position: relative; overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s;
-}
-.market-card:hover { border-color: var(--border-gold); transform: translateY(-4px); }
-.market-card::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0; transition: opacity 0.3s;
-}
-.market-card:hover::after { opacity: 1; }
-.market-num {
-  font-size: 48px; font-weight: 900; letter-spacing: -0.04em;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; line-height: 1; margin-bottom: 8px;
-}
-.market-num sub { font-size: 0.4em; font-weight: 700; vertical-align: baseline; margin-left: 2px; }
-.market-label { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
-.market-desc { font-size: 14px; color: var(--gray); line-height: 1.6; }
-
-.market-highlight {
-  margin-top: 60px;
-  background: var(--surface-2);
-  border: 1px solid var(--border-gold);
-  border-radius: var(--radius-lg);
-  padding: 48px;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
-  position: relative; overflow: hidden;
-}
-.market-highlight::before {
-  content: '';
-  position: absolute; top: -1px; left: 20%; right: 20%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.market-highlight-quote {
-  font-size: clamp(18px, 2.5vw, 26px); font-weight: 700; line-height: 1.5;
-  letter-spacing: -0.02em;
-}
-.market-highlight-quote strong { color: var(--gold-light); }
-.market-highlight-sub { font-size: 14px; color: var(--gray); margin-top: 12px; }
-.market-sources { display: flex; flex-direction: column; gap: 16px; }
-.market-source-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px 20px; border-radius: 12px;
-  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-}
-.market-source-icon { font-size: 22px; color: var(--gold); }
-.market-source-text { font-size: 14px; font-weight: 600; }
-.market-source-sub { font-size: 12px; color: var(--gray); margin-top: 2px; }
-
-/* ─────────────────── REVENUE ─────────────────── */
-.revenue-section { background: var(--bg-2); }
-.revenue-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 60px; }
-.revenue-note { text-align: right; }
-.revenue-note p { font-size: 13px; color: var(--gray); line-height: 1.8; }
-
-.revenue-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.rev-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 32px 24px;
-  text-align: center; transition: all 0.3s;
-}
-.rev-card:hover { border-color: var(--border-gold); background: var(--surface-2); }
-.rev-card.featured {
-  background: linear-gradient(135deg, rgba(30,92,74,0.12), rgba(30,92,74,0.04));
-  border-color: var(--border-gold);
-}
-.rev-icon { font-size: 32px; margin-bottom: 16px; }
-.rev-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.rev-amount {
-  font-size: 28px; font-weight: 900; letter-spacing: -0.04em;
-  color: var(--gold-light); margin-bottom: 8px;
-}
-.rev-amount span { font-size: 14px; font-weight: 600; }
-.rev-desc { font-size: 13px; color: var(--gray); line-height: 1.5; }
-
-.revenue-model {
-  margin-top: 40px;
-  background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  padding: 48px;
-}
-.revenue-model-title { font-size: 18px; font-weight: 700; margin-bottom: 32px; }
-.revenue-bars { display: flex; flex-direction: column; gap: 20px; }
-.rev-bar-item {}
-.rev-bar-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-.rev-bar-label { font-size: 14px; font-weight: 600; }
-.rev-bar-value { font-size: 14px; color: var(--gold-light); font-weight: 700; }
-.rev-bar-track {
-  height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;
-}
-.rev-bar-fill {
-  height: 100%; border-radius: 4px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-light));
-  transition: width 1s ease;
-}
-
-/* ─────────────────── SUPPORT ─────────────────── */
-.support-section { background: var(--bg-3); }
-.support-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
-.support-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 36px 28px;
-  position: relative; overflow: hidden;
-  transition: all 0.3s;
-}
-.support-card:hover {
-  border-color: var(--border-gold);
-  background: var(--surface-2);
-  transform: translateY(-4px);
-}
-.support-num {
-  font-size: 64px; font-weight: 900; letter-spacing: -0.06em;
-  color: rgba(255,255,255,0.04); line-height: 1;
-  position: absolute; top: 12px; right: 16px;
-}
-.support-icon {
-  width: 52px; height: 52px; border-radius: 14px;
-  background: var(--gold-pale); border: 1px solid var(--border-gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px; color: var(--gold); margin-bottom: 20px;
-}
-.support-title { font-size: 17px; font-weight: 700; margin-bottom: 12px; }
-.support-desc { font-size: 14px; color: var(--gray-light); line-height: 1.7; }
-.support-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-.support-tag {
-  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 100px;
-  background: rgba(255,255,255,0.06); color: var(--gray-light);
-  border: 1px solid var(--border);
-}
-
-/* ─────────────────── COST ─────────────────── */
-.cost-section { background: var(--bg); }
-.cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; }
-
-.cost-table-wrapper {
-  background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-.cost-table-head {
-  padding: 24px 32px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
-}
-.cost-table-head-title { font-size: 16px; font-weight: 700; }
-.cost-badge {
+.canvas-foot-txt { font-size: 13px; color: var(--text-3); }
+.canvas-live {
+  background: var(--green-pale); color: var(--green);
   padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 700;
 }
-.cost-badge.standard { background: rgba(255,255,255,0.08); color: var(--gray-light); }
-.cost-badge.premium { background: var(--gold-pale); color: var(--gold-light); border: 1px solid var(--border-gold); }
-.cost-rows { padding: 8px 0; }
-.cost-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px 32px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.2s;
+.hero-mini-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px;
 }
-.cost-row:last-child { border-bottom: none; }
-.cost-row:hover { background: var(--surface-2); }
-.cost-row-label { font-size: 14px; color: var(--gray-light); }
-.cost-row-value { font-size: 15px; font-weight: 700; }
-.cost-row-value.total { color: var(--gold-light); font-size: 18px; }
-.cost-row.total-row { background: var(--gold-pale); }
+.hms {
+  background: rgba(255,255,255,.75); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: var(--r);
+  padding: 16px 18px;
+}
+.hms-num { font-size: 26px; font-weight: 900; color: var(--green); letter-spacing: -1px; line-height: 1; }
+.hms-lbl { font-size: 12px; color: var(--text-3); margin-top: 4px; }
 
-.cost-note {
-  background: var(--surface-2);
-  border: 1px solid var(--border-gold); border-radius: var(--radius-lg);
-  padding: 36px;
+/* ─────── STATS BAR ─────── */
+.stats-bar { background: var(--green); padding: 56px 48px; }
+.stats-grid {
+  max-width: 1120px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: rgba(255,255,255,.18);
+  border-radius: 20px; overflow: hidden;
 }
-.cost-note-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--gold-light); }
-.cost-note-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-.cost-note-item {
-  display: flex; gap: 12px; align-items: flex-start;
-  font-size: 14px; color: var(--gray-light); line-height: 1.6;
+.stat {
+  background: var(--green); padding: 40px 32px; text-align: center;
 }
-.cost-note-item::before {
-  content: '✓';
-  color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 1px;
+.stat-n {
+  font-size: clamp(42px, 4.5vw, 64px); font-weight: 900; color: #fff;
+  letter-spacing: -2px; line-height: 1; margin-bottom: 10px;
 }
+.stat-n sup { font-size: .5em; vertical-align: super; letter-spacing: 0; }
+.stat-l { font-size: 14px; color: rgba(255,255,255,.6); font-weight: 500; }
 
-/* ─────────────────── PROCESS ─────────────────── */
-.process-section { background: var(--bg-2); }
-.process-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 70px; position: relative; }
-.process-steps::before {
-  content: '';
-  position: absolute; top: 28px; left: calc(10% + 28px); right: calc(10% + 28px); height: 1px;
-  background: linear-gradient(90deg, var(--border), var(--border-gold), var(--border));
+/* ─────── SECTION COMMON ─────── */
+.sec { padding: 100px 48px; }
+.inner { max-width: 1120px; margin: 0 auto; }
+.tag {
+  display: inline-block; background: var(--green-pale); color: var(--green);
+  padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 700;
+  letter-spacing: .5px; text-transform: uppercase; margin-bottom: 20px;
 }
-.process-step { text-align: center; padding: 0 12px; position: relative; }
-.process-step-num {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--bg-2); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 20px; font-size: 18px; font-weight: 800; color: var(--gray);
-  position: relative; z-index: 1; transition: all 0.3s;
+.sec-h {
+  font-size: clamp(36px, 4vw, 58px); font-weight: 900;
+  letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 18px; color: var(--text);
 }
-.process-step.active .process-step-num {
-  background: var(--gold-pale); border-color: var(--gold);
-  color: var(--gold-light);
-  box-shadow: 0 0 24px rgba(30,92,74,0.3);
-}
-.process-step-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.process-step-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
-.process-step-period {
-  display: inline-block; margin-top: 10px;
-  font-size: 12px; font-weight: 600; color: var(--gold);
-  background: var(--gold-pale); padding: 3px 10px; border-radius: 100px;
-}
+.sec-sub { font-size: 18px; color: var(--text-3); line-height: 1.75; max-width: 520px; margin-bottom: 56px; }
 
-/* ─────────────────── TESTIMONIALS ─────────────────── */
-.test-section { background: var(--bg-3); }
-.test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
-.test-card {
-  background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--radius-lg);
-  padding: 36px 28px;
-  transition: all 0.3s;
+/* ─────── BRAND ─────── */
+#brand { background: var(--white); }
+.brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.brand-vis {
+  background: var(--green-mid); border-radius: var(--r-lg);
+  padding: 48px 44px; position: relative; overflow: hidden;
 }
-.test-card:hover { border-color: var(--border-gold); transform: translateY(-4px); }
-.test-stars { color: var(--gold); font-size: 18px; margin-bottom: 20px; letter-spacing: 2px; }
-.test-quote { font-size: 15px; line-height: 1.8; color: var(--gray-light); margin-bottom: 28px; }
-.test-quote strong { color: var(--white); font-weight: 700; }
-.test-author { display: flex; align-items: center; gap: 14px; }
-.test-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--gold-pale); border: 1px solid var(--border-gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 800; color: var(--gold);
-}
-.test-name { font-size: 15px; font-weight: 700; }
-.test-branch { font-size: 13px; color: var(--gray); margin-top: 3px; }
-
-/* ─────────────────── FAQ ─────────────────── */
-.faq-section { background: var(--bg); }
-.faq-container { max-width: 720px; margin: 60px auto 0; }
-.faq-item {
-  border: 1px solid var(--border); border-radius: var(--radius);
-  margin-bottom: 12px; overflow: hidden;
-  transition: border-color 0.3s;
-}
-.faq-item.open { border-color: var(--border-gold); }
-.faq-q {
-  padding: 22px 28px;
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  cursor: pointer; font-size: 16px; font-weight: 600;
-  user-select: none;
-  transition: color 0.2s;
-}
-.faq-q:hover { color: var(--gold-light); }
-.faq-item.open .faq-q { color: var(--gold-light); }
-.faq-arrow {
-  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-  background: var(--surface-2); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; color: var(--gray);
-  transition: all 0.3s;
-}
-.faq-item.open .faq-arrow {
-  background: var(--gold-pale); border-color: var(--border-gold);
-  color: var(--gold); transform: rotate(45deg);
-}
-.faq-a {
-  max-height: 0; overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.4s ease;
-  font-size: 15px; color: var(--gray-light); line-height: 1.8;
-}
-.faq-a-inner { padding: 0 28px 24px; }
-.faq-item.open .faq-a { max-height: 300px; }
-
-/* ─────────────────── CTA ─────────────────── */
-.cta-section {
-  background: var(--bg-2);
-  position: relative; overflow: hidden;
-  padding: 140px 40px;
-}
-.cta-section::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 80% at 50% 50%, rgba(30,92,74,0.06) 0%, transparent 60%);
-}
-.cta-content { position: relative; z-index: 1; text-align: center; max-width: 680px; margin: 0 auto; }
-.cta-title {
-  font-size: clamp(32px, 5vw, 60px); font-weight: 800;
-  letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 24px;
-}
-.cta-title em { font-style: normal; color: var(--gold-light); }
-.cta-desc { font-size: 18px; color: var(--gray-light); line-height: 1.7; margin-bottom: 48px; }
-
-.cta-form {
-  background: var(--surface-2);
-  border: 1px solid var(--border-gold); border-radius: var(--radius-lg);
-  padding: 48px; text-align: left;
-}
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.form-group { display: flex; flex-direction: column; gap: 8px; }
-.form-group.full { grid-column: 1 / -1; }
-.form-label { font-size: 13px; font-weight: 600; color: var(--gray-light); }
-.form-input, .form-select, .form-textarea {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 18px;
-  font-size: 15px; color: var(--white);
-  font-family: inherit;
-  transition: border-color 0.2s, background 0.2s;
-  outline: none; width: 100%;
-}
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--gold); background: rgba(30,92,74,0.06);
-}
-.form-input::placeholder, .form-textarea::placeholder { color: var(--gray); }
-.form-select option { background: #0D0D18; color: var(--white); }
-.form-textarea { resize: vertical; min-height: 120px; }
-.form-submit {
-  margin-top: 28px; width: 100%;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  color: #fff; font-weight: 800; font-size: 17px;
-  padding: 18px; border-radius: 100px; border: none;
-  cursor: pointer; letter-spacing: 0.02em;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-}
-.form-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(30,92,74,0.4); }
-.form-note { text-align: center; font-size: 13px; color: var(--gray); margin-top: 16px; }
-
-/* ─────────────────── FOOTER ─────────────────── */
-footer {
-  background: #04040A;
-  border-top: 1px solid var(--border);
-  padding: 60px 40px 40px;
-}
-.footer-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 48px; }
-.footer-brand { max-width: 320px; }
-.footer-logo {
-  font-size: 20px; font-weight: 800; letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 14px;
-}
-.footer-tagline { font-size: 14px; color: var(--gray); line-height: 1.7; }
-.footer-links { display: flex; flex-direction: column; gap: 12px; }
-.footer-links-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-.footer-links a { font-size: 14px; color: var(--gray); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--gold-light); }
-.footer-bottom {
-  padding-top: 32px; border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 13px; color: var(--gray);
-  flex-wrap: wrap; gap: 12px;
-}
-
-/* ─────────────────── SCROLL ANIMATION ─────────────────── */
-.reveal {
-  opacity: 0; transform: translateY(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-
-/* ─────────────────── HOVER UNDERLINE ─────────────────── */
-.hover-ul {
-  position: relative; display: inline-block;
-}
-.hover-ul::after {
+.brand-vis::after {
   content: ''; position: absolute;
-  width: 100%; height: 1px;
-  bottom: -2px; left: 0;
-  background: var(--gold);
-  transform: scaleX(0); transform-origin: right;
-  transition: transform 0.45s cubic-bezier(0.86, 0, 0.07, 1);
+  top: -80px; right: -80px; width: 280px; height: 280px;
+  border-radius: 50%; background: rgba(30,92,74,.1);
 }
-.hover-ul:hover::after {
-  transform: scaleX(1); transform-origin: left;
+.brand-yr {
+  font-size: 110px; font-weight: 900; color: rgba(30,92,74,.1);
+  line-height: 1; margin-bottom: -12px; position: relative; z-index: 1;
 }
-
-/* ─────────────────── EDITORIAL STATEMENT ─────────────────── */
-.statement-section {
-  background: #F0EBE2; /* 크림 배경 — 다크 페이지 내 대조 구간 */
-  padding: 160px 40px;
-  position: relative; overflow: hidden;
+.brand-vis-title {
+  font-size: 26px; font-weight: 800; color: var(--green);
+  margin-bottom: 14px; position: relative; z-index: 1;
 }
-.statement-inner { max-width: 860px; margin: 0 auto; text-align: center; }
-.statement-eyebrow {
-  display: block; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(30,18,4,0.38); margin-bottom: 52px;
-}
-.statement-quote {
-  font-size: clamp(34px, 5.5vw, 70px);
-  font-weight: 800; letter-spacing: -0.04em; line-height: 1.2;
-  color: #1C1007; margin: 0 0 52px;
-}
-.statement-quote em {
-  font-style: normal; color: #4DB896;
-}
-.statement-divider {
-  width: 48px; height: 1px; background: rgba(30,18,4,0.2);
-  margin: 0 auto 48px;
-}
-.statement-cta {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: 12px; font-weight: 800; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #1C1007; text-decoration: none;
-  padding-bottom: 4px; border-bottom: 1px solid rgba(30,18,4,0.3);
-  transition: border-color 0.3s, gap 0.3s;
-}
-.statement-cta:hover { border-color: #1C1007; gap: 16px; }
-
-/* ─────────────────── MARQUEE ─────────────────── */
-.marquee-strip {
-  overflow: hidden; padding: 15px 0;
-  background: var(--gold-pale);
-  border-top: 1px solid var(--border-gold);
-  border-bottom: 1px solid var(--border-gold);
-}
-.marquee-track {
-  display: flex; width: max-content;
-  animation: marqueeLTR 36s linear infinite;
-}
-.marquee-track:hover { animation-play-state: paused; }
-.marquee-item {
-  display: inline-flex; align-items: center; gap: 24px;
-  font-size: 12px; font-weight: 800; letter-spacing: 0.12em;
-  color: var(--gold-light); text-transform: uppercase;
-  white-space: nowrap; padding: 0 24px; flex-shrink: 0;
-}
-.marquee-dot { color: var(--gold); opacity: 0.7; font-size: 10px; }
-@keyframes marqueeLTR {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-
-/* ─────────────────── FEATURE SCROLL ─────────────────── */
-.feature-scroll-section { background: var(--bg-2); padding: 120px 40px; }
-.feature-scroll-inner {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: start;
-}
-.feature-scroll-left { position: sticky; top: 60px; }
-.feature-scroll-head { margin-bottom: 44px; }
-.feature-scroll-head h2 {
-  font-size: 34px; font-weight: 800; letter-spacing: -0.04em;
-  line-height: 1.25; margin: 16px 0 14px;
-}
-.feature-scroll-head h2 em { font-style: normal; color: var(--gold-light); }
-.feature-scroll-head p { font-size: 15px; color: var(--gray-light); line-height: 1.75; }
-
-.feature-cat-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
-.feature-cat-item {
-  display: flex; align-items: center; gap: 18px;
-  padding: 14px 18px; border-radius: 12px; cursor: pointer;
-  transition: all 0.35s ease; border-left: 2px solid transparent;
-}
-.feature-cat-item:hover { background: var(--surface); }
-.feature-cat-item.active { background: var(--gold-pale); border-left-color: var(--gold); }
-.feature-cat-num {
-  font-size: 12px; font-weight: 800; color: var(--gray);
-  min-width: 22px; transition: color 0.35s;
-}
-.feature-cat-item.active .feature-cat-num { color: var(--gold); }
-.feature-cat-title {
-  font-size: 16px; font-weight: 700; color: var(--gray);
-  transition: color 0.35s;
-}
-.feature-cat-item.active .feature-cat-title,
-.feature-cat-item:hover .feature-cat-title { color: var(--text); }
-
-.feature-scroll-right { display: flex; flex-direction: column; }
-.feature-panel { min-height: 420px; display: flex; align-items: center; padding: 40px 0; }
-.feature-panel-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 44px; width: 100%;
-  transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
-  position: relative; overflow: hidden;
-}
-.feature-panel-card::before {
-  content: ''; position: absolute; top: -60px; right: -60px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(30,92,74,0.14) 0%, transparent 70%);
-  opacity: 0; transition: opacity 0.4s;
-}
-.feature-panel-card.panel-active {
-  border-color: var(--border-gold);
-  background: rgba(30,92,74,0.04);
-  box-shadow: 0 0 48px rgba(30,92,74,0.06);
-}
-.feature-panel-card.panel-active::before { opacity: 1; }
-.feature-panel-icon {
-  width: 60px; height: 60px; border-radius: 16px;
-  background: var(--gold-pale); border: 1px solid var(--border-gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 26px; color: var(--gold); margin-bottom: 24px;
-}
-.feature-panel-num {
-  font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
-  color: var(--gold); margin-bottom: 10px; text-transform: uppercase;
-}
-.feature-panel-title {
-  font-size: 24px; font-weight: 800; letter-spacing: -0.03em;
-  line-height: 1.3; margin-bottom: 16px;
-}
-.feature-panel-desc {
-  font-size: 14px; color: var(--gray-light); line-height: 1.85; margin-bottom: 24px;
-}
-.feature-panel-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-.feature-panel-tag {
-  font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 100px;
-  background: var(--gold-pale); color: var(--gold-light);
-  border: 1px solid var(--border-gold);
-}
-.feature-panel-stats {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
-  padding-top: 24px; border-top: 1px solid var(--border);
-}
-.feature-panel-stat-val {
-  font-size: 26px; font-weight: 900; letter-spacing: -0.04em; color: var(--gold-light);
-}
-.feature-panel-stat-label { font-size: 12px; color: var(--gray); margin-top: 4px; }
-
-/* ─────────────────── TABLET / MOBILE ─────────────────── */
-@media (max-width: 1024px) {
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 8px 0 40px rgba(0,0,0,0.08);
-  }
-  .sidebar.open { transform: translateX(0); }
-  .main-wrapper { margin-left: 0; }
-  .mobile-top-bar { display: flex; }
-  .sidebar-overlay { display: block; }
-}
-
-@media (max-width: 768px) {
-  section { padding: 80px 24px; }
-  .hero { padding-top: 56px; }
-  .hero-split { grid-template-columns: 1fr; padding: 0 24px; }
-  .hero-left { padding: 80px 0 40px; text-align: center; }
-  .hero-right { display: none; }
-  .hero-actions { justify-content: center; }
-  .hero-stats { justify-content: center; gap: 32px; }
-  .brand-grid, .revenue-header, .cost-grid,
-  .market-highlight { grid-template-columns: 1fr; }
-  .market-grid, .support-grid, .test-grid { grid-template-columns: 1fr; }
-  .revenue-cards { grid-template-columns: 1fr 1fr; }
-  .process-steps { grid-template-columns: 1fr; gap: 24px; }
-  .process-steps::before { display: none; }
-  .footer-top { flex-direction: column; }
-  .form-grid { grid-template-columns: 1fr; }
-  .market-note { text-align: left; }
-  .revenue-note { text-align: left; }
-  .statement-section { padding: 100px 24px; }
-  .feature-scroll-section { padding: 80px 24px; }
-  .feature-scroll-inner { grid-template-columns: 1fr; gap: 40px; }
-  .feature-scroll-left { position: static; }
-  .feature-cat-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .feature-cat-item { padding: 10px 14px; }
-  .feature-cat-title { font-size: 14px; }
-  .feature-panel { min-height: auto; padding: 20px 0; }
-  .feature-panel-card { padding: 28px; }
-  .feature-panel-stats { grid-template-columns: 1fr 1fr; }
-}
-
-/* ══════════════════════════════════════
-   LIGHT THEME — LAYOUT & OVERRIDES
-══════════════════════════════════════ */
-
-/* ── Hero 2-column layout ── */
-.hero { padding: 0; }
-
-.hero-split {
-  display: grid; grid-template-columns: 55% 45%;
-  min-height: 100vh; align-items: center;
-  padding: 0 60px;
+.brand-vis-body {
+  font-size: 15px; color: var(--text-2); line-height: 1.8;
   position: relative; z-index: 1;
-  width: 100%;
 }
-.hero-left {
-  padding: 100px 60px 80px 0;
-  text-align: left;
+.brand-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; position: relative; z-index: 1; }
+.brand-pill {
+  background: rgba(255,255,255,.8); border: 1px solid rgba(30,92,74,.2);
+  color: var(--green); padding: 5px 14px; border-radius: 100px;
+  font-size: 13px; font-weight: 600;
 }
-.hero-right {
+.brand-vals { display: flex; flex-direction: column; gap: 28px; }
+.bv { display: flex; gap: 20px; align-items: flex-start; }
+.bv-ic {
+  flex: 0 0 52px; height: 52px; border-radius: 16px;
+  background: var(--green-pale); display: flex; align-items: center;
+  justify-content: center; font-size: 24px;
+}
+.bv-title { font-size: 17px; font-weight: 800; margin-bottom: 5px; color: var(--text); }
+.bv-desc { font-size: 14px; color: var(--text-3); line-height: 1.65; }
+
+/* ─────── FEATURES ─────── */
+#features { background: var(--cream); }
+.feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.feat-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 36px 30px;
+  transition: transform .22s, box-shadow .22s;
+}
+.feat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.feat-card.hl { background: var(--green); border-color: transparent; }
+.feat-ic {
+  width: 54px; height: 54px; border-radius: 16px; background: var(--green-pale);
   display: flex; align-items: center; justify-content: center;
-  min-height: 100vh;
-  padding: 80px 0 60px;
+  font-size: 26px; margin-bottom: 24px;
 }
-.hero-actions { justify-content: flex-start; }
-.hero-stats {
-  margin-top: 60px;
-  justify-content: flex-start;
-  gap: 40px;
-  padding-top: 40px;
-  border-top: 1px solid var(--border);
-}
+.feat-card.hl .feat-ic { background: rgba(255,255,255,.15); }
+.feat-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+.feat-card.hl .feat-title { color: #fff; }
+.feat-desc { font-size: 14px; color: var(--text-3); line-height: 1.72; }
+.feat-card.hl .feat-desc { color: rgba(255,255,255,.72); }
 
-/* ── Helix canvas ── */
-.hero-helix-wrap {
-  position: relative;
-  width: 320px; height: 580px;
+/* ─────── MARKET ─────── */
+#market { background: var(--white); }
+.mkt-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+.mkt-big {
+  font-size: clamp(72px, 9vw, 128px); font-weight: 900; color: var(--green);
+  line-height: .9; letter-spacing: -4px; margin-bottom: 16px;
 }
-.hero-helix-canvas {
-  width: 100%; height: 100%; display: block;
+.mkt-big sub { font-size: .38em; letter-spacing: -1px; }
+.mkt-cap { font-size: 17px; color: var(--text-3); margin-bottom: 44px; }
+.mkt-bars { display: flex; flex-direction: column; gap: 22px; }
+.mkt-bar-lbl { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-2); }
+.mkt-bar-track { height: 8px; background: var(--green-pale); border-radius: 100px; overflow: hidden; }
+.mkt-bar-fill { height: 100%; background: var(--green); border-radius: 100px; }
+.mkt-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mkt-card { background: var(--cream); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 24px; }
+.mkt-card-n { font-size: 38px; font-weight: 900; color: var(--green); letter-spacing: -1px; line-height: 1; margin-bottom: 6px; }
+.mkt-card-l { font-size: 13px; color: var(--text-3); }
+
+/* ─────── REVENUE ─────── */
+#revenue { background: var(--cream); }
+.rev-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: start; }
+.rev-rows { display: flex; flex-direction: column; gap: 14px; }
+.rev-row {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 22px 26px; display: flex; justify-content: space-between; align-items: center;
+  transition: border-color .2s;
 }
-.hero-helix-label {
-  position: absolute; bottom: -28px; left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--gray);
-  white-space: nowrap; opacity: 0.5;
+.rev-row:hover { border-color: var(--green); }
+.rev-row-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.rev-row-sub { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.rev-pct { font-size: 30px; font-weight: 900; color: var(--green); letter-spacing: -1px; }
+.rev-panel { background: var(--green); border-radius: var(--r-lg); padding: 40px 36px; }
+.rev-panel-lbl { font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+.rev-panel-n { font-size: 54px; font-weight: 900; color: #fff; letter-spacing: -2px; line-height: 1; margin-bottom: 6px; }
+.rev-panel-sub { font-size: 13px; color: rgba(255,255,255,.55); padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,.15); }
+.rev-range { display: flex; flex-direction: column; gap: 14px; }
+.rev-range-row { display: flex; justify-content: space-between; align-items: center; }
+.rev-range-lbl { font-size: 13px; color: rgba(255,255,255,.55); }
+.rev-range-val { font-size: 15px; font-weight: 700; color: #fff; }
+
+/* ─────── SUPPORT ─────── */
+#support { background: var(--white); }
+.sup-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.sup-card {
+  background: var(--cream); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 30px 22px; text-align: center;
+  transition: transform .2s, box-shadow .2s;
 }
+.sup-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.sup-ic { font-size: 34px; margin-bottom: 14px; }
+.sup-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.sup-desc { font-size: 13px; color: var(--text-3); line-height: 1.65; }
 
-/* ── Hardcoded dark-transparent overrides ── */
-.market-source-item { background: rgba(0,0,0,0.03); }
-.rev-bar-track { background: rgba(0,0,0,0.08); }
-.support-num { color: rgba(0,0,0,0.055); }
-.cost-badge.standard { background: rgba(0,0,0,0.06); color: var(--gray); }
-.form-input, .form-select, .form-textarea {
-  background: rgba(0,0,0,0.04);
-  color: var(--text);
+/* ─────── COST ─────── */
+#cost { background: var(--cream); }
+.cost-wrap { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start; }
+.cost-intro .sec-h { margin-bottom: 20px; font-size: clamp(32px, 3.5vw, 48px); }
+.cost-intro p { color: var(--text-3); line-height: 1.8; margin-bottom: 28px; }
+.cost-hl {
+  background: var(--green-pale); border-left: 4px solid var(--green);
+  border-radius: var(--r); padding: 24px 20px;
 }
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--gold); background: rgba(30,92,74,0.05);
+.cost-hl-t { font-size: 11px; font-weight: 800; color: var(--green); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+.cost-hl-n { font-size: 38px; font-weight: 900; color: var(--text); letter-spacing: -1px; }
+.cost-hl-s { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+.cost-tbl { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.cost-thead {
+  display: grid; grid-template-columns: 1fr 130px 110px;
+  padding: 14px 28px; background: var(--green);
+  font-size: 12px; font-weight: 700; color: rgba(255,255,255,.7);
 }
-.form-select option { background: #F3F0EA; color: var(--text); }
+.cost-thead span:not(:first-child) { text-align: right; }
+.cost-tr {
+  display: grid; grid-template-columns: 1fr 130px 110px;
+  padding: 18px 28px; border-bottom: 1px solid var(--border);
+  align-items: center; transition: background .15s;
+}
+.cost-tr:last-of-type { border-bottom: none; }
+.cost-tr:hover { background: var(--cream); }
+.cost-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.cost-name-s { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.cost-amt { text-align: right; font-size: 15px; font-weight: 800; color: var(--text); }
+.cost-note { text-align: right; font-size: 12px; color: var(--text-3); }
+.cost-total {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 28px; background: var(--green-pale);
+}
+.cost-total-lbl { font-size: 15px; font-weight: 800; color: var(--green); }
+.cost-total-n { font-size: 24px; font-weight: 900; color: var(--green); letter-spacing: -.5px; }
 
-/* ── Statement section → dark contrast block ── */
-.statement-section { background: #100E0B; }
-.statement-eyebrow { color: rgba(240,237,232,0.38); }
-.statement-quote { color: #EDE9E2; }
-.statement-quote em { color: #4DB896; }
-.statement-divider { background: rgba(240,237,232,0.15); }
-.statement-cta { color: #EDE9E2; border-bottom-color: rgba(240,237,232,0.3); }
-.statement-cta:hover { border-color: #EDE9E2; gap: 16px; }
+/* ─────── PROCESS ─────── */
+#process { background: var(--white); }
+.proc-grid {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 0; position: relative;
+}
+.proc-grid::before {
+  content: ''; position: absolute;
+  top: 39px; left: calc(10% + 20px); right: calc(10% + 20px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--green) 0%, rgba(30,92,74,.2) 100%);
+}
+.proc-step { text-align: center; position: relative; z-index: 1; padding: 0 10px; }
+.proc-num {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--white); border: 3px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 22px; font-size: 22px; font-weight: 900; color: var(--green);
+}
+.proc-step.done .proc-num { background: var(--green); color: #fff; }
+.proc-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.proc-desc { font-size: 13px; color: var(--text-3); line-height: 1.6; }
 
-/* ── Test quote strong ── */
-.test-quote strong { color: var(--text); }
+/* ─────── TESTIMONIALS ─────── */
+#testimonials { background: var(--cream); }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.testi-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 36px 30px;
+}
+.testi-stars { color: var(--green); font-size: 17px; letter-spacing: 2px; margin-bottom: 20px; }
+.testi-q {
+  font-size: 15px; color: var(--text-2); line-height: 1.78; margin-bottom: 28px;
+}
+.testi-q::before { content: '\201C'; font-size: 44px; color: var(--green); line-height: 1; display: block; margin-bottom: 8px; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-av {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--green-pale);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.testi-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.testi-role { font-size: 12px; color: var(--text-3); margin-top: 2px; }
 
-/* ── Footer (stays dark) ── */
-.footer-links-title { color: rgba(240,237,232,0.85); }
-.footer-tagline { color: rgba(240,237,232,0.42); }
-.footer-links a { color: rgba(240,237,232,0.42); }
-.footer-links a:hover { color: var(--gold-light); }
-.footer-bottom { color: rgba(240,237,232,0.35); }
-.footer-bottom a { color: rgba(240,237,232,0.35); }
+/* ─────── FAQ ─────── */
+#faq { background: var(--white); }
+.faq-layout { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: start; }
+.faq-list { display: flex; flex-direction: column; gap: 10px; }
+.faq-item { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; transition: border-color .2s; }
+.faq-item.open { border-color: var(--green); }
+.faq-q {
+  padding: 20px 22px; display: flex; justify-content: space-between;
+  align-items: center; cursor: pointer; font-size: 15px; font-weight: 700;
+  color: var(--text); gap: 14px; user-select: none;
+}
+.faq-q:hover { background: var(--cream); }
+.faq-item.open .faq-q { background: var(--green-pale); color: var(--green); }
+.faq-ic {
+  flex: 0 0 24px; height: 24px; border-radius: 50%;
+  background: rgba(0,0,0,.06); display: flex; align-items: center;
+  justify-content: center; font-size: 17px; font-weight: 300;
+  color: var(--text-3); transition: background .2s, transform .3s;
+}
+.faq-item.open .faq-ic { background: var(--green); color: #fff; transform: rotate(45deg); }
+.faq-a { display: none; padding: 0 22px 20px; font-size: 14px; color: var(--text-3); line-height: 1.78; }
+.faq-item.open .faq-a { display: block; }
 
+/* ─────── CTA ─────── */
+#contact { background: var(--green); padding: 120px 48px; text-align: center; }
+.cta-inner { max-width: 680px; margin: 0 auto; }
+.cta-eyebrow {
+  font-size: 12px; font-weight: 800; color: rgba(255,255,255,.55);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px;
+}
+.cta-h {
+  font-size: clamp(40px, 5.5vw, 68px); font-weight: 900; color: #fff;
+  letter-spacing: -2px; line-height: 1.08; margin-bottom: 20px;
+}
+.cta-sub { font-size: 18px; color: rgba(255,255,255,.68); line-height: 1.7; margin-bottom: 52px; }
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+.cta-btn-w {
+  background: #fff; color: var(--green);
+  padding: 18px 42px; border-radius: 100px; font-size: 17px; font-weight: 900;
+  text-decoration: none; box-shadow: 0 6px 28px rgba(0,0,0,.18);
+  transition: transform .2s, box-shadow .2s;
+}
+.cta-btn-w:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+.cta-btn-gh {
+  background: transparent; color: rgba(255,255,255,.85);
+  padding: 18px 42px; border-radius: 100px; font-size: 17px; font-weight: 600;
+  text-decoration: none; border: 1.5px solid rgba(255,255,255,.3);
+  transition: border-color .2s, color .2s;
+}
+.cta-btn-gh:hover { border-color: rgba(255,255,255,.8); color: #fff; }
+.cta-contacts { display: flex; gap: 44px; justify-content: center; flex-wrap: wrap; }
+.cta-ci { text-align: center; }
+.cta-ci-lbl { font-size: 11px; font-weight: 800; color: rgba(255,255,255,.45); letter-spacing: .6px; text-transform: uppercase; margin-bottom: 6px; }
+.cta-ci-val { font-size: 18px; font-weight: 700; color: rgba(255,255,255,.9); text-decoration: none; display: block; }
+.cta-ci-val:hover { color: #fff; }
+
+/* ─────── FOOTER ─────── */
+footer { background: #0C1713; padding: 44px 48px; }
+.foot-inner {
+  max-width: 1120px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.foot-logo { font-size: 19px; font-weight: 900; color: rgba(255,255,255,.85); }
+.foot-copy { font-size: 13px; color: rgba(255,255,255,.28); }
+.foot-links { display: flex; gap: 20px; }
+.foot-links a { font-size: 13px; color: rgba(255,255,255,.35); text-decoration: none; }
+.foot-links a:hover { color: rgba(255,255,255,.75); }
+
+/* ─────── RESPONSIVE ─────── */
+@media (max-width: 1024px) {
+  .nav { display: none; }
+  .mob-bar { display: flex; }
+  .sec { padding: 72px 24px; }
+  #home { padding: 100px 24px 64px; flex-direction: column; min-height: auto; }
+  .hero-right { flex: none; width: 100%; }
+  .stats-bar { padding: 48px 24px; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .brand-grid { grid-template-columns: 1fr; gap: 40px; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .mkt-layout { grid-template-columns: 1fr; gap: 44px; }
+  .mkt-cards { grid-template-columns: 1fr 1fr; }
+  .rev-layout { grid-template-columns: 1fr; gap: 32px; }
+  .sup-grid { grid-template-columns: repeat(2,1fr); }
+  .cost-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .proc-grid { grid-template-columns: 1fr; gap: 28px; }
+  .proc-grid::before { display: none; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .faq-layout { grid-template-columns: 1fr; gap: 40px; }
+  #contact { padding: 80px 24px; }
+  footer { padding: 36px 24px; }
+  .foot-inner { flex-direction: column; text-align: center; }
+  .cost-note, .cost-thead span:last-child { display: none; }
+  .cost-thead { grid-template-columns: 1fr 130px; }
+  .cost-tr { grid-template-columns: 1fr 130px; }
+}
+@media (max-width: 640px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .sup-grid { grid-template-columns: 1fr; }
+  .cta-contacts { flex-direction: column; gap: 20px; }
+  .hero-mini-stats { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- ─── MOBILE TOP BAR ─── -->
-<div class="mobile-top-bar">
-  <a class="mobile-logo" href="#home">새없결</a>
-  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="메뉴 열기">
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a class="nav-logo" href="#home">새없결</a>
+  <div class="nav-links">
+    <a class="nav-a" href="#brand">브랜드</a>
+    <a class="nav-a" href="#features">선택 이유</a>
+    <a class="nav-a" href="#market">시장 분석</a>
+    <a class="nav-a" href="#revenue">수익 구조</a>
+    <a class="nav-a" href="#support">본사 지원</a>
+    <a class="nav-a" href="#cost">창업 비용</a>
+    <a class="nav-a" href="#process">프로세스</a>
+    <a class="nav-a" href="#faq">FAQ</a>
+  </div>
+  <a class="nav-cta" href="#contact">가맹 문의하기</a>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mob-bar">
+  <a class="mob-logo" href="#home">새없결</a>
+  <button class="mob-ham" id="mobHam" aria-label="메뉴 열기">
     <span></span><span></span><span></span>
   </button>
 </div>
+<div class="mob-drawer" id="mobDrawer">
+  <a href="#brand" onclick="closeMob()">브랜드 소개</a>
+  <a href="#features" onclick="closeMob()">선택받는 이유</a>
+  <a href="#market" onclick="closeMob()">시장 분석</a>
+  <a href="#revenue" onclick="closeMob()">수익 구조</a>
+  <a href="#support" onclick="closeMob()">본사 지원</a>
+  <a href="#cost" onclick="closeMob()">창업 비용</a>
+  <a href="#process" onclick="closeMob()">가맹 프로세스</a>
+  <a href="#testimonials" onclick="closeMob()">파트너 후기</a>
+  <a href="#faq" onclick="closeMob()">FAQ</a>
+  <a href="#contact" class="mob-cta-btn" onclick="closeMob()">가맹 문의하기 →</a>
+</div>
 
-<!-- ─── SIDEBAR OVERLAY ─── -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-<!-- ─── SIDEBAR ─── -->
-<aside class="sidebar" id="sidebar">
-  <a href="#home" class="sidebar-logo" onclick="closeSidebar()">
-    <span class="sidebar-logo-main">새없결</span>
-    <span class="sidebar-logo-sub">Franchise</span>
-  </a>
-
-  <div class="sidebar-status">
-    <span class="sidebar-status-dot"></span>
-    모집중 · EST. 2022
-  </div>
-
-  <div class="sidebar-nav-label">Navigation</div>
-  <nav class="sidebar-nav">
-    <a class="sidebar-nav-link active" href="#home"     data-section="home"        onclick="closeSidebar()">홈</a>
-    <a class="sidebar-nav-link"       href="#brand"    data-section="brand"       onclick="closeSidebar()">브랜드 소개</a>
-    <a class="sidebar-nav-link"       href="#features" data-section="features"    onclick="closeSidebar()">선택받는 이유</a>
-    <a class="sidebar-nav-link"       href="#market"   data-section="market"      onclick="closeSidebar()">시장 분석</a>
-    <a class="sidebar-nav-link"       href="#revenue"  data-section="revenue"     onclick="closeSidebar()">수익 구조</a>
-    <a class="sidebar-nav-link"       href="#support"  data-section="support"     onclick="closeSidebar()">본사 지원</a>
-    <a class="sidebar-nav-link"       href="#cost"     data-section="cost"        onclick="closeSidebar()">창업 비용</a>
-    <a class="sidebar-nav-link"       href="#process"  data-section="process"     onclick="closeSidebar()">가맹 프로세스</a>
-    <a class="sidebar-nav-link"       href="#testimonials" data-section="testimonials" onclick="closeSidebar()">파트너 후기</a>
-    <a class="sidebar-nav-link"       href="#faq"      data-section="faq"         onclick="closeSidebar()">FAQ</a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <a class="sidebar-cta" href="#contact" onclick="closeSidebar()">가맹 문의하기</a>
-    <div class="sidebar-contact">
-      <a href="tel:02-0000-0000">02-0000-0000</a><br>
-      franchise@seupkyul.com
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg-blob b1"></div>
+  <div class="hero-bg-blob b2"></div>
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      현재 가맹점 모집 중 · EST. 2022
+    </div>
+    <h1 class="hero-h1">
+      지금 가장<br>
+      <em>빠르게 성장</em>하는<br>
+      프랜차이즈
+    </h1>
+    <p class="hero-sub">
+      새없결은 검증된 수익 모델과 전폭적인 본사 지원으로
+      파트너의 성공을 함께 만들어갑니다.
+      새로운 시작, 지금 바로 경험하세요.
+    </p>
+    <div class="hero-btns">
+      <a class="btn-g" href="#contact">가맹 문의하기 →</a>
+      <a class="btn-w" href="#brand">브랜드 알아보기</a>
     </div>
   </div>
-</aside>
-
-<!-- ─── MAIN CONTENT ─── -->
-<div class="main-wrapper">
-
-<!-- ─── HERO ─── -->
-<section class="hero" id="home">
-  <div class="hero-bg">
-    <div class="hero-grid"></div>
-  </div>
-
-  <!-- 2칼럼 레이아웃 -->
-  <div class="hero-split">
-
-    <!-- 왼쪽: 텍스트 -->
-    <div class="hero-left">
-      <div class="hero-badge">
-        <span></span> 2025 신규 가맹 모집 중
-      </div>
-      <h1 class="hero-headline">
-        두피·모발 케어의<br>
-        <em>새로운 기준</em>을<br>
-        함께 만드세요
-      </h1>
-      <p class="hero-sub">
-        새없결은 검증된 시스템과 완전한 본사 지원으로<br>
-        예비 창업자의 성공을 함께 설계합니다.
-      </p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-primary">
-          <iconify-icon icon="solar:arrow-right-bold"></iconify-icon>
-          지금 가맹 문의하기
-        </a>
-        <a href="#brand" class="btn-ghost">
-          <iconify-icon icon="solar:play-circle-outline"></iconify-icon>
-          브랜드 알아보기
-        </a>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat-item">
-          <div class="hero-stat-num"><span class="cnum" data-to="3">0</span><span>년+</span></div>
-          <div class="hero-stat-label">브랜드 운영 연수</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num"><span class="cnum" data-to="98">0</span><span>%</span></div>
-          <div class="hero-stat-label">재방문율</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num"><span class="cnum" data-to="4.9" data-decimal="1">0.0</span><span>★</span></div>
-          <div class="hero-stat-label">고객 평균 평점</div>
-        </div>
-        <div class="hero-stat-item">
-          <div class="hero-stat-num"><span class="cnum" data-to="30">0</span><span>일</span></div>
-          <div class="hero-stat-label">오픈 지원 기간</div>
-        </div>
+  <div class="hero-right">
+    <div class="canvas-card">
+      <canvas id="helixCanvas" width="336" height="240"></canvas>
+      <div class="canvas-foot">
+        <span class="canvas-foot-txt">새없결 성장 DNA</span>
+        <span class="canvas-live">● LIVE</span>
       </div>
     </div>
-
-    <!-- 오른쪽: 헬릭스 애니메이션 -->
-    <div class="hero-right">
-      <div class="hero-helix-wrap">
-        <canvas class="hero-helix-canvas" id="helixCanvas"></canvas>
-        <div class="hero-helix-label">SCALP CARE SYSTEM // 두피 케어 시스템</div>
+    <div class="hero-mini-stats">
+      <div class="hms">
+        <div class="hms-num">300<sup style="font-size:.55em">+</sup></div>
+        <div class="hms-lbl">전국 가맹점</div>
+      </div>
+      <div class="hms">
+        <div class="hms-num">92%</div>
+        <div class="hms-lbl">BEP 달성률</div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ─── MARQUEE ─── -->
-<div class="marquee-strip">
-  <div class="marquee-track">
-    <span class="marquee-item">새없결 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">두피·모발 케어 전문 브랜드 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">프리미엄 가맹 모집 중 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">재방문율 98% <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">본사 완전 지원 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">탈모 케어 No.1 솔루션 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">객단가 5~8만원 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">스마트 운영 시스템 <span class="marquee-dot">✦</span></span>
-    <!-- repeat for seamless loop -->
-    <span class="marquee-item">새없결 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">두피·모발 케어 전문 브랜드 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">프리미엄 가맹 모집 중 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">재방문율 98% <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">본사 완전 지원 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">탈모 케어 No.1 솔루션 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">객단가 5~8만원 <span class="marquee-dot">✦</span></span>
-    <span class="marquee-item">스마트 운영 시스템 <span class="marquee-dot">✦</span></span>
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-n">300<sup>+</sup></div>
+      <div class="stat-l">전국 가맹점</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">92%</div>
+      <div class="stat-l">6개월 내 BEP 달성률</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">4.8<sup>★</sup></div>
+      <div class="stat-l">파트너 만족도</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">2022</div>
+      <div class="stat-l">브랜드 설립</div>
+    </div>
   </div>
 </div>
 
-<!-- ─── BRAND ─── -->
-<section class="brand-section" id="brand">
-  <div class="container">
+<!-- BRAND -->
+<section class="sec" id="brand">
+  <div class="inner">
     <div class="brand-grid">
-      <div class="brand-visual reveal">
-        <div class="brand-card-main">
-          <div class="brand-number">01</div>
-          <div class="brand-icon-row">
-            <div class="brand-icon-box"><iconify-icon icon="solar:leaf-bold"></iconify-icon></div>
-            <div class="brand-icon-box"><iconify-icon icon="solar:stars-bold"></iconify-icon></div>
-            <div class="brand-icon-box"><iconify-icon icon="solar:heart-pulse-bold"></iconify-icon></div>
-          </div>
-          <div class="brand-card-title">프리미엄 두피·모발 케어 전문 브랜드</div>
-          <div class="brand-card-desc">
-            새없결은 손상된 모발을 건강하게 되살리는<br>
-            과학적 두피 케어 시스템입니다.<br>
-            단순한 미용이 아닌, 전문 치료 케어로 포지셔닝합니다.
-          </div>
-          <div class="brand-pills">
-            <span class="brand-pill">두피 진단</span>
-            <span class="brand-pill">딥 클리닉</span>
-            <span class="brand-pill">모발 처방</span>
-            <span class="brand-pill">프리미엄 제품</span>
-          </div>
-        </div>
-      </div>
-      <div class="brand-info reveal reveal-delay-1">
-        <span class="section-label">BRAND STORY</span>
-        <h2 class="section-title">왜 <em>새없결</em>인가요?</h2>
-        <p class="section-desc">
-          기존 헤어샵의 한계를 넘어, 모발 손상의 근본 원인을 해결하는 과학 기반 프리미엄 케어 시스템으로 시장을 재정의합니다.
+      <div class="brand-vis">
+        <div class="brand-yr">22</div>
+        <div class="brand-vis-title">새없결의 시작</div>
+        <p class="brand-vis-body">
+          2022년, 더 건강하고 특별한 경험을 만들겠다는 철학 하나로 시작했습니다.
+          3년이 채 되지 않아 전국 300개 이상의 파트너와 함께 성장하고 있습니다.
+          우리의 성공 공식을 이제 당신과 함께 나누고 싶습니다.
         </p>
-        <ul class="brand-list">
-          <li class="brand-list-item">
-            <div class="brand-list-icon"><iconify-icon icon="solar:microscope-bold"></iconify-icon></div>
-            <div>
-              <div class="brand-list-title">과학적 두피 진단 시스템</div>
-              <div class="brand-list-desc">전문 두피 진단 장비로 고객의 모발 상태를 정밀 분석, 맞춤형 케어 솔루션을 제공합니다.</div>
-            </div>
-          </li>
-          <li class="brand-list-item">
-            <div class="brand-list-icon"><iconify-icon icon="solar:diploma-bold"></iconify-icon></div>
-            <div>
-              <div class="brand-list-title">검증된 단독 케어 프로그램</div>
-              <div class="brand-list-desc">딥 클리닉, 모발 처방전 등 새없결만의 독자적인 시술 프로그램으로 높은 재방문율을 달성합니다.</div>
-            </div>
-          </li>
-          <li class="brand-list-item">
-            <div class="brand-list-icon"><iconify-icon icon="solar:smartphone-bold"></iconify-icon></div>
-            <div>
-              <div class="brand-list-title">스마트 운영 시스템 내장</div>
-              <div class="brand-list-desc">예약·결제·재고·정산이 하나로 연결된 통합 플랫폼으로 점주의 운영 부담을 최소화합니다.</div>
-            </div>
-          </li>
-        </ul>
+        <div class="brand-pills">
+          <span class="brand-pill">검증된 시스템</span>
+          <span class="brand-pill">높은 재구매율</span>
+          <span class="brand-pill">독점 상권 보장</span>
+        </div>
+      </div>
+      <div class="brand-vals">
+        <div class="tag">Brand Identity</div>
+        <h2 class="sec-h">왜 새없결인가</h2>
+        <div class="bv">
+          <div class="bv-ic">🌿</div>
+          <div>
+            <div class="bv-title">건강한 철학</div>
+            <div class="bv-desc">화학첨가물 없이 자연 그대로의 원재료를 고집합니다. 소비자가 오래 신뢰하는 브랜드를 만듭니다.</div>
+          </div>
+        </div>
+        <div class="bv">
+          <div class="bv-ic">📈</div>
+          <div>
+            <div class="bv-title">검증된 수익 모델</div>
+            <div class="bv-desc">오픈 6개월 내 BEP 달성률 92%. 데이터로 증명된 수익 구조를 그대로 제공합니다.</div>
+          </div>
+        </div>
+        <div class="bv">
+          <div class="bv-ic">🤝</div>
+          <div>
+            <div class="bv-title">파트너 우선주의</div>
+            <div class="bv-desc">본사의 성공은 가맹점의 성공에서 시작됩니다. 파트너의 이익이 곧 우리의 이익입니다.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FEATURE SCROLL ─── -->
-<section class="feature-scroll-section" id="features">
-  <div class="container">
-    <div class="feature-scroll-inner">
-
-      <!-- 왼쪽 sticky 카테고리 리스트 -->
-      <div class="feature-scroll-left">
-        <div class="feature-scroll-head">
-          <span class="section-label">WHY 새없결</span>
-          <h2>선택받는<br><em>6가지 이유</em></h2>
-          <p>수많은 프랜차이즈 중 새없결이 특별한 이유,<br>직접 확인해보세요.</p>
-        </div>
-        <ul class="feature-cat-list">
-          <li class="feature-cat-item active" data-target="fp-0">
-            <span class="feature-cat-num">01</span>
-            <span class="feature-cat-title">탁월한 기술력</span>
-          </li>
-          <li class="feature-cat-item" data-target="fp-1">
-            <span class="feature-cat-num">02</span>
-            <span class="feature-cat-title">체계적 교육 시스템</span>
-          </li>
-          <li class="feature-cat-item" data-target="fp-2">
-            <span class="feature-cat-num">03</span>
-            <span class="feature-cat-title">완전한 마케팅 지원</span>
-          </li>
-          <li class="feature-cat-item" data-target="fp-3">
-            <span class="feature-cat-num">04</span>
-            <span class="feature-cat-title">스마트 운영 플랫폼</span>
-          </li>
-          <li class="feature-cat-item" data-target="fp-4">
-            <span class="feature-cat-num">05</span>
-            <span class="feature-cat-title">검증된 수익 모델</span>
-          </li>
-          <li class="feature-cat-item" data-target="fp-5">
-            <span class="feature-cat-num">06</span>
-            <span class="feature-cat-title">전담 본사 컨설팅</span>
-          </li>
-        </ul>
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="inner">
+    <div class="tag">Why Choose Us</div>
+    <h2 class="sec-h">새없결을 선택하는 이유</h2>
+    <p class="sec-sub">수많은 프랜차이즈 중 새없결이 특별한 6가지 이유.</p>
+    <div class="feat-grid">
+      <div class="feat-card hl">
+        <div class="feat-ic">⚡</div>
+        <div class="feat-title">빠른 BEP 달성</div>
+        <p class="feat-desc">오픈 후 평균 6개월 내 초기 투자금 회수. 업계 평균 대비 2배 빠른 손익분기점 달성.</p>
       </div>
-
-      <!-- 오른쪽 스크롤 패널들 -->
-      <div class="feature-scroll-right">
-
-        <div class="feature-panel" id="fp-0">
-          <div class="feature-panel-card panel-active">
-            <div class="feature-panel-icon"><iconify-icon icon="solar:diploma-bold"></iconify-icon></div>
-            <div class="feature-panel-num">01 / 탁월한 기술력</div>
-            <h3 class="feature-panel-title">업계 유일 특허 출원<br>두피 케어 프로그램</h3>
-            <p class="feature-panel-desc">새없결은 수년간의 R&D를 통해 개발된 독자적인 두피·모발 케어 프로토콜을 보유합니다. 딥 클리닉, 탈모 집중 케어, 모발 처방전 시스템 등 어디서도 경험할 수 없는 차별화된 기술력이 고객을 다시 찾게 만듭니다.</p>
-            <div class="feature-panel-tags">
-              <span class="feature-panel-tag">딥 클리닉</span>
-              <span class="feature-panel-tag">탈모 집중 케어</span>
-              <span class="feature-panel-tag">모발 처방전</span>
-              <span class="feature-panel-tag">두피 마이크로바이옴</span>
-            </div>
-            <div class="feature-panel-stats">
-              <div><div class="feature-panel-stat-val">98%</div><div class="feature-panel-stat-label">고객 재방문율</div></div>
-              <div><div class="feature-panel-stat-val">4.9★</div><div class="feature-panel-stat-label">평균 고객 평점</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-panel" id="fp-1">
-          <div class="feature-panel-card">
-            <div class="feature-panel-icon"><iconify-icon icon="solar:users-group-two-rounded-bold"></iconify-icon></div>
-            <div class="feature-panel-num">02 / 체계적 교육 시스템</div>
-            <h3 class="feature-panel-title">경험 없어도 괜찮아요<br>3단계 집중 트레이닝</h3>
-            <p class="feature-panel-desc">미용 경력이 없어도, 처음 창업해도 걱정 없습니다. 이론·실습·현장 3단계 교육 프로그램으로 누구나 새없결의 기술을 완벽하게 습득할 수 있습니다. 오픈 후에도 본사 트레이너가 직접 현장 지원에 나섭니다.</p>
-            <div class="feature-panel-tags">
-              <span class="feature-panel-tag">이론 교육 1주</span>
-              <span class="feature-panel-tag">실습 트레이닝 2주</span>
-              <span class="feature-panel-tag">현장 OJT</span>
-              <span class="feature-panel-tag">온라인 복습 콘텐츠</span>
-            </div>
-            <div class="feature-panel-stats">
-              <div><div class="feature-panel-stat-val">3주</div><div class="feature-panel-stat-label">집중 교육 기간</div></div>
-              <div><div class="feature-panel-stat-val">100%</div><div class="feature-panel-stat-label">교육 이수율</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-panel" id="fp-2">
-          <div class="feature-panel-card">
-            <div class="feature-panel-icon"><iconify-icon icon="solar:megaphone-bold"></iconify-icon></div>
-            <div class="feature-panel-num">03 / 완전한 마케팅 지원</div>
-            <h3 class="feature-panel-title">마케팅은 본사가<br>전부 책임집니다</h3>
-            <p class="feature-panel-desc">SNS 콘텐츠 제작부터 지역 타겟 광고 집행, 네이버 플레이스 최적화, 오픈 이벤트 기획까지 — 가맹점주는 케어에만 집중하세요. 본사 마케팅팀이 디지털 채널을 완벽하게 관리합니다.</p>
-            <div class="feature-panel-tags">
-              <span class="feature-panel-tag">SNS 콘텐츠 제작</span>
-              <span class="feature-panel-tag">지역 광고</span>
-              <span class="feature-panel-tag">네이버 플레이스</span>
-              <span class="feature-panel-tag">오픈 이벤트</span>
-            </div>
-            <div class="feature-panel-stats">
-              <div><div class="feature-panel-stat-val">월 30+</div><div class="feature-panel-stat-label">SNS 콘텐츠 제공</div></div>
-              <div><div class="feature-panel-stat-val">+45%</div><div class="feature-panel-stat-label">오픈 첫달 신규 고객</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-panel" id="fp-3">
-          <div class="feature-panel-card">
-            <div class="feature-panel-icon"><iconify-icon icon="solar:smartphone-bold"></iconify-icon></div>
-            <div class="feature-panel-num">04 / 스마트 운영 플랫폼</div>
-            <h3 class="feature-panel-title">예약·결제·재고·정산<br>하나의 앱으로</h3>
-            <p class="feature-panel-desc">새없결 전용 통합 관리 플랫폼은 예약 스케줄, 고객 관리, 재고 주문, 매출 정산을 하나로 연결합니다. 실시간 대시보드로 매장 현황을 언제 어디서나 확인하고, 본사와 데이터를 공유해 맞춤 컨설팅을 받으세요.</p>
-            <div class="feature-panel-tags">
-              <span class="feature-panel-tag">실시간 예약 관리</span>
-              <span class="feature-panel-tag">고객 CRM</span>
-              <span class="feature-panel-tag">재고 자동발주</span>
-              <span class="feature-panel-tag">매출 대시보드</span>
-            </div>
-            <div class="feature-panel-stats">
-              <div><div class="feature-panel-stat-val">-40%</div><div class="feature-panel-stat-label">운영 행정 시간 절감</div></div>
-              <div><div class="feature-panel-stat-val">99.9%</div><div class="feature-panel-stat-label">시스템 가동률</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-panel" id="fp-4">
-          <div class="feature-panel-card">
-            <div class="feature-panel-icon"><iconify-icon icon="solar:chart-2-bold"></iconify-icon></div>
-            <div class="feature-panel-num">05 / 검증된 수익 모델</div>
-            <h3 class="feature-panel-title">객단가 5~8만원<br>안정적 고수익 구조</h3>
-            <p class="feature-panel-desc">일반 헤어샵 대비 3~4배 높은 객단가와 정기 케어로 이어지는 재방문 구조가 안정적인 매출을 만듭니다. 평균 월매출 1,500만원 이상, 수익률 35~45%로 검증된 수익 모델을 직접 확인하세요.</p>
-            <div class="feature-panel-tags">
-              <span class="feature-panel-tag">객단가 5~8만원</span>
-              <span class="feature-panel-tag">정기 구독 모델</span>
-              <span class="feature-panel-tag">부가 상품 판매</span>
-            </div>
-            <div class="feature-panel-stats">
-              <div><div class="feature-panel-stat-val">1,500만+</div><div class="feature-panel-stat-label">평균 월 매출</div></div>
-              <div><div class="feature-panel-stat-val">35~45%</div><div class="feature-panel-stat-label">순이익률</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-panel" id="fp-5">
-          <div class="feature-panel-card">
-            <div class="feature-panel-icon"><iconify-icon icon="solar:shield-check-bold"></iconify-icon></div>
-            <div class="feature-panel-num">06 / 전담 본사 컨설팅</div>
-            <h3 class="feature-panel-title">오픈부터 성장까지<br>전담 MD 1:1 파트너</h3>
-            <p class="feature-panel-desc">계약 체결부터 개점, 그리고 운영 안정화까지 전담 MD가 처음부터 끝까지 함께합니다. 월별 매출 분석 리포트, 분기별 현장 방문, 24시간 긴급 대응 채널로 점주 혼자가 아닌 본사와 함께 성장합니다.</p>
-            <div class="feature-panel-tags">
-              <span class="feature-panel-tag">전담 MD 배정</span>
-              <span class="feature-panel-tag">월별 매출 리포트</span>
-              <span class="feature-panel-tag">분기 현장 방문</span>
-              <span class="feature-panel-tag">24h 긴급 채널</span>
-            </div>
-            <div class="feature-panel-stats">
-              <div><div class="feature-panel-stat-val">48h</div><div class="feature-panel-stat-label">긴급 이슈 대응 시간</div></div>
-              <div><div class="feature-panel-stat-val">100%</div><div class="feature-panel-stat-label">가맹점 전담 배정률</div></div>
-            </div>
-          </div>
-        </div>
-
+      <div class="feat-card">
+        <div class="feat-ic">🎯</div>
+        <div class="feat-title">독점 상권 보장</div>
+        <p class="feat-desc">가맹점 개설 시 일정 반경 내 독점 영업권 보장. 내부 경쟁 없는 안정적 영업 환경.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">🏭</div>
+        <div class="feat-title">중앙 공급 시스템</div>
+        <p class="feat-desc">본사 직영 생산 시설로 품질 균일화. 발주부터 배송까지 원스탑 처리.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">📱</div>
+        <div class="feat-title">스마트 운영 앱</div>
+        <p class="feat-desc">전용 가맹점 앱으로 재고·매출·발주를 실시간 관리. 경험 없이도 쉽게 운영.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">🎓</div>
+        <div class="feat-title">체계적 교육 과정</div>
+        <p class="feat-desc">오픈 전 2주 집중 교육 + 오픈 동행 지원. 외식업 경험이 없어도 걱정 없습니다.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic">💡</div>
+        <div class="feat-title">마케팅 풀 서포트</div>
+        <p class="feat-desc">SNS 콘텐츠, 배달 플랫폼 최적화, 지역 마케팅까지. 마케팅 걱정은 본사가 합니다.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── MARKET ─── -->
-<section class="market-section" id="market">
-  <div class="container">
-    <div style="text-align:center; max-width:600px; margin:0 auto;">
-      <span class="section-label reveal">MARKET OPPORTUNITY</span>
-      <h2 class="section-title reveal reveal-delay-1">지금이 <em>최적의 타이밍</em>입니다</h2>
-      <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;">
-        두피·모발 케어 시장은 뷰티 산업 내에서 가장 빠르게 성장하는 분야입니다. 선점이 곧 경쟁력입니다.
-      </p>
-    </div>
-    <div class="market-grid">
-      <div class="market-card reveal">
-        <div class="market-num">4.2<sub>조</sub></div>
-        <div class="market-label">국내 두피 케어 시장 규모</div>
-        <div class="market-desc">2024년 기준 국내 두피·모발 케어 시장 규모. 2028년까지 연평균 12% 성장 전망.</div>
-      </div>
-      <div class="market-card reveal reveal-delay-1">
-        <div class="market-num">68<sub>%</sub></div>
-        <div class="market-label">탈모 고민 경험 비율</div>
-        <div class="market-desc">성인 3명 중 2명이 탈모·두피 문제를 경험. 잠재 고객층이 광대합니다.</div>
-      </div>
-      <div class="market-card reveal reveal-delay-2">
-        <div class="market-num">2.4<sub>회</sub></div>
-        <div class="market-label">월 평균 재방문 횟수</div>
-        <div class="market-desc">케어 특성상 정기적 방문이 필요해 안정적인 매출 기반이 자연스럽게 형성됩니다.</div>
-      </div>
-    </div>
-    <div class="market-highlight reveal">
+<!-- MARKET -->
+<section class="sec" id="market">
+  <div class="inner">
+    <div class="tag">Market Analysis</div>
+    <div class="mkt-layout">
       <div>
-        <div class="market-highlight-quote">
-          "2025년 이후, <strong>두피 케어는 선택이 아닌 필수</strong>가 되고 있습니다. 케어 전문숍 수요가 폭발적으로 증가 중입니다."
+        <div class="mkt-big">14<sub>조원</sub></div>
+        <p class="mkt-cap">국내 건강·뷰티 케어 시장 규모 (2024)</p>
+        <div class="mkt-bars">
+          <div>
+            <div class="mkt-bar-lbl"><span>시장 연평균 성장률</span><span>+18%</span></div>
+            <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:82%"></div></div>
+          </div>
+          <div>
+            <div class="mkt-bar-lbl"><span>프랜차이즈 선호도</span><span>78%</span></div>
+            <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:78%"></div></div>
+          </div>
+          <div>
+            <div class="mkt-bar-lbl"><span>고객 재구매율</span><span>91%</span></div>
+            <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:91%"></div></div>
+          </div>
         </div>
-        <div class="market-highlight-sub">한국 뷰티산업 트렌드 리포트 2024</div>
       </div>
-      <div class="market-sources">
-        <div class="market-source-item">
-          <iconify-icon class="market-source-icon" icon="solar:chart-2-bold"></iconify-icon>
-          <div>
-            <div class="market-source-text">헤어 케어 전문숍 매출 YoY +34%</div>
-            <div class="market-source-sub">일반 헤어샵 대비 3배 높은 성장률</div>
-          </div>
+      <div class="mkt-cards">
+        <div class="mkt-card">
+          <div class="mkt-card-n">2.3배</div>
+          <div class="mkt-card-l">5년 내 시장 성장 예측</div>
         </div>
-        <div class="market-source-item">
-          <iconify-icon class="market-source-icon" icon="solar:users-group-two-rounded-bold"></iconify-icon>
-          <div>
-            <div class="market-source-text">20~40대 주요 고객층 수요 급증</div>
-            <div class="market-source-sub">직장인 탈모 케어 관심 3년 연속 증가</div>
-          </div>
+        <div class="mkt-card">
+          <div class="mkt-card-n">MZ세대</div>
+          <div class="mkt-card-l">핵심 소비층 타깃</div>
         </div>
-        <div class="market-source-item">
-          <iconify-icon class="market-source-icon" icon="solar:map-point-bold"></iconify-icon>
+        <div class="mkt-card">
+          <div class="mkt-card-n">1위</div>
+          <div class="mkt-card-l">카테고리 브랜드 인지도</div>
+        </div>
+        <div class="mkt-card">
+          <div class="mkt-card-n">23개</div>
+          <div class="mkt-card-l">수상 및 인증 획득</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE -->
+<section class="sec" id="revenue">
+  <div class="inner">
+    <div class="tag">Revenue Model</div>
+    <h2 class="sec-h">수익 구조</h2>
+    <p class="sec-sub">다양한 매출 채널로 안정적인 수익을 창출합니다.</p>
+    <div class="rev-layout">
+      <div class="rev-rows">
+        <div class="rev-row">
           <div>
-            <div class="market-source-text">전국 미개척 상권 다수 존재</div>
-            <div class="market-source-sub">브랜드 인지도 선점 효과 극대화 시기</div>
+            <div class="rev-row-name">홀 매장 판매</div>
+            <div class="rev-row-sub">기본 매출 채널</div>
+          </div>
+          <div class="rev-pct">45%</div>
+        </div>
+        <div class="rev-row">
+          <div>
+            <div class="rev-row-name">배달 주문</div>
+            <div class="rev-row-sub">배달앱 최적화 지원</div>
+          </div>
+          <div class="rev-pct">35%</div>
+        </div>
+        <div class="rev-row">
+          <div>
+            <div class="rev-row-name">포장 판매</div>
+            <div class="rev-row-sub">테이크아웃 강세</div>
+          </div>
+          <div class="rev-pct">15%</div>
+        </div>
+        <div class="rev-row">
+          <div>
+            <div class="rev-row-name">B2B / 케이터링</div>
+            <div class="rev-row-sub">기업 단체 수주</div>
+          </div>
+          <div class="rev-pct">5%</div>
+        </div>
+      </div>
+      <div class="rev-panel">
+        <div class="rev-panel-lbl">월 평균 매출</div>
+        <div class="rev-panel-n">3,800만원</div>
+        <div class="rev-panel-sub">전국 가맹점 평균 기준</div>
+        <div class="rev-range">
+          <div class="rev-range-row">
+            <span class="rev-range-lbl">하위 25%</span>
+            <span class="rev-range-val">2,200만원</span>
+          </div>
+          <div class="rev-range-row">
+            <span class="rev-range-lbl">중간값</span>
+            <span class="rev-range-val">3,800만원</span>
+          </div>
+          <div class="rev-range-row">
+            <span class="rev-range-lbl">상위 25%</span>
+            <span class="rev-range-val">5,600만원</span>
+          </div>
+          <div class="rev-range-row">
+            <span class="rev-range-lbl">평균 순이익률</span>
+            <span class="rev-range-val">22 ~ 28%</span>
           </div>
         </div>
       </div>
@@ -1447,822 +826,349 @@ footer {
   </div>
 </section>
 
-<!-- ─── REVENUE ─── -->
-<section class="revenue-section" id="revenue">
-  <div class="container">
-    <div class="revenue-header">
+<!-- SUPPORT -->
+<section class="sec" id="support">
+  <div class="inner">
+    <div class="tag">HQ Support</div>
+    <h2 class="sec-h">본사의 전폭적 지원</h2>
+    <p class="sec-sub">새없결은 파트너의 성공을 위해 아끼지 않습니다.</p>
+    <div class="sup-grid">
+      <div class="sup-card">
+        <div class="sup-ic">🏗</div>
+        <div class="sup-title">인테리어 지원</div>
+        <p class="sup-desc">본사 협력사를 통한 합리적인 비용의 표준 인테리어 시공 지원</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">📦</div>
+        <div class="sup-title">원자재 공급</div>
+        <p class="sup-desc">본사 직소싱 원재료 안정 공급. 품질과 가격 모두 보장된 공급망</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">📊</div>
+        <div class="sup-title">데이터 분석</div>
+        <p class="sup-desc">매출 데이터 분석 및 개선 방향 제시. 주간 리포트로 경영 인사이트 제공</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">🎨</div>
+        <div class="sup-title">마케팅 지원</div>
+        <p class="sup-desc">SNS 콘텐츠, 인쇄물, 이벤트 기획 등 마케팅 전 분야 본사 지원</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">📞</div>
+        <div class="sup-title">24시간 상담</div>
+        <p class="sup-desc">영업 중 발생하는 모든 이슈 즉각 대응. 전담 매니저 1:1 배정</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">🔄</div>
+        <div class="sup-title">메뉴 R&D</div>
+        <p class="sup-desc">분기별 신메뉴 개발·출시. 트렌드를 앞서가는 지속적인 메뉴 혁신</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">🏆</div>
+        <div class="sup-title">우수 가맹점 인센티브</div>
+        <p class="sup-desc">성과 우수 가맹점 추가 마케팅 지원 및 인센티브 제공 프로그램</p>
+      </div>
+      <div class="sup-card">
+        <div class="sup-ic">🌐</div>
+        <div class="sup-title">온라인 판매 채널</div>
+        <p class="sup-desc">배달 플랫폼 입점 지원, 온라인 주문 시스템, 통합 포스 무상 제공</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COST -->
+<section class="sec" id="cost">
+  <div class="inner">
+    <div class="cost-wrap">
+      <div class="cost-intro">
+        <div class="tag">Investment</div>
+        <h2 class="sec-h">창업 비용</h2>
+        <p>합리적인 초기 투자로 새없결의 검증된 비즈니스 모델을 운영하세요. 모든 비용은 투명하게 공개됩니다.</p>
+        <div class="cost-hl">
+          <div class="cost-hl-t">총 예상 투자금</div>
+          <div class="cost-hl-n">8,500만원~</div>
+          <div class="cost-hl-s">10평 기준 · 임차 보증금 별도</div>
+        </div>
+      </div>
+      <div class="cost-tbl">
+        <div class="cost-thead">
+          <span>항목</span>
+          <span style="text-align:right">금액</span>
+          <span style="text-align:right" class="cost-note">비고</span>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">가맹비</div><div class="cost-name-s">브랜드 사용권</div></div>
+          <div class="cost-amt">500만원</div>
+          <div class="cost-note">일회성</div>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">교육비</div><div class="cost-name-s">2주 과정 포함</div></div>
+          <div class="cost-amt">200만원</div>
+          <div class="cost-note">일회성</div>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">인테리어 공사비</div><div class="cost-name-s">표준형 기준 10평</div></div>
+          <div class="cost-amt">3,500만원~</div>
+          <div class="cost-note">면적별 상이</div>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">주방기기 및 집기</div><div class="cost-name-s">본사 협력사 구매</div></div>
+          <div class="cost-amt">2,000만원~</div>
+          <div class="cost-note">임대 가능</div>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">간판 및 사인물</div><div class="cost-name-s">외부·내부 포함</div></div>
+          <div class="cost-amt">500만원~</div>
+          <div class="cost-note">규모별 상이</div>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">초도 물품비</div><div class="cost-name-s">1개월 운영 재고</div></div>
+          <div class="cost-amt">800만원~</div>
+          <div class="cost-note">실사용 후 정산</div>
+        </div>
+        <div class="cost-tr">
+          <div><div class="cost-name">기타 / 예비비</div><div class="cost-name-s">운전 자금 포함</div></div>
+          <div class="cost-amt">1,000만원</div>
+          <div class="cost-note">권장 보유</div>
+        </div>
+        <div class="cost-total">
+          <div class="cost-total-lbl">합계 (임차 보증금 제외)</div>
+          <div class="cost-total-n">8,500만원~</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="sec" id="process">
+  <div class="inner">
+    <div class="tag">How to Start</div>
+    <h2 class="sec-h">가맹 프로세스</h2>
+    <p class="sec-sub">단 5단계로 새없결 파트너가 되어보세요.</p>
+    <div class="proc-grid">
+      <div class="proc-step done">
+        <div class="proc-num">1</div>
+        <div class="proc-title">온라인 상담 신청</div>
+        <p class="proc-desc">홈페이지 또는 전화로 간단한 상담 신청서 작성</p>
+      </div>
+      <div class="proc-step done">
+        <div class="proc-num">2</div>
+        <div class="proc-title">가맹 상담 진행</div>
+        <p class="proc-desc">전담 매니저와 1:1 맞춤 상담 및 사업계획서 공유</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">3</div>
+        <div class="proc-title">상권 분석 & 계약</div>
+        <p class="proc-desc">입지 분석 후 가맹 계약 체결 및 독점 상권 부여</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">4</div>
+        <div class="proc-title">교육 & 인테리어</div>
+        <p class="proc-desc">2주 운영 교육 이수 + 동시 인테리어 공사 진행</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num">5</div>
+        <div class="proc-title">오픈 & 사후 지원</div>
+        <p class="proc-desc">본사 동행 오픈 + 초기 30일 밀착 지원 프로그램</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec" id="testimonials">
+  <div class="inner">
+    <div class="tag">Partner Reviews</div>
+    <h2 class="sec-h">파트너들의 이야기</h2>
+    <p class="sec-sub">새없결과 함께하는 파트너들의 진솔한 후기를 들어보세요.</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">외식업 경험이 전혀 없어서 걱정이 많았는데, 본사 교육이 너무 체계적이어서 오픈하고 바로 자신감이 생겼어요. 오픈 4개월 만에 BEP를 달성했습니다.</p>
+        <div class="testi-author">
+          <div class="testi-av">👨</div>
+          <div>
+            <div class="testi-name">김○○ 대표</div>
+            <div class="testi-role">강남구 역삼점 · 2023년 오픈</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">직영점처럼 본사가 적극적으로 도와줘서 놀랐어요. SNS 마케팅, 배달 최적화까지 모두 지원해줘서 매달 매출이 꾸준히 성장하고 있습니다.</p>
+        <div class="testi-author">
+          <div class="testi-av">👩</div>
+          <div>
+            <div class="testi-name">이○○ 대표</div>
+            <div class="testi-role">마포구 합정점 · 2023년 오픈</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">2호점을 준비 중입니다. 첫 가맹점이 워낙 잘 되어서 자연스럽게 확장하게 됐어요. 새없결 브랜드 파워가 정말 크다는 걸 직접 체감하고 있습니다.</p>
+        <div class="testi-author">
+          <div class="testi-av">👨‍💼</div>
+          <div>
+            <div class="testi-name">박○○ 대표</div>
+            <div class="testi-role">수원 인계점 · 2022년 오픈</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="inner">
+    <div class="faq-layout">
       <div>
-        <span class="section-label reveal">REVENUE MODEL</span>
-        <h2 class="section-title reveal reveal-delay-1">안정적인 <em>수익 구조</em></h2>
-        <p class="section-desc reveal reveal-delay-2">단일 시술이 아닌 케어·제품·구독이 결합된 다중 수익원으로 매출 변동성을 최소화합니다.</p>
+        <div class="tag">FAQ</div>
+        <h2 class="sec-h">자주 묻는<br>질문들</h2>
+        <p style="color:var(--text-3);line-height:1.78;margin-top:20px;">더 궁금한 점은 언제든지 상담 신청을 통해 전담 매니저에게 문의하세요.</p>
+        <a class="btn-g" href="#contact" style="margin-top:32px;display:inline-flex">상담 신청하기 →</a>
       </div>
-      <div class="revenue-note reveal">
-        <p>* 아래 수치는 평균 규모(25평) 매장 기준 예상치이며,<br>
-        상권 및 운영 역량에 따라 차이가 있을 수 있습니다.<br>
-        자세한 내용은 가맹 상담 시 안내드립니다.</p>
-      </div>
-    </div>
-    <div class="revenue-cards">
-      <div class="rev-card reveal">
-        <div class="rev-icon">✂️</div>
-        <div class="rev-title">시술 매출</div>
-        <div class="rev-amount">450<span>만원+</span></div>
-        <div class="rev-desc">두피 클리닉, 딥 트리트먼트 등 핵심 시술 수익</div>
-      </div>
-      <div class="rev-card reveal reveal-delay-1 featured">
-        <div class="rev-icon">🧴</div>
-        <div class="rev-title">제품 판매</div>
-        <div class="rev-amount">180<span>만원+</span></div>
-        <div class="rev-desc">처방 기반 홈케어 제품 리테일 판매 수익</div>
-      </div>
-      <div class="rev-card reveal reveal-delay-2">
-        <div class="rev-icon">🔄</div>
-        <div class="rev-title">정기 케어권</div>
-        <div class="rev-amount">220<span>만원+</span></div>
-        <div class="rev-desc">월정액 멤버십 및 정기 케어 구독 수익</div>
-      </div>
-      <div class="rev-card reveal reveal-delay-3">
-        <div class="rev-icon">📦</div>
-        <div class="rev-title">소모품 마진</div>
-        <div class="rev-amount">60<span>만원+</span></div>
-        <div class="rev-desc">본사 공급 소모품 및 시술 재료 마진 수익</div>
-      </div>
-    </div>
-    <div class="revenue-model reveal">
-      <div class="revenue-model-title">월 예상 매출 구성 비율</div>
-      <div class="revenue-bars">
-        <div class="rev-bar-item">
-          <div class="rev-bar-top">
-            <span class="rev-bar-label">시술 매출</span>
-            <span class="rev-bar-value">49%</span>
-          </div>
-          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:49%"></div></div>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <div class="faq-q">외식업 경험이 없어도 창업이 가능한가요? <span class="faq-ic">+</span></div>
+          <div class="faq-a">네, 가능합니다. 새없결은 외식업 경험 없이도 누구나 운영할 수 있도록 체계적인 2주 교육 프로그램을 운영합니다. 오픈 후에도 30일 밀착 지원이 제공됩니다.</div>
         </div>
-        <div class="rev-bar-item">
-          <div class="rev-bar-top">
-            <span class="rev-bar-label">정기 케어권</span>
-            <span class="rev-bar-value">24%</span>
-          </div>
-          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:24%"></div></div>
+        <div class="faq-item">
+          <div class="faq-q">상권 분석은 어떻게 진행되나요? <span class="faq-ic">+</span></div>
+          <div class="faq-a">본사 전문 상권분석팀이 유동인구, 경쟁점 현황, 소비자 데이터를 분석하여 최적의 입지를 추천해 드립니다. 기존 희망 입지가 있으시면 객관적인 분석 리포트를 제공합니다.</div>
         </div>
-        <div class="rev-bar-item">
-          <div class="rev-bar-top">
-            <span class="rev-bar-label">제품 판매</span>
-            <span class="rev-bar-value">20%</span>
-          </div>
-          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:20%"></div></div>
+        <div class="faq-item">
+          <div class="faq-q">로열티는 어떻게 산정되나요? <span class="faq-ic">+</span></div>
+          <div class="faq-a">월 매출의 3%가 로열티로 부과됩니다. 브랜드 마케팅, R&D, 전국 광고비 등에 사용됩니다. 초기 6개월은 로열티 50% 감면 혜택이 제공됩니다.</div>
         </div>
-        <div class="rev-bar-item">
-          <div class="rev-bar-top">
-            <span class="rev-bar-label">소모품 마진</span>
-            <span class="rev-bar-value">7%</span>
-          </div>
-          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:7%"></div></div>
+        <div class="faq-item">
+          <div class="faq-q">계약 기간과 갱신 조건은? <span class="faq-ic">+</span></div>
+          <div class="faq-a">기본 계약 기간은 3년이며, 만료 후 협의를 통해 갱신이 가능합니다. 갱신 시 가맹비가 면제되며 우수 가맹점에는 추가 인센티브가 제공됩니다.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">최소 창업 면적은 얼마나 되나요? <span class="faq-ic">+</span></div>
+          <div class="faq-a">최소 7평부터 창업이 가능합니다. 배달 전문 매장은 더 작은 공간도 가능합니다. 홀 매장은 10평 이상을 권장하며 면적에 따라 비용이 달라집니다.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">원재료는 반드시 본사에서 구매해야 하나요? <span class="faq-ic">+</span></div>
+          <div class="faq-a">핵심 소스류와 특화 재료는 브랜드 품질 유지를 위해 본사 공급을 원칙으로 합니다. 채소, 육류 등 일반 식재료는 가맹점에서 지역 업체를 활용하실 수 있습니다.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── SUPPORT ─── -->
-<section class="support-section" id="support">
-  <div class="container">
-    <div style="text-align:center; max-width:600px; margin:0 auto;">
-      <span class="section-label reveal">HQ SUPPORT SYSTEM</span>
-      <h2 class="section-title reveal reveal-delay-1">혼자 하지 않아도 됩니다<br><em>처음부터 끝까지</em> 함께합니다</h2>
+<!-- CTA -->
+<section id="contact">
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Join Us Now</div>
+    <h2 class="cta-h">새없결과 함께<br>성공을 시작하세요</h2>
+    <p class="cta-sub">지금 상담을 신청하시면 전담 매니저가 48시간 내에 연락드립니다.<br>무료 상권 분석 리포트도 함께 제공됩니다.</p>
+    <div class="cta-btns">
+      <a class="cta-btn-w" href="tel:02-0000-0000">전화 상담 신청</a>
+      <a class="cta-btn-gh" href="mailto:franchise@seupkyul.com">이메일 문의</a>
     </div>
-    <div class="support-grid">
-      <div class="support-card reveal">
-        <div class="support-num">01</div>
-        <div class="support-icon"><iconify-icon icon="solar:map-point-search-bold"></iconify-icon></div>
-        <div class="support-title">입지 선정 & 상권 분석</div>
-        <div class="support-desc">전문 MD가 직접 현장 조사 후 유동 인구, 경쟁 매장, 임대 조건을 분석하여 최적의 입지를 추천합니다.</div>
-        <div class="support-tags">
-          <span class="support-tag">GIS 상권 분석</span>
-          <span class="support-tag">MD 현장 방문</span>
-          <span class="support-tag">임대 협상 지원</span>
-        </div>
+    <div class="cta-contacts">
+      <div class="cta-ci">
+        <div class="cta-ci-lbl">전화</div>
+        <a class="cta-ci-val" href="tel:02-0000-0000">02-0000-0000</a>
       </div>
-      <div class="support-card reveal reveal-delay-1">
-        <div class="support-num">02</div>
-        <div class="support-icon"><iconify-icon icon="solar:ruler-angular-bold"></iconify-icon></div>
-        <div class="support-title">인테리어 & 시공 지원</div>
-        <div class="support-desc">브랜드 아이덴티티를 유지하는 표준화 인테리어 가이드 제공, 제휴 시공사 연결로 비용과 품질을 동시에 잡습니다.</div>
-        <div class="support-tags">
-          <span class="support-tag">공간 설계 가이드</span>
-          <span class="support-tag">시공사 연결</span>
-          <span class="support-tag">비용 최적화</span>
-        </div>
+      <div class="cta-ci">
+        <div class="cta-ci-lbl">이메일</div>
+        <a class="cta-ci-val" href="mailto:franchise@seupkyul.com">franchise@seupkyul.com</a>
       </div>
-      <div class="support-card reveal reveal-delay-2">
-        <div class="support-num">03</div>
-        <div class="support-icon"><iconify-icon icon="solar:diploma-bold"></iconify-icon></div>
-        <div class="support-title">오픈 전 집중 교육</div>
-        <div class="support-desc">본사 교육센터에서 2주 집중 교육. 시술 기술부터 고객 응대, 매장 운영까지 모든 것을 완벽하게 익힐 수 있습니다.</div>
-        <div class="support-tags">
-          <span class="support-tag">시술 실습</span>
-          <span class="support-tag">운영 교육</span>
-          <span class="support-tag">CS 교육</span>
-        </div>
-      </div>
-      <div class="support-card reveal">
-        <div class="support-num">04</div>
-        <div class="support-icon"><iconify-icon icon="solar:rocket-bold"></iconify-icon></div>
-        <div class="support-title">오픈 현장 지원</div>
-        <div class="support-desc">오픈 당일부터 30일간 본사 슈퍼바이저가 매장에 상주하며 초기 안착을 완벽하게 지원합니다.</div>
-        <div class="support-tags">
-          <span class="support-tag">현장 슈퍼바이저</span>
-          <span class="support-tag">30일 동행</span>
-          <span class="support-tag">트러블슈팅</span>
-        </div>
-      </div>
-      <div class="support-card reveal reveal-delay-1">
-        <div class="support-num">05</div>
-        <div class="support-icon"><iconify-icon icon="solar:smartphone-bold"></iconify-icon></div>
-        <div class="support-title">통합 운영 플랫폼</div>
-        <div class="support-desc">예약·결제·재고·정산·고객 관리가 모두 연결된 가맹점 전용 앱으로 운영 복잡도를 대폭 낮춥니다.</div>
-        <div class="support-tags">
-          <span class="support-tag">예약 자동화</span>
-          <span class="support-tag">실시간 정산</span>
-          <span class="support-tag">재고 알림</span>
-        </div>
-      </div>
-      <div class="support-card reveal reveal-delay-2">
-        <div class="support-num">06</div>
-        <div class="support-icon"><iconify-icon icon="solar:megaphone-bold"></iconify-icon></div>
-        <div class="support-title">마케팅 & 홍보 지원</div>
-        <div class="support-desc">본사 SNS 채널, 네이버 플레이스 최적화, 오픈 이벤트 기획까지 전방위 마케팅을 함께 진행합니다.</div>
-        <div class="support-tags">
-          <span class="support-tag">SNS 마케팅</span>
-          <span class="support-tag">네이버 최적화</span>
-          <span class="support-tag">이벤트 기획</span>
-        </div>
+      <div class="cta-ci">
+        <div class="cta-ci-lbl">운영 시간</div>
+        <span class="cta-ci-val">평일 09:00 – 18:00</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── COST ─── -->
-<section class="cost-section" id="cost">
-  <div class="container">
-    <span class="section-label reveal">STARTUP COST</span>
-    <h2 class="section-title reveal reveal-delay-1">합리적인 <em>창업 비용</em></h2>
-    <p class="section-desc reveal reveal-delay-2">프리미엄 브랜드를 합리적 비용으로 시작할 수 있도록 다양한 창업 패키지를 제공합니다.</p>
-    <div class="cost-grid">
-      <div class="reveal reveal-delay-1">
-        <div class="cost-table-wrapper">
-          <div class="cost-table-head">
-            <div class="cost-table-head-title">스탠다드 패키지</div>
-            <span class="cost-badge standard">15평 기준</span>
-          </div>
-          <div class="cost-rows">
-            <div class="cost-row">
-              <span class="cost-row-label">가맹비</span>
-              <span class="cost-row-value">1,000만원</span>
-            </div>
-            <div class="cost-row">
-              <span class="cost-row-label">교육비</span>
-              <span class="cost-row-value">200만원</span>
-            </div>
-            <div class="cost-row">
-              <span class="cost-row-label">인테리어 (평당)</span>
-              <span class="cost-row-value">130만원~</span>
-            </div>
-            <div class="cost-row">
-              <span class="cost-row-label">설비·집기</span>
-              <span class="cost-row-value">500만원~</span>
-            </div>
-            <div class="cost-row">
-              <span class="cost-row-label">초도 물품</span>
-              <span class="cost-row-value">150만원</span>
-            </div>
-            <div class="cost-row total-row">
-              <span class="cost-row-label" style="color:var(--gold-light);font-weight:700;">예상 총 창업 비용</span>
-              <span class="cost-row-value total">약 3,800만원~</span>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:20px;">
-          <div class="cost-table-wrapper">
-            <div class="cost-table-head">
-              <div class="cost-table-head-title">프리미엄 패키지</div>
-              <span class="cost-badge premium">25평 기준</span>
-            </div>
-            <div class="cost-rows">
-              <div class="cost-row">
-                <span class="cost-row-label">가맹비</span>
-                <span class="cost-row-value">1,500만원</span>
-              </div>
-              <div class="cost-row">
-                <span class="cost-row-label">교육비</span>
-                <span class="cost-row-value">200만원</span>
-              </div>
-              <div class="cost-row">
-                <span class="cost-row-label">인테리어 (평당)</span>
-                <span class="cost-row-value">150만원~</span>
-              </div>
-              <div class="cost-row">
-                <span class="cost-row-label">설비·집기</span>
-                <span class="cost-row-value">800만원~</span>
-              </div>
-              <div class="cost-row">
-                <span class="cost-row-label">초도 물품</span>
-                <span class="cost-row-value">200만원</span>
-              </div>
-              <div class="cost-row total-row">
-                <span class="cost-row-label" style="color:var(--gold-light);font-weight:700;">예상 총 창업 비용</span>
-                <span class="cost-row-value total">약 6,500만원~</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal reveal-delay-2">
-        <div class="cost-note">
-          <div class="cost-note-title">💡 새없결 가맹 혜택</div>
-          <ul class="cost-note-list">
-            <li class="cost-note-item">가맹비 분할 납부 가능 (3회 분납 지원)</li>
-            <li class="cost-note-item">인테리어 제휴 시공사 이용 시 10~15% 비용 절감</li>
-            <li class="cost-note-item">초도 물품 원가 공급 (시중가 대비 30% 절감)</li>
-            <li class="cost-note-item">오픈 이후 6개월간 로열티 50% 감면</li>
-            <li class="cost-note-item">우수 상권 선정 시 인테리어 지원금 지급</li>
-            <li class="cost-note-item">운영 플랫폼 구독료 3개월 무료 제공</li>
-            <li class="cost-note-item">정책 금융 연계 대출 상담 무료 제공</li>
-          </ul>
-        </div>
-        <div style="margin-top:24px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
-          <div style="font-size:15px;font-weight:700;margin-bottom:16px;">월 고정 비용 구성</div>
-          <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;">
-              <span style="color:var(--gray-light);">로열티</span>
-              <span style="font-weight:600;">매출의 5%</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;">
-              <span style="color:var(--gray-light);">광고 분담금</span>
-              <span style="font-weight:600;">월 30만원</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;">
-              <span style="color:var(--gray-light);">운영 플랫폼</span>
-              <span style="font-weight:600;">월 15만원</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── PROCESS ─── -->
-<section class="support-section" id="process" style="background:var(--bg-2);">
-  <div class="container">
-    <div style="text-align:center; max-width:600px; margin:0 auto;">
-      <span class="section-label reveal">FRANCHISE PROCESS</span>
-      <h2 class="section-title reveal reveal-delay-1"><em>5단계</em>로 완성되는<br>가맹 오픈 프로세스</h2>
-    </div>
-    <div class="process-steps">
-      <div class="process-step active reveal">
-        <div class="process-step-num">01</div>
-        <div class="process-step-title">초기 상담</div>
-        <div class="process-step-desc">가맹 문의 접수 후 전문 컨설턴트와 1:1 상담 진행</div>
-        <span class="process-step-period">1~3일</span>
-      </div>
-      <div class="process-step reveal reveal-delay-1">
-        <div class="process-step-num">02</div>
-        <div class="process-step-title">상권 분석</div>
-        <div class="process-step-desc">MD가 희망 지역 현장 방문 후 상권 분석 리포트 제공</div>
-        <span class="process-step-period">1~2주</span>
-      </div>
-      <div class="process-step reveal reveal-delay-2">
-        <div class="process-step-num">03</div>
-        <div class="process-step-title">계약 & 교육</div>
-        <div class="process-step-desc">가맹 계약 체결 후 본사 2주 집중 교육 과정 이수</div>
-        <span class="process-step-period">2~3주</span>
-      </div>
-      <div class="process-step reveal reveal-delay-3">
-        <div class="process-step-num">04</div>
-        <div class="process-step-title">인테리어 & 설비</div>
-        <div class="process-step-desc">본사 가이드에 따른 인테리어 시공 및 장비 설치</div>
-        <span class="process-step-period">3~5주</span>
-      </div>
-      <div class="process-step reveal reveal-delay-4">
-        <div class="process-step-num">05</div>
-        <div class="process-step-title">그랜드 오픈</div>
-        <div class="process-step-desc">슈퍼바이저 상주 지원과 함께 성공적인 오픈 달성</div>
-        <span class="process-step-period">D-Day</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── TESTIMONIALS ─── -->
-<section class="test-section" id="testimonials">
-  <div class="container">
-    <div style="text-align:center; max-width:600px; margin:0 auto;">
-      <span class="section-label reveal">FRANCHISEE VOICES</span>
-      <h2 class="section-title reveal reveal-delay-1">가맹점주들이<br><em>직접 전하는</em> 이야기</h2>
-    </div>
-    <div class="test-grid">
-      <div class="test-card reveal">
-        <div class="test-stars">★★★★★</div>
-        <div class="test-quote">
-          처음 창업이라 걱정이 많았는데, 본사에서 <strong>오픈 이후 한 달간 슈퍼바이저가 상주</strong>하며 도와줘서 정말 든든했어요. 덕분에 첫 달부터 손익 분기점을 넘겼습니다.
-        </div>
-        <div class="test-author">
-          <div class="test-avatar">김</div>
-          <div>
-            <div class="test-name">김○○ 점주</div>
-            <div class="test-branch">서울 마포구 — 오픈 5개월 차</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal reveal-delay-1">
-        <div class="test-stars">★★★★★</div>
-        <div class="test-quote">
-          다른 브랜드도 알아봤는데 <strong>운영 앱이 이렇게 잘 되어 있는 곳이 없었어요.</strong> 예약·정산·재고가 다 자동화되니 혼자 운영해도 전혀 힘들지 않습니다.
-        </div>
-        <div class="test-author">
-          <div class="test-avatar">박</div>
-          <div>
-            <div class="test-name">박○○ 점주</div>
-            <div class="test-branch">경기 성남시 — 오픈 8개월 차</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal reveal-delay-2">
-        <div class="test-stars">★★★★★</div>
-        <div class="test-quote">
-          교육이 정말 체계적이에요. <strong>두피 진단부터 고객 상담 스크립트까지</strong> 처음 창업하는 분들도 충분히 따라갈 수 있도록 구성되어 있습니다. 재방문율이 95% 넘어요.
-        </div>
-        <div class="test-author">
-          <div class="test-avatar">이</div>
-          <div>
-            <div class="test-name">이○○ 점주</div>
-            <div class="test-branch">부산 해운대구 — 오픈 1년 2개월 차</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── EDITORIAL STATEMENT ─── -->
-<section class="statement-section">
-  <div class="statement-inner">
-    <span class="statement-eyebrow">THE 새없결 PHILOSOPHY</span>
-    <p class="statement-quote reveal">
-      두피 케어는 외모가 아닌,<br>
-      <em>자신감의 문제</em>입니다.<br>
-      새없결은 그 자신감을<br>
-      함께 되살립니다.
-    </p>
-    <div class="statement-divider"></div>
-    <a href="#contact" class="statement-cta reveal reveal-delay-1">
-      지금 가맹 문의하기
-      <iconify-icon icon="solar:arrow-right-bold"></iconify-icon>
-    </a>
-  </div>
-</section>
-
-<!-- ─── FAQ ─── -->
-<section class="faq-section" id="faq">
-  <div class="container">
-    <div style="text-align:center; max-width:600px; margin:0 auto;">
-      <span class="section-label reveal">FAQ</span>
-      <h2 class="section-title reveal reveal-delay-1">자주 묻는 <em>질문</em></h2>
-    </div>
-    <div class="faq-container">
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          미용 경력이 없어도 창업할 수 있나요?
-          <span class="faq-arrow">+</span>
-        </div>
-        <div class="faq-a">
-          <div class="faq-a-inner">
-            네, 가능합니다. 새없결은 미용 자격증이나 경력이 없는 분들도 창업할 수 있도록 설계된 브랜드입니다. 본사 2주 집중 교육 과정을 통해 두피 진단, 시술 기술, 고객 응대까지 전 과정을 체계적으로 배울 수 있습니다. 실제 가맹점주의 40% 이상이 미용 경력이 없는 분들입니다.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item reveal reveal-delay-1" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          혼자 운영할 수 있나요? 직원을 꼭 고용해야 하나요?
-          <span class="faq-arrow">+</span>
-        </div>
-        <div class="faq-a">
-          <div class="faq-a-inner">
-            15평 스탠다드 매장 기준으로 1인 운영이 충분히 가능합니다. 예약·결제·고객 관리가 앱으로 자동화되어 있어 행정 업무 부담이 거의 없습니다. 성수기나 매출이 늘어나면 파트타임 인력을 추가하는 방식으로 확장하시는 것을 권장드립니다.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item reveal reveal-delay-2" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          로열티는 어떻게 책정되나요?
-          <span class="faq-arrow">+</span>
-        </div>
-        <div class="faq-a">
-          <div class="faq-a-inner">
-            로열티는 월 매출의 5%입니다. 오픈 이후 6개월간은 초기 안착을 위해 로열티를 2.5%로 50% 감면해 드립니다. 광고 분담금은 별도로 월 30만원 정액 부과됩니다. 모든 비용은 계약서에 명시되어 있으며 추가 비용은 없습니다.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          상권 보호 정책이 있나요?
-          <span class="faq-arrow">+</span>
-        </div>
-        <div class="faq-a">
-          <div class="faq-a-inner">
-            네, 엄격한 상권 보호 정책을 운영하고 있습니다. 동일 상권 내 추가 가맹점 개설을 금지하며, 보호 구역은 매장 반경 500m(도심 지역) ~ 1km(교외 지역) 기준으로 설정됩니다. 계약 체결 전 보호 상권을 지도에 명확히 표기하여 안내드립니다.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item reveal reveal-delay-1" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          계약 기간과 재계약 조건은 어떻게 되나요?
-          <span class="faq-arrow">+</span>
-        </div>
-        <div class="faq-a">
-          <div class="faq-a-inner">
-            기본 계약 기간은 2년이며, 계약 종료 3개월 전까지 별도 의사를 밝히지 않으면 동일 조건으로 자동 갱신됩니다. 재계약 시 가맹비는 받지 않습니다. 우수 가맹점에는 재계약 시 로열티 인하 혜택을 추가로 드립니다.
-          </div>
-        </div>
-      </div>
-      <div class="faq-item reveal reveal-delay-2" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          가맹 문의부터 실제 오픈까지 얼마나 걸리나요?
-          <span class="faq-arrow">+</span>
-        </div>
-        <div class="faq-a">
-          <div class="faq-a-inner">
-            빠른 경우 문의 후 약 2개월, 일반적으로는 2.5~3개월 내 오픈이 가능합니다. 상권 분석(1~2주) → 계약 및 교육(2~3주) → 인테리어 및 설비(3~5주) 순으로 진행됩니다. 점주 분의 일정과 상권 상황에 따라 조율 가능합니다.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── CTA / CONTACT ─── -->
-<section class="cta-section" id="contact">
-  <div class="container">
-    <div class="cta-content">
-      <h2 class="cta-title reveal">
-        지금 바로<br><em>첫 걸음</em>을 내딛으세요
-      </h2>
-      <p class="cta-desc reveal reveal-delay-1">
-        무료 상담 신청 후 전문 컨설턴트가 48시간 내 연락드립니다.<br>
-        상담은 완전 무료이며 어떤 의무도 없습니다.
-      </p>
-    </div>
-    <div class="cta-form reveal reveal-delay-2" style="max-width:680px;margin:0 auto;">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">이름 *</label>
-          <input type="text" class="form-input" placeholder="홍길동">
-        </div>
-        <div class="form-group">
-          <label class="form-label">연락처 *</label>
-          <input type="tel" class="form-input" placeholder="010-0000-0000">
-        </div>
-        <div class="form-group">
-          <label class="form-label">이메일</label>
-          <input type="email" class="form-input" placeholder="example@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">희망 지역 *</label>
-          <select class="form-select">
-            <option value="" disabled selected>지역 선택</option>
-            <option>서울</option>
-            <option>경기·인천</option>
-            <option>부산·경남</option>
-            <option>대구·경북</option>
-            <option>광주·전남</option>
-            <option>대전·충청</option>
-            <option>기타</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">창업 예정 시기</label>
-          <select class="form-select">
-            <option value="" disabled selected>시기 선택</option>
-            <option>3개월 이내</option>
-            <option>6개월 이내</option>
-            <option>1년 이내</option>
-            <option>미정</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">창업 자금 규모</label>
-          <select class="form-select">
-            <option value="" disabled selected>규모 선택</option>
-            <option>3,000만원 미만</option>
-            <option>3,000~5,000만원</option>
-            <option>5,000만원~1억</option>
-            <option>1억 이상</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label class="form-label">문의 내용 (선택)</label>
-          <textarea class="form-textarea" placeholder="궁금하신 점을 자유롭게 남겨주세요."></textarea>
-        </div>
-      </div>
-      <button class="form-submit" onclick="submitForm()">
-        <iconify-icon icon="solar:letter-bold"></iconify-icon>
-        무료 가맹 상담 신청하기
-      </button>
-      <div class="form-note">
-        개인정보는 상담 목적으로만 사용되며, 제3자에게 제공하지 않습니다.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── FOOTER ─── -->
+<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-logo">새없결 FRANCHISE</div>
-        <div class="footer-tagline">
-          프리미엄 두피·모발 케어 프랜차이즈 새없결의<br>
-          가맹 문의 전용 페이지입니다.<br>
-          브랜드 B2C 홈페이지와는 별도로 운영됩니다.
-        </div>
-      </div>
-      <div class="footer-links">
-        <div class="footer-links-title">바로가기</div>
-        <a href="#brand">브랜드 소개</a>
-        <a href="#market">시장성 분석</a>
-        <a href="#revenue">수익 구조</a>
-        <a href="#support">본사 지원</a>
-        <a href="#cost">창업 비용</a>
-        <a href="#faq">자주 묻는 질문</a>
-      </div>
-      <div class="footer-links">
-        <div class="footer-links-title">연락처</div>
-        <a href="tel:02-0000-0000">대표전화 02-0000-0000</a>
-        <a href="mailto:franchise@seupkyul.com">franchise@seupkyul.com</a>
-        <a href="#">카카오톡 채널 문의</a>
-        <a href="#">인스타그램</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 새없결. All rights reserved.</span>
-      <div style="display:flex;gap:24px;">
-        <a href="#" style="color:var(--gray);text-decoration:none;">개인정보처리방침</a>
-        <a href="#" style="color:var(--gray);text-decoration:none;">가맹사업 정보공개서</a>
-        <a href="#" style="color:var(--gray);text-decoration:none;">이용약관</a>
-      </div>
+  <div class="foot-inner">
+    <div class="foot-logo">새없결</div>
+    <div class="foot-copy">© 2024 새없결. All rights reserved.</div>
+    <div class="foot-links">
+      <a href="#">개인정보처리방침</a>
+      <a href="#">이용약관</a>
+      <a href="#">사업자정보</a>
     </div>
   </div>
 </footer>
-</div><!-- /.main-wrapper -->
 
 <script>
-/* ── SIDEBAR TOGGLE (mobile) ── */
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const menuBtn = document.getElementById('mobileMenuBtn');
-
-function closeSidebar() {
-  sidebar.classList.remove('open');
-  overlay.classList.remove('visible');
-}
-if (menuBtn) {
-  menuBtn.addEventListener('click', () => {
-    const isOpen = sidebar.classList.toggle('open');
-    overlay.classList.toggle('visible', isOpen);
-  });
-}
-if (overlay) overlay.addEventListener('click', closeSidebar);
-
-/* ── SIDEBAR ACTIVE STATE (스크롤 따라 자동 하이라이트) ── */
-(function() {
-  const sectionIds = ['home','brand','features','market','revenue','support','cost','process','testimonials','faq'];
-  const links = document.querySelectorAll('.sidebar-nav-link');
-
-  function setActive(id) {
-    links.forEach(link => {
-      link.classList.toggle('active', link.dataset.section === id);
-    });
-  }
-
-  const sectionObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) setActive(entry.target.id);
-    });
-  }, { threshold: 0.25, rootMargin: '-10% 0px -60% 0px' });
-
-  sectionIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) sectionObs.observe(el);
-  });
-})();
-
+// NAV scroll effect
+const mainNav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
-  // reserved for future scroll logic
+  mainNav.classList.toggle('on', window.scrollY > 40);
+}, { passive: true });
+
+// Mobile menu
+const mobHam = document.getElementById('mobHam');
+const mobDrawer = document.getElementById('mobDrawer');
+mobHam.addEventListener('click', () => mobDrawer.classList.toggle('open'));
+function closeMob() { mobDrawer.classList.remove('open'); }
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
 });
 
-/* ── FAQ 토글 ── */
-function toggleFaq(el) {
-  const isOpen = el.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-  if (!isOpen) el.classList.add('open');
-}
-
-/* ── 스크롤 reveal ── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ── 폼 제출 ── */
-function submitForm() {
-  const name  = document.querySelector('input[type="text"]').value.trim();
-  const phone = document.querySelector('input[type="tel"]').value.trim();
-  if (!name || !phone) {
-    alert('이름과 연락처는 필수 입력 항목입니다.');
-    return;
-  }
-  alert('상담 신청이 완료되었습니다.\n48시간 내 전문 컨설턴트가 연락드리겠습니다.\n감사합니다!');
-}
-
-/* ── 수익 바 애니메이션 ── */
-const barObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('.rev-bar-fill').forEach(bar => {
-        const w = bar.style.width;
-        bar.style.width = '0%';
-        setTimeout(() => { bar.style.width = w; }, 100);
-      });
-      barObserver.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.3 });
-const revenueModel = document.querySelector('.revenue-model');
-if (revenueModel) barObserver.observe(revenueModel);
-
-/* ── 숫자 카운터 애니메이션 ── */
-(function() {
-  const cnums = document.querySelectorAll('.cnum');
-  if (!cnums.length) return;
-
-  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-
-  function runCounter(el) {
-    const to = parseFloat(el.dataset.to);
-    const isDecimal = el.dataset.decimal === '1';
-    const duration = 1800;
-    const start = performance.now();
-    function tick(now) {
-      const t = Math.min((now - start) / duration, 1);
-      const val = to * easeOutCubic(t);
-      el.textContent = isDecimal ? val.toFixed(1) : Math.floor(val);
-      if (t < 1) requestAnimationFrame(tick);
-      else el.textContent = isDecimal ? to.toFixed(1) : to;
-    }
-    requestAnimationFrame(tick);
-  }
-
-  const counterObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        runCounter(entry.target);
-        counterObs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  cnums.forEach(el => counterObs.observe(el));
-})();
-
-
-/* ── 피처 스크롤 인터랙션 ── */
-(function() {
-  const catItems = document.querySelectorAll('.feature-cat-item');
-  const panels   = document.querySelectorAll('.feature-panel');
-  const cards    = document.querySelectorAll('.feature-panel-card');
-  if (!catItems.length) return;
-
-  function activate(idx) {
-    catItems.forEach((el, i) => el.classList.toggle('active', i === idx));
-    cards.forEach((el, i)    => el.classList.toggle('panel-active', i === idx));
-  }
-
-  /* 카테고리 클릭 시 해당 패널로 스크롤 */
-  catItems.forEach((item, idx) => {
-    item.addEventListener('click', () => {
-      const target = document.getElementById(item.dataset.target);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      activate(idx);
-    });
-  });
-
-  /* 스크롤로 패널 진입 시 자동 하이라이트 */
-  const fp = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const idx = Array.from(panels).indexOf(entry.target);
-        if (idx !== -1) activate(idx);
-      }
-    });
-  }, { threshold: 0.5, rootMargin: '-15% 0px -15% 0px' });
-
-  panels.forEach(p => fp.observe(p));
-})();
-
-/* ── 두피 케어 헬릭스 캔버스 애니메이션 ── */
+// Helix canvas
 (function() {
   const canvas = document.getElementById('helixCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let phase = 0;
-  let W = 0, H = 0;
-
-  function resize() {
-    const dpr = window.devicePixelRatio || 1;
-    W = canvas.offsetWidth;
-    H = canvas.offsetHeight;
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-  }
-
+  const W = canvas.width, H = canvas.height;
+  let t = 0;
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    const cx   = W / 2;
-    const amp  = W * 0.31;
-    const steps = 90;
-    const loops = 3.8;
-
-    /* 두 가닥 좌표 계산 */
-    const pts1 = [], pts2 = [];
-    for (let i = 0; i <= steps; i++) {
-      const y     = (i / steps) * H;
-      const angle = (i / steps) * loops * Math.PI * 2 + phase;
-      const s     = Math.sin(angle);
-      pts1.push({ x: cx + s * amp, y, s });
-      pts2.push({ x: cx - s * amp, y, s: -s });
-    }
-
-    /* 교차 연결선 */
-    for (let i = 0; i <= steps; i++) {
-      if (Math.abs(pts1[i].s) < 0.16) {
+    const cx = W / 2, r = W * 0.28, pts = 64;
+    for (let i = 0; i < pts; i++) {
+      const f = i / pts;
+      const a1 = f * Math.PI * 6 + t;
+      const a2 = a1 + Math.PI;
+      const x1 = cx + Math.cos(a1) * r, y1 = H * 0.08 + f * H * 0.84;
+      const x2 = cx + Math.cos(a2) * r, y2 = y1;
+      const d1 = (Math.cos(a1) + 1) / 2;
+      const d2 = (Math.cos(a2) + 1) / 2;
+      if (i > 0) {
+        const pf = (i-1)/pts, pa1 = pf*Math.PI*6+t, pa2 = pa1+Math.PI;
         ctx.beginPath();
-        ctx.moveTo(pts1[i].x, pts1[i].y);
-        ctx.lineTo(pts2[i].x, pts2[i].y);
-        ctx.strokeStyle = 'rgba(30,92,74,0.18)';
-        ctx.lineWidth   = 0.8;
-        ctx.stroke();
+        ctx.moveTo(cx + Math.cos(pa1)*r, H*0.08+pf*H*0.84);
+        ctx.lineTo(x1, y1);
+        ctx.strokeStyle = 'rgba(30,92,74,.65)';
+        ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(pa2)*r, H*0.08+pf*H*0.84);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = 'rgba(30,92,74,.28)';
+        ctx.lineWidth = 1.5; ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(x1, y1, 2.5 + d1*4, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(30,92,74,${.28 + d1*.72})`; ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x2, y2, 2.5 + d2*4, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(30,92,74,${.12 + d2*.42})`; ctx.fill();
+      if (i % 8 === 0) {
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.strokeStyle = 'rgba(30,92,74,.10)'; ctx.lineWidth = 1; ctx.stroke();
       }
     }
-
-    /* 가닥 1 — solid */
-    ctx.beginPath();
-    pts1.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
-    ctx.setLineDash([]);
-    ctx.strokeStyle = 'rgba(30,92,74,0.65)';
-    ctx.lineWidth   = 1.6;
-    ctx.stroke();
-
-    /* 가닥 2 — dashed */
-    ctx.beginPath();
-    pts2.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
-    ctx.setLineDash([4, 7]);
-    ctx.strokeStyle = 'rgba(30,92,74,0.28)';
-    ctx.lineWidth   = 1;
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    /* 가닥 1 — 깊이 인식 점 */
-    for (let i = 0; i <= steps; i += 2) {
-      const { x, y, s } = pts1[i];
-      const depth = (s + 1) / 2;
-      ctx.beginPath();
-      ctx.arc(x, y, 1.5 + depth * 3.8, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(30,92,74,${(0.18 + depth * 0.82).toFixed(2)})`;
-      ctx.fill();
-    }
-
-    /* 가닥 2 — 더 연한 점 */
-    for (let i = 0; i <= steps; i += 2) {
-      const { x, y, s } = pts2[i];
-      const depth = (s + 1) / 2;
-      ctx.beginPath();
-      ctx.arc(x, y, 1 + depth * 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(30,92,74,${(0.07 + depth * 0.38).toFixed(2)})`;
-      ctx.fill();
-    }
-
-    phase += 0.007;
+    t += 0.009;
     requestAnimationFrame(draw);
   }
-
-  resize();
-  window.addEventListener('resize', resize);
   draw();
 })();
 </script>
