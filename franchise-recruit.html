@@ -660,6 +660,73 @@ footer {
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
 
+/* ─────────────────── MARQUEE ─────────────────── */
+.marquee-strip {
+  overflow: hidden; padding: 15px 0;
+  background: var(--gold-pale);
+  border-top: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+}
+.marquee-track {
+  display: flex; width: max-content;
+  animation: marqueeLTR 36s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 24px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.12em;
+  color: var(--gold-light); text-transform: uppercase;
+  white-space: nowrap; padding: 0 24px; flex-shrink: 0;
+}
+.marquee-dot { color: var(--gold); opacity: 0.7; font-size: 10px; }
+@keyframes marqueeLTR {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─────────────────── FLOAT BAR ─────────────────── */
+.float-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
+  background: rgba(7,7,13,0.96);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border-top: 1px solid var(--border-gold);
+  padding: 14px 40px;
+  display: flex; align-items: center; gap: 20px;
+  transform: translateY(110%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.float-bar.visible { transform: translateY(0); }
+.float-bar-label {
+  font-size: 12px; font-weight: 800; color: var(--gold);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  white-space: nowrap; flex-shrink: 0;
+}
+.float-bar-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+.float-bar-inputs { display: flex; gap: 10px; flex: 1; }
+.float-bar-inputs input {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 16px;
+  font-size: 14px; color: var(--white); font-family: inherit;
+  outline: none; flex: 1; min-width: 0; transition: border-color 0.2s;
+}
+.float-bar-inputs input::placeholder { color: var(--gray); }
+.float-bar-inputs input:focus { border-color: var(--border-gold); }
+.float-bar-btn {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #07070D; font-weight: 800; font-size: 14px;
+  padding: 11px 28px; border-radius: 100px; border: none;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.float-bar-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,124,0.4); }
+.float-bar-close {
+  background: transparent; border: none; cursor: pointer;
+  color: var(--gray); font-size: 20px; padding: 4px; flex-shrink: 0;
+  line-height: 1; transition: color 0.2s;
+}
+.float-bar-close:hover { color: var(--white); }
+
 /* ─────────────────── FEATURE SCROLL ─────────────────── */
 .feature-scroll-section { background: var(--bg-2); padding: 120px 40px; }
 .feature-scroll-inner {
@@ -775,6 +842,10 @@ footer {
   .form-grid { grid-template-columns: 1fr; }
   .market-note { text-align: left; }
   .revenue-note { text-align: left; }
+  .float-bar { padding: 12px 16px; gap: 12px; }
+  .float-bar-inputs, .float-bar-sep { display: none; }
+  .float-bar-label { font-size: 11px; }
+  .float-bar-btn { padding: 10px 20px; font-size: 13px; }
   .feature-scroll-section { padding: 80px 24px; }
   .feature-scroll-inner { grid-template-columns: 1fr; gap: 40px; }
   .feature-scroll-left { position: static; }
@@ -835,24 +906,47 @@ footer {
 
     <div class="hero-stats">
       <div class="hero-stat-item">
-        <div class="hero-stat-num">3<span>년+</span></div>
+        <div class="hero-stat-num"><span class="cnum" data-to="3">0</span><span>년+</span></div>
         <div class="hero-stat-label">브랜드 운영 연수</div>
       </div>
       <div class="hero-stat-item">
-        <div class="hero-stat-num">98<span>%</span></div>
+        <div class="hero-stat-num"><span class="cnum" data-to="98">0</span><span>%</span></div>
         <div class="hero-stat-label">재방문율</div>
       </div>
       <div class="hero-stat-item">
-        <div class="hero-stat-num">4.9<span>★</span></div>
+        <div class="hero-stat-num"><span class="cnum" data-to="4.9" data-decimal="1">0.0</span><span>★</span></div>
         <div class="hero-stat-label">고객 평균 평점</div>
       </div>
       <div class="hero-stat-item">
-        <div class="hero-stat-num">30<span>일</span></div>
+        <div class="hero-stat-num"><span class="cnum" data-to="30">0</span><span>일</span></div>
         <div class="hero-stat-label">오픈 지원 기간</div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">새없결 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">두피·모발 케어 전문 브랜드 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">프리미엄 가맹 모집 중 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">재방문율 98% <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">본사 완전 지원 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">탈모 케어 No.1 솔루션 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">객단가 5~8만원 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">스마트 운영 시스템 <span class="marquee-dot">✦</span></span>
+    <!-- repeat for seamless loop -->
+    <span class="marquee-item">새없결 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">두피·모발 케어 전문 브랜드 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">프리미엄 가맹 모집 중 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">재방문율 98% <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">본사 완전 지원 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">탈모 케어 No.1 솔루션 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">객단가 5~8만원 <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">스마트 운영 시스템 <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
 
 <!-- ─── BRAND ─── -->
 <section class="brand-section" id="brand">
@@ -1687,6 +1781,18 @@ footer {
   </div>
 </footer>
 
+<!-- ─── FLOAT BAR ─── -->
+<div class="float-bar" id="floatBar">
+  <span class="float-bar-label">가맹 빠른 상담</span>
+  <div class="float-bar-sep"></div>
+  <div class="float-bar-inputs">
+    <input type="text" id="fbName" placeholder="성함">
+    <input type="tel" id="fbPhone" placeholder="연락처 (예: 010-0000-0000)">
+  </div>
+  <button class="float-bar-btn" onclick="submitFloatBar()">상담 신청하기</button>
+  <button class="float-bar-close" onclick="closeFloatBar()" title="닫기">×</button>
+</div>
+
 <script>
 /* ── NAV 스크롤 ── */
 const nav = document.getElementById('mainNav');
@@ -1735,6 +1841,66 @@ const barObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 const revenueModel = document.querySelector('.revenue-model');
 if (revenueModel) barObserver.observe(revenueModel);
+
+/* ── 숫자 카운터 애니메이션 ── */
+(function() {
+  const cnums = document.querySelectorAll('.cnum');
+  if (!cnums.length) return;
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function runCounter(el) {
+    const to = parseFloat(el.dataset.to);
+    const isDecimal = el.dataset.decimal === '1';
+    const duration = 1800;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const val = to * easeOutCubic(t);
+      el.textContent = isDecimal ? val.toFixed(1) : Math.floor(val);
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = isDecimal ? to.toFixed(1) : to;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        runCounter(entry.target);
+        counterObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  cnums.forEach(el => counterObs.observe(el));
+})();
+
+/* ── 플로팅 바 ── */
+(function() {
+  const bar = document.getElementById('floatBar');
+  const hero = document.querySelector('.hero');
+  if (!bar || !hero) return;
+  let closed = false;
+
+  window.addEventListener('scroll', () => {
+    if (closed) return;
+    bar.classList.toggle('visible', hero.getBoundingClientRect().bottom < 0);
+  }, { passive: true });
+
+  window.closeFloatBar = function() {
+    closed = true;
+    bar.classList.remove('visible');
+  };
+
+  window.submitFloatBar = function() {
+    const name  = document.getElementById('fbName').value.trim();
+    const phone = document.getElementById('fbPhone').value.trim();
+    if (!name || !phone) { alert('이름과 연락처를 입력해주세요.'); return; }
+    alert('상담 신청이 완료되었습니다.\n48시간 내 전문 컨설턴트가 연락드리겠습니다!');
+    closeFloatBar();
+  };
+})();
 
 /* ── 피처 스크롤 인터랙션 ── */
 (function() {
