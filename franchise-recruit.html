@@ -27,6 +27,7 @@
   --border-gold: rgba(30,92,74,0.22);
   --radius:      16px;
   --radius-lg:   24px;
+  --sidebar-w:   252px;
 }
 
 html { scroll-behavior: smooth; }
@@ -45,47 +46,124 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
 
-/* ─────────────────── NAV ─────────────────── */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-  padding: 20px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: all 0.4s ease;
+/* ─────────────────── SIDEBAR ─────────────────── */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w); z-index: 999;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 36px 28px 32px;
+  overflow-y: auto;
 }
-.nav.scrolled {
-  background: rgba(249,247,244,0.92);
-  backdrop-filter: blur(24px) saturate(1.6);
-  -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 40px;
+.sidebar-logo {
+  display: block; text-decoration: none;
+  margin-bottom: 10px;
 }
-.nav-logo {
-  font-size: 22px; font-weight: 800; letter-spacing: -0.03em;
+.sidebar-logo-main {
+  font-size: 20px; font-weight: 800; letter-spacing: -0.03em;
   background: linear-gradient(135deg, var(--gold-light), var(--gold));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background-clip: text; display: block;
 }
-.nav-logo span { font-weight: 300; -webkit-text-fill-color: rgba(18,16,13,0.35); }
-.nav-links {
-  display: flex; gap: 36px; list-style: none;
+.sidebar-logo-sub {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gray); display: block; margin-top: 3px;
 }
-.nav-links a {
-  font-size: 14px; font-weight: 500; color: var(--gray-light);
+.sidebar-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gray);
+  padding: 20px 0; margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-status-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(30,92,74,0.5);
+  animation: pulse 2s ease infinite;
+}
+.sidebar-nav-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gray);
+  padding: 20px 10px 8px;
+}
+.sidebar-nav {
+  display: flex; flex-direction: column; gap: 1px;
+  flex: 1;
+}
+.sidebar-nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; color: var(--gray-light);
   text-decoration: none; letter-spacing: 0.01em;
-  transition: color 0.2s;
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
 }
-.nav-links a:hover { color: var(--gold-light); }
-.nav-cta {
+.sidebar-nav-link:hover {
+  background: var(--surface); color: var(--text);
+}
+.sidebar-nav-link.active {
+  background: var(--gold-pale); color: var(--gold);
+  border-left-color: var(--gold); font-weight: 700;
+}
+.sidebar-footer {
+  margin-top: 24px; padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.sidebar-cta {
+  display: block; width: 100%;
   background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  color: #fff; font-weight: 700; font-size: 14px;
-  padding: 11px 24px; border-radius: 100px; border: none;
-  cursor: pointer; text-decoration: none; letter-spacing: 0.02em;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: inline-block;
+  color: #fff; font-weight: 700; font-size: 13px;
+  padding: 12px 16px; border-radius: 10px; border: none;
+  cursor: pointer; text-decoration: none; text-align: center;
+  letter-spacing: 0.02em; transition: opacity 0.2s, transform 0.2s;
+  margin-bottom: 14px;
 }
-.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(30,92,74,0.35); }
+.sidebar-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+.sidebar-contact {
+  font-size: 11px; color: var(--gray); line-height: 1.7; text-align: center;
+}
+.sidebar-contact a { color: var(--gray); text-decoration: none; }
 
-.nav-mobile-cta { display: none; }
+/* ─────────────────── MAIN WRAPPER ─────────────────── */
+.main-wrapper {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+
+/* ─────────────────── MOBILE TOP BAR ─────────────────── */
+.mobile-top-bar {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 998;
+  background: rgba(248,247,245,0.96);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  justify-content: space-between; align-items: center;
+}
+.mobile-logo {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; text-decoration: none;
+}
+.mobile-menu-btn {
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; gap: 5px; padding: 6px;
+}
+.mobile-menu-btn span {
+  display: block; width: 20px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: all 0.3s;
+}
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0; z-index: 997;
+  background: rgba(0,0,0,0.25); opacity: 0;
+  transition: opacity 0.3s;
+}
+.sidebar-overlay.visible { opacity: 1; }
 
 /* ─────────────────── HERO ─────────────────── */
 .hero {
@@ -676,15 +754,6 @@ footer {
 .hover-ul:hover::after {
   transform: scaleX(1); transform-origin: left;
 }
-.nav-links a { position: relative; }
-.nav-links a::after {
-  content: ''; position: absolute;
-  width: 100%; height: 1px; bottom: -2px; left: 0;
-  background: var(--gold-light);
-  transform: scaleX(0); transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
-}
-.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
 
 /* ─────────────────── EDITORIAL STATEMENT ─────────────────── */
 .statement-section {
@@ -743,48 +812,6 @@ footer {
   100% { transform: translateX(-50%); }
 }
 
-/* ─────────────────── FLOAT BAR ─────────────────── */
-.float-bar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
-  background: rgba(7,7,13,0.96);
-  backdrop-filter: blur(24px) saturate(1.6);
-  -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  border-top: 1px solid var(--border-gold);
-  padding: 14px 40px;
-  display: flex; align-items: center; gap: 20px;
-  transform: translateY(110%);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.float-bar.visible { transform: translateY(0); }
-.float-bar-label {
-  font-size: 12px; font-weight: 800; color: var(--gold);
-  letter-spacing: 0.1em; text-transform: uppercase;
-  white-space: nowrap; flex-shrink: 0;
-}
-.float-bar-sep { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
-.float-bar-inputs { display: flex; gap: 10px; flex: 1; }
-.float-bar-inputs input {
-  background: var(--surface-2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 10px 16px;
-  font-size: 14px; color: var(--white); font-family: inherit;
-  outline: none; flex: 1; min-width: 0; transition: border-color 0.2s;
-}
-.float-bar-inputs input::placeholder { color: var(--gray); }
-.float-bar-inputs input:focus { border-color: var(--border-gold); }
-.float-bar-btn {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  color: #fff; font-weight: 800; font-size: 14px;
-  padding: 11px 28px; border-radius: 100px; border: none;
-  cursor: pointer; white-space: nowrap; flex-shrink: 0;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.float-bar-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(30,92,74,0.4); }
-.float-bar-close {
-  background: transparent; border: none; cursor: pointer;
-  color: var(--gray); font-size: 20px; padding: 4px; flex-shrink: 0;
-  line-height: 1; transition: color 0.2s;
-}
-.float-bar-close:hover { color: var(--white); }
 
 /* ─────────────────── FEATURE SCROLL ─────────────────── */
 .feature-scroll-section { background: var(--bg-2); padding: 120px 40px; }
@@ -792,7 +819,7 @@ footer {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 80px; align-items: start;
 }
-.feature-scroll-left { position: sticky; top: 120px; }
+.feature-scroll-left { position: sticky; top: 60px; }
 .feature-scroll-head { margin-bottom: 44px; }
 .feature-scroll-head h2 {
   font-size: 34px; font-weight: 800; letter-spacing: -0.04em;
@@ -873,43 +900,38 @@ footer {
 }
 .feature-panel-stat-label { font-size: 12px; color: var(--gray); margin-top: 4px; }
 
-/* ─────────────────── MOBILE ─────────────────── */
+/* ─────────────────── TABLET / MOBILE ─────────────────── */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 8px 0 40px rgba(0,0,0,0.08);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main-wrapper { margin-left: 0; }
+  .mobile-top-bar { display: flex; }
+  .sidebar-overlay { display: block; }
+}
+
 @media (max-width: 768px) {
   section { padding: 80px 24px; }
-  .nav { padding: 16px 24px; }
-  .nav.scrolled { padding: 12px 24px; }
-  .nav-links { display: none; }
-  .nav-cta { display: none; }
-  .nav-mobile-cta {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    color: #fff; font-weight: 700; font-size: 13px;
-    padding: 9px 18px; border-radius: 100px;
-    text-decoration: none;
-  }
+  .hero { padding-top: 56px; }
   .hero-split { grid-template-columns: 1fr; padding: 0 24px; }
-  .hero-left { padding: 120px 0 40px; text-align: center; }
+  .hero-left { padding: 80px 0 40px; text-align: center; }
   .hero-right { display: none; }
-  .hero-status-bar { padding: 14px 24px; gap: 12px; }
   .hero-actions { justify-content: center; }
   .hero-stats { justify-content: center; gap: 32px; }
   .brand-grid, .revenue-header, .cost-grid,
   .market-highlight { grid-template-columns: 1fr; }
   .market-grid, .support-grid, .test-grid { grid-template-columns: 1fr; }
   .revenue-cards { grid-template-columns: 1fr 1fr; }
-  .process-steps {
-    grid-template-columns: 1fr; gap: 24px;
-  }
+  .process-steps { grid-template-columns: 1fr; gap: 24px; }
   .process-steps::before { display: none; }
   .footer-top { flex-direction: column; }
   .form-grid { grid-template-columns: 1fr; }
   .market-note { text-align: left; }
   .revenue-note { text-align: left; }
   .statement-section { padding: 100px 24px; }
-  .float-bar { padding: 12px 16px; gap: 12px; }
-  .float-bar-inputs, .float-bar-sep { display: none; }
-  .float-bar-label { font-size: 11px; }
-  .float-bar-btn { padding: 10px 20px; font-size: 13px; }
   .feature-scroll-section { padding: 80px 24px; }
   .feature-scroll-inner { grid-template-columns: 1fr; gap: 40px; }
   .feature-scroll-left { position: static; }
@@ -927,45 +949,22 @@ footer {
 
 /* ── Hero 2-column layout ── */
 .hero { padding: 0; }
-.hero-status-bar {
-  position: absolute; top: 0; left: 0; right: 0;
-  padding: 16px 60px;
-  display: flex; align-items: center; gap: 20px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--gray);
-  border-bottom: 1px solid var(--border);
-  z-index: 2;
-}
-.hero-status-dot { color: rgba(0,0,0,0.18); font-size: 16px; line-height: 1; }
-.hero-status-live {
-  color: var(--gold);
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.hero-status-live::before {
-  content: '';
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 6px rgba(30,92,74,0.6);
-  animation: pulse 2s ease infinite;
-  flex-shrink: 0;
-}
 
 .hero-split {
   display: grid; grid-template-columns: 55% 45%;
   min-height: 100vh; align-items: center;
-  max-width: 1360px; margin: 0 auto;
   padding: 0 60px;
   position: relative; z-index: 1;
   width: 100%;
 }
 .hero-left {
-  padding: 140px 60px 100px 0;
+  padding: 100px 60px 80px 0;
   text-align: left;
 }
 .hero-right {
   display: flex; align-items: center; justify-content: center;
   min-height: 100vh;
-  padding: 120px 0 80px;
+  padding: 80px 0 60px;
 }
 .hero-actions { justify-content: flex-start; }
 .hero-stats {
@@ -1026,46 +1025,63 @@ footer {
 .footer-bottom { color: rgba(240,237,232,0.35); }
 .footer-bottom a { color: rgba(240,237,232,0.35); }
 
-/* ── Float bar inputs (float-bar stays dark) ── */
-.float-bar-inputs input {
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-  border-color: rgba(255,255,255,0.14);
-}
-.float-bar-inputs input::placeholder { color: rgba(255,255,255,0.38); }
-.float-bar-close:hover { color: #fff; }
 </style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
-<nav class="nav" id="mainNav">
-  <div class="nav-logo">새없결 <span>FRANCHISE</span></div>
-  <ul class="nav-links">
-    <li><a href="#brand">브랜드</a></li>
-    <li><a href="#market">시장성</a></li>
-    <li><a href="#revenue">수익구조</a></li>
-    <li><a href="#support">본사지원</a></li>
-    <li><a href="#cost">창업비용</a></li>
-    <li><a href="#faq">FAQ</a></li>
-  </ul>
-  <a class="nav-cta" href="#contact">가맹 문의하기</a>
-  <a class="nav-mobile-cta" href="#contact">문의하기</a>
-</nav>
+<!-- ─── MOBILE TOP BAR ─── -->
+<div class="mobile-top-bar">
+  <a class="mobile-logo" href="#home">새없결</a>
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="메뉴 열기">
+    <span></span><span></span><span></span>
+  </button>
+</div>
 
-<!-- ─── HERO ─── -->
-<section class="hero">
-  <div class="hero-bg">
-    <div class="hero-grid"></div>
+<!-- ─── SIDEBAR OVERLAY ─── -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar" id="sidebar">
+  <a href="#home" class="sidebar-logo" onclick="closeSidebar()">
+    <span class="sidebar-logo-main">새없결</span>
+    <span class="sidebar-logo-sub">Franchise</span>
+  </a>
+
+  <div class="sidebar-status">
+    <span class="sidebar-status-dot"></span>
+    모집중 · EST. 2022
   </div>
 
-  <!-- 상단 상태 바 -->
-  <div class="hero-status-bar">
-    <span>새없결 FRANCHISE</span>
-    <span class="hero-status-dot">·</span>
-    <span>STATUS: <span class="hero-status-live">OPEN</span></span>
-    <span class="hero-status-dot">·</span>
-    <span>EST. 2022</span>
+  <div class="sidebar-nav-label">Navigation</div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-link active" href="#home"     data-section="home"        onclick="closeSidebar()">홈</a>
+    <a class="sidebar-nav-link"       href="#brand"    data-section="brand"       onclick="closeSidebar()">브랜드 소개</a>
+    <a class="sidebar-nav-link"       href="#features" data-section="features"    onclick="closeSidebar()">선택받는 이유</a>
+    <a class="sidebar-nav-link"       href="#market"   data-section="market"      onclick="closeSidebar()">시장 분석</a>
+    <a class="sidebar-nav-link"       href="#revenue"  data-section="revenue"     onclick="closeSidebar()">수익 구조</a>
+    <a class="sidebar-nav-link"       href="#support"  data-section="support"     onclick="closeSidebar()">본사 지원</a>
+    <a class="sidebar-nav-link"       href="#cost"     data-section="cost"        onclick="closeSidebar()">창업 비용</a>
+    <a class="sidebar-nav-link"       href="#process"  data-section="process"     onclick="closeSidebar()">가맹 프로세스</a>
+    <a class="sidebar-nav-link"       href="#testimonials" data-section="testimonials" onclick="closeSidebar()">파트너 후기</a>
+    <a class="sidebar-nav-link"       href="#faq"      data-section="faq"         onclick="closeSidebar()">FAQ</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a class="sidebar-cta" href="#contact" onclick="closeSidebar()">가맹 문의하기</a>
+    <div class="sidebar-contact">
+      <a href="tel:02-0000-0000">02-0000-0000</a><br>
+      franchise@seupkyul.com
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MAIN CONTENT ─── -->
+<div class="main-wrapper">
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
   </div>
 
   <!-- 2칼럼 레이아웃 -->
@@ -1210,7 +1226,7 @@ footer {
 </section>
 
 <!-- ─── FEATURE SCROLL ─── -->
-<section class="feature-scroll-section">
+<section class="feature-scroll-section" id="features">
   <div class="container">
     <div class="feature-scroll-inner">
 
@@ -1999,24 +2015,51 @@ footer {
     </div>
   </div>
 </footer>
-
-<!-- ─── FLOAT BAR ─── -->
-<div class="float-bar" id="floatBar">
-  <span class="float-bar-label">가맹 빠른 상담</span>
-  <div class="float-bar-sep"></div>
-  <div class="float-bar-inputs">
-    <input type="text" id="fbName" placeholder="성함">
-    <input type="tel" id="fbPhone" placeholder="연락처 (예: 010-0000-0000)">
-  </div>
-  <button class="float-bar-btn" onclick="submitFloatBar()">상담 신청하기</button>
-  <button class="float-bar-close" onclick="closeFloatBar()" title="닫기">×</button>
-</div>
+</div><!-- /.main-wrapper -->
 
 <script>
-/* ── NAV 스크롤 ── */
-const nav = document.getElementById('mainNav');
+/* ── SIDEBAR TOGGLE (mobile) ── */
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+const menuBtn = document.getElementById('mobileMenuBtn');
+
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('visible');
+}
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible', isOpen);
+  });
+}
+if (overlay) overlay.addEventListener('click', closeSidebar);
+
+/* ── SIDEBAR ACTIVE STATE (스크롤 따라 자동 하이라이트) ── */
+(function() {
+  const sectionIds = ['home','brand','features','market','revenue','support','cost','process','testimonials','faq'];
+  const links = document.querySelectorAll('.sidebar-nav-link');
+
+  function setActive(id) {
+    links.forEach(link => {
+      link.classList.toggle('active', link.dataset.section === id);
+    });
+  }
+
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActive(entry.target.id);
+    });
+  }, { threshold: 0.25, rootMargin: '-10% 0px -60% 0px' });
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) sectionObs.observe(el);
+  });
+})();
+
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
+  // reserved for future scroll logic
 });
 
 /* ── FAQ 토글 ── */
@@ -2095,31 +2138,6 @@ if (revenueModel) barObserver.observe(revenueModel);
   cnums.forEach(el => counterObs.observe(el));
 })();
 
-/* ── 플로팅 바 ── */
-(function() {
-  const bar = document.getElementById('floatBar');
-  const hero = document.querySelector('.hero');
-  if (!bar || !hero) return;
-  let closed = false;
-
-  window.addEventListener('scroll', () => {
-    if (closed) return;
-    bar.classList.toggle('visible', hero.getBoundingClientRect().bottom < 0);
-  }, { passive: true });
-
-  window.closeFloatBar = function() {
-    closed = true;
-    bar.classList.remove('visible');
-  };
-
-  window.submitFloatBar = function() {
-    const name  = document.getElementById('fbName').value.trim();
-    const phone = document.getElementById('fbPhone').value.trim();
-    if (!name || !phone) { alert('이름과 연락처를 입력해주세요.'); return; }
-    alert('상담 신청이 완료되었습니다.\n48시간 내 전문 컨설턴트가 연락드리겠습니다!');
-    closeFloatBar();
-  };
-})();
 
 /* ── 피처 스크롤 인터랙션 ── */
 (function() {
