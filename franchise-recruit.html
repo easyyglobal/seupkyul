@@ -3,1122 +3,969 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>새없결 프랜차이즈 창업 — 지금 가장 빠르게 성장하는 두피·모발 케어 브랜드</title>
-<meta name="description" content="새없결 프랜차이즈로 검증된 수익 모델과 전폭적인 본사 지원을 경험하세요. 오픈 6개월 내 BEP 달성률 92%.">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<title>PAMANGTTE 파망떼 프랜차이즈 창업 — 복구염색 기술력으로 헤어 시장을 바꾸다</title>
+<meta name="description" content="파망떼 프랜차이즈. 과학으로 증명한 손상모 복구 프로토콜과 검증된 수익 모델. 평균 월매출 4,200만원, 손익분기 5.8개월.">
+<link rel="stylesheet" as="style" crossorigin="anonymous" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --canvas:   #FFFFFF;
-  --soft:     #F7F7F7;
-  --ink:      #222222;
-  --body-c:   #3F3F3F;
-  --muted:    #6A6A6A;
-  --hairline: #DDDDDD;
-  --shadow:   rgba(0,0,0,.02) 0 0 0 1px, rgba(0,0,0,.04) 0 2px 6px, rgba(0,0,0,.10) 0 4px 8px;
-  --nav-h:    80px;
-}
-
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--canvas); color: var(--ink);
-  font-size: 16px; line-height: 1.6; overflow-x: hidden;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0E0E10;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover { opacity: 0.75; }
+table { border-collapse: collapse; }
+details summary { list-style: none; cursor: pointer; }
+details summary::-webkit-details-marker { display: none; }
+
+/* ─── KEYFRAMES ─── */
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes kenBurns {
+  from { transform: scale(1) translateX(0); }
+  to   { transform: scale(1.14) translateX(-1%); }
+}
+@keyframes softPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(217,142,146,0.5); }
+  50%      { box-shadow: 0 0 0 14px rgba(217,142,146,0); }
+}
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* ─── NAV ─── */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 900;
-  display: flex; align-items: center; padding: 0 64px;
-  background: rgba(255,255,255,0); border-bottom: 1px solid transparent;
-  transition: background .3s, border-color .3s, backdrop-filter .3s;
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: 0 56px;
+  background: rgba(14,14,16,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fadeUpIn 0.8s cubic-bezier(.16,.84,.44,1) both;
 }
-.nav.on {
-  background: rgba(255,255,255,.96); backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px); border-color: var(--hairline);
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
 }
-.nav-logo { font-weight: 800; font-size: 20px; color: var(--ink); text-decoration: none; letter-spacing: -.5px; margin-right: auto; }
-.nav-links { display: flex; }
-.nav-a { font-size: 14px; color: var(--muted); font-weight: 500; text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: color .15s; }
-.nav-a:hover { color: var(--ink); }
+.nav-logo { font-size: 24px; font-weight: 900; letter-spacing: 0.01em; }
+.nav-links { display: flex; align-items: center; gap: 34px; }
+.nav-links a { font-size: 15px; font-weight: 500; }
 .nav-cta {
-  background: var(--ink); color: #fff;
-  padding: 10px 24px; border-radius: 100px; font-size: 14px; font-weight: 600;
-  text-decoration: none; margin-left: 24px; flex-shrink: 0; transition: opacity .2s;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0E0E10 !important;
+  background: #D98E92;
+  padding: 11px 26px;
+  border-radius: 999px;
+  display: inline-block;
+  opacity: 1 !important;
+  transition: background 0.2s, transform 0.2s;
 }
-.nav-cta:hover { opacity: .7; }
+.nav-cta:hover { background: #e8a2a6 !important; transform: scale(1.04); opacity: 1 !important; }
 
-/* Mobile nav */
-.mob-bar {
-  display: none; position: fixed; top: 0; left: 0; right: 0; height: 58px; z-index: 900;
-  background: rgba(255,255,255,.96); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--hairline); align-items: center; padding: 0 20px; justify-content: space-between;
-}
-.mob-logo { font-weight: 800; font-size: 18px; color: var(--ink); text-decoration: none; }
-.mob-ham { background: none; border: none; cursor: pointer; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
-.mob-ham span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
-.mob-drawer {
-  display: none; position: fixed; top: 58px; left: 0; right: 0; bottom: 0;
-  background: var(--canvas); z-index: 899; overflow-y: auto;
-  padding: 8px 20px 40px; flex-direction: column;
-}
-.mob-drawer.open { display: flex; }
-.mob-drawer a {
-  display: block; padding: 14px 12px; font-size: 16px; color: var(--ink);
-  text-decoration: none; border-bottom: 1px solid var(--hairline); font-weight: 500;
-}
-.mob-cta-btn {
-  margin-top: 16px; background: var(--ink) !important; color: #fff !important;
-  text-align: center; border-radius: 12px; font-weight: 600 !important; border-bottom: none !important;
-}
-
-/* ─── HERO (HUSH-style) ─── */
-#home {
-  min-height: 100svh; padding-top: var(--nav-h);
-  background: var(--canvas); display: flex; flex-direction: column;
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  height: 780px;
+  width: 100%;
   overflow: hidden;
 }
-
-.hero-top-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 36px 64px 0;
+.hero-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  animation: kenBurns 20s ease-in-out infinite alternate;
+  transform-origin: center;
 }
-.hero-overline {
-  font-size: 12px; font-weight: 700; color: var(--muted);
-  letter-spacing: .8px; text-transform: uppercase;
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.35) 0%,
+    rgba(0,0,0,0.5) 45%,
+    rgba(0,0,0,0.4) 65%,
+    rgba(0,0,0,0.78) 100%
+  );
 }
-.hero-overline-r { font-size: 13px; color: var(--muted); font-weight: 500; }
-
-.hero-headline-zone {
-  flex: 1; display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  padding: 40px 48px; text-align: center;
+.hero-body {
+  position: absolute; inset: 0;
+  padding: 0 56px;
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.hero-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  position: relative;
+}
+.hero-text-bg {
+  position: absolute;
+  left: -24px; right: -24px; top: -24px; bottom: -24px;
+  background: radial-gradient(ellipse at left, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 75%, rgba(0,0,0,0) 100%);
+  z-index: 0;
+  border-radius: 24px;
+}
+.hero-text-content { position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.22em;
+  color: #D98E92; margin-bottom: 26px;
+  animation: fadeUpIn 0.9s cubic-bezier(.16,.84,.44,1) 0.15s both;
 }
 .hero-h1 {
-  font-size: clamp(56px, 10vw, 136px);
-  font-weight: 800; letter-spacing: -4px; line-height: .92;
-  color: var(--ink); text-align: center;
+  font-size: 52px; font-weight: 900; line-height: 1.24;
+  letter-spacing: -0.01em; margin: 0 0 24px;
+  max-width: 560px;
+  animation: fadeUpIn 1s cubic-bezier(.16,.84,.44,1) 0.32s both;
 }
+.hero-h1 em { color: #D98E92; font-style: normal; }
+.hero-desc {
+  font-size: 19px; font-weight: 400; line-height: 1.65;
+  color: rgba(255,255,255,0.85);
+  max-width: 560px; margin: 0 0 36px;
+  animation: fadeUpIn 1s cubic-bezier(.16,.84,.44,1) 0.5s both;
+}
+.hero-btns {
+  display: flex; gap: 16px;
+  animation: fadeUpIn 1s cubic-bezier(.16,.84,.44,1) 0.68s both;
+}
+.btn-hero-primary {
+  font-size: 16px; font-weight: 700; color: #0E0E10;
+  background: #fff; padding: 17px 34px; border-radius: 999px;
+  display: inline-block; animation: softPulse 2.6s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+.btn-hero-primary:hover { opacity: 1; transform: scale(1.05); }
+.btn-hero-outline {
+  font-size: 16px; font-weight: 700; color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 17px 34px; border-radius: 999px;
+  display: inline-block; transition: background 0.2s, transform 0.2s;
+}
+.btn-hero-outline:hover { opacity: 1; background: rgba(255,255,255,0.18); transform: scale(1.05); }
 
-.hero-stat-row {
-  display: flex; align-items: stretch;
-  border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden;
-  margin-top: 52px; box-shadow: var(--shadow); background: var(--hairline); gap: 1px;
+/* Opening Card */
+.opening-card {
+  position: relative;
+  flex: 0 0 340px; width: 340px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(8px);
+  border-radius: 22px; padding: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  animation: fadeUpIn 0.7s cubic-bezier(.16,.84,.44,1) 0.4s both;
+  color: #0E0E10;
 }
-.hero-stat-item {
-  padding: 20px 48px; text-align: center; background: var(--canvas);
-  display: flex; flex-direction: column; align-items: center;
+.opening-card.hidden { display: none; }
+.opening-card-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 30px; height: 30px; border-radius: 999px;
+  background: rgba(14,14,16,0.55); color: #fff;
+  border: none; font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2; transition: background 0.2s;
 }
-.hero-stat-n {
-  font-size: 44px; font-weight: 800; letter-spacing: -2px; color: var(--ink);
-  line-height: 1; display: block;
+.opening-card-close:hover { background: rgba(14,14,16,0.8); }
+.opening-card-img {
+  width: 100%; height: 280px;
+  border-radius: 14px; overflow: hidden; margin-bottom: 18px;
 }
-.hero-stat-n sup { font-size: .42em; vertical-align: super; letter-spacing: 0; }
-.hero-stat-l { font-size: 12px; color: var(--muted); margin-top: 6px; display: block; font-weight: 500; }
+.opening-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.opening-card-badge {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  color: #B96069; margin-bottom: 10px;
+}
+.opening-card-name { font-size: 23px; font-weight: 800; color: #0E0E10; margin-bottom: 6px; }
+.opening-card-date { font-size: 14.5px; font-weight: 500; color: #6B6B6E; }
 
-.hero-info-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  padding: 40px 64px 60px;
-  border-top: 1px solid var(--hairline); margin-top: 52px;
-  gap: 48px;
+/* ─── SECTION REVEAL ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(48px);
+  transition: opacity 0.9s cubic-bezier(.16,.84,.44,1), transform 0.9s cubic-bezier(.16,.84,.44,1);
 }
-.hero-info-label {
-  font-size: 11px; font-weight: 700; color: var(--muted);
-  letter-spacing: .7px; text-transform: uppercase; margin-bottom: 10px;
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-child {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.7s cubic-bezier(.16,.84,.44,1), transform 0.7s cubic-bezier(.16,.84,.44,1);
 }
-.hero-info-title { font-size: 18px; font-weight: 700; color: var(--ink); line-height: 1.4; }
-.hero-info-right { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
-.hero-info-body { font-size: 16px; color: var(--body-c); line-height: 1.8; margin-bottom: 28px; max-width: 440px; }
-.hero-btns { display: flex; gap: 12px; }
+.reveal-child.visible { opacity: 1; transform: translateY(0); }
 
-/* ─── BUTTONS ─── */
-.btn-primary {
-  background: var(--ink); color: #fff;
-  padding: 14px 32px; border-radius: 100px; font-size: 15px; font-weight: 600;
-  text-decoration: none; transition: opacity .2s; display: inline-block;
+/* ─── PHILOSOPHY ─── */
+#philosophy {
+  background: #D98E92;
+  padding: 120px 56px;
+  scroll-margin-top: 96px;
 }
-.btn-primary:hover { opacity: .72; }
-.btn-outline {
-  border: 1.5px solid var(--hairline); color: var(--ink);
-  padding: 14px 32px; border-radius: 100px; font-size: 15px; font-weight: 500;
-  text-decoration: none; transition: border-color .2s; display: inline-block;
+.philosophy-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 0.8fr 1.2fr;
+  gap: 72px; align-items: start;
 }
-.btn-outline:hover { border-color: var(--ink); }
-
-/* ─── TRUST BAND ─── */
-.trust-band {
-  border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
-  padding: 48px; background: var(--canvas);
+.philosophy-label {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  color: #3A1418; margin-bottom: 20px;
 }
-.trust-inner {
-  max-width: 1120px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(4,1fr);
+.philosophy-h2 {
+  font-size: 46px; font-weight: 900; line-height: 1.25; color: #2A1416;
 }
-.trust-item {
-  text-align: center; padding: 0 32px;
-  border-right: 1px solid var(--hairline);
+.philosophy-body {
+  font-size: 21px; font-weight: 500; line-height: 1.7;
+  color: #2A1416; margin-bottom: 26px;
 }
-.trust-item:last-child { border-right: none; }
-.trust-n {
-  font-size: clamp(36px, 4vw, 54px); font-weight: 800; color: var(--ink);
-  letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px;
-}
-.trust-n sup { font-size: .45em; letter-spacing: 0; vertical-align: super; }
-.trust-l { font-size: 13px; color: var(--muted); font-weight: 500; }
-
-/* ─── SECTION COMMON ─── */
-.sec { padding: 96px 48px; }
-.inner { max-width: 1120px; margin: 0 auto; }
-.eyebrow {
-  font-size: 12px; font-weight: 700; color: var(--muted);
-  letter-spacing: .8px; text-transform: uppercase; margin-bottom: 16px; display: block;
-}
-.sec-h {
-  font-size: clamp(30px, 3.5vw, 48px); font-weight: 800;
-  letter-spacing: -1px; line-height: 1.12; margin-bottom: 16px; color: var(--ink);
-}
-.sec-sub { font-size: 17px; color: var(--muted); line-height: 1.7; max-width: 480px; margin-bottom: 56px; }
-
-/* ─── BRAND ─── */
-#brand { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
-.brand-vis {
-  border: 1px solid var(--hairline); border-radius: 20px;
-  padding: 44px 40px; background: var(--canvas); position: relative; overflow: hidden;
-}
-.brand-watermark {
-  font-size: 120px; font-weight: 900; color: var(--soft);
-  line-height: 1; position: absolute; bottom: 8px; right: 16px;
-  user-select: none; pointer-events: none;
-}
-.brand-yr-txt {
-  font-size: 11px; font-weight: 700; color: var(--muted);
-  letter-spacing: .7px; text-transform: uppercase; margin-bottom: 20px;
-}
-.brand-vis-title {
-  font-size: 26px; font-weight: 800; color: var(--ink);
-  margin-bottom: 16px; letter-spacing: -.5px; line-height: 1.2; position: relative; z-index: 1;
-}
-.brand-vis-body { font-size: 15px; color: var(--body-c); line-height: 1.8; position: relative; z-index: 1; }
-.brand-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; position: relative; z-index: 1; }
-.brand-pill {
-  background: var(--canvas); border: 1px solid var(--hairline);
-  color: var(--ink); padding: 5px 14px; border-radius: 100px; font-size: 12px; font-weight: 600;
-}
-.brand-vals { display: flex; flex-direction: column; gap: 32px; }
-.bv { display: flex; gap: 20px; align-items: flex-start; }
-.bv-ic {
-  flex: 0 0 48px; height: 48px; border-radius: 12px;
-  background: var(--canvas); border: 1px solid var(--hairline);
-  display: flex; align-items: center; justify-content: center; font-size: 22px;
-}
-.bv-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
-.bv-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+.philosophy-body:last-child { margin-bottom: 0; }
 
 /* ─── FEATURES ─── */
-#features { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.feat-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden;
-  background: var(--hairline); gap: 1px;
+#features { padding: 140px 56px; scroll-margin-top: 96px; }
+.features-inner { max-width: 1200px; margin: 0 auto; }
+.section-label-rose {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  color: #D98E92; margin-bottom: 20px;
 }
-.feat-card { background: var(--canvas); padding: 36px 28px; transition: background .2s; }
-.feat-card:hover { background: var(--soft); }
-.feat-num {
-  font-size: 11px; font-weight: 700; color: var(--muted);
-  letter-spacing: .6px; text-transform: uppercase; margin-bottom: 20px;
+.features-h2 { font-size: 44px; font-weight: 900; margin: 0 0 64px; }
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.14);
 }
-.feat-ic { font-size: 28px; margin-bottom: 14px; }
-.feat-title { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
-.feat-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.feature-cell {
+  background: #0E0E10; padding: 44px 36px;
+}
+.feature-n { font-size: 44px; font-weight: 900; color: #D98E92; margin-bottom: 28px; }
+.feature-title { font-size: 22px; font-weight: 700; margin: 0 0 16px; }
+.feature-desc { font-size: 15.5px; font-weight: 400; line-height: 1.7; color: #a8a8ac; }
 
-/* ─── MARKET ─── */
-#market { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.mkt-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; }
-.mkt-big {
-  font-size: clamp(64px, 8vw, 108px); font-weight: 800; color: var(--ink);
-  line-height: .9; letter-spacing: -4px; margin-bottom: 12px;
+/* ─── STATS ─── */
+#stats { background: #fff; padding: 120px 56px; color: #0E0E10; }
+.stats-inner { max-width: 1200px; margin: 0 auto; }
+.section-label-dark {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  color: #B96069; margin-bottom: 20px;
 }
-.mkt-big sub { font-size: .38em; letter-spacing: -1px; }
-.mkt-cap { font-size: 15px; color: var(--muted); margin-bottom: 48px; }
-.mkt-bars { display: flex; flex-direction: column; gap: 24px; }
-.mkt-bar-lbl { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--body-c); }
-.mkt-bar-track { height: 3px; background: var(--hairline); border-radius: 100px; overflow: hidden; }
-.mkt-bar-fill { height: 100%; background: var(--ink); border-radius: 100px; }
-.mkt-right-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden;
-  background: var(--hairline); gap: 1px;
+.stats-h2 { font-size: 40px; font-weight: 900; color: #0E0E10; margin: 0 0 56px; }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
 }
-.mkt-card { background: var(--canvas); padding: 32px 24px; }
-.mkt-card-n { font-size: 34px; font-weight: 800; color: var(--ink); letter-spacing: -1px; line-height: 1; margin-bottom: 8px; }
-.mkt-card-l { font-size: 13px; color: var(--muted); }
-
-/* ─── REVENUE ─── */
-#revenue { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.rev-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: start; }
-.rev-rows { border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden; }
-.rev-row {
-  background: var(--canvas); border-bottom: 1px solid var(--hairline);
-  padding: 22px 24px; display: flex; justify-content: space-between; align-items: center;
-  transition: background .15s;
+.stat-item { border-left: 2px solid #D98E92; padding-left: 24px; }
+.stat-n {
+  font-size: 46px; font-weight: 900; color: #0E0E10;
+  letter-spacing: -0.01em; line-height: 1;
 }
-.rev-row:last-child { border-bottom: none; }
-.rev-row:hover { background: var(--soft); }
-.rev-row-name { font-size: 15px; font-weight: 700; color: var(--ink); }
-.rev-row-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.rev-pct { font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -1px; }
-.rev-panel { border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden; }
-.rev-panel-head { background: var(--ink); padding: 32px 28px; }
-.rev-panel-lbl { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); margin-bottom: 6px; }
-.rev-panel-n { font-size: 42px; font-weight: 800; color: #fff; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
-.rev-panel-sub { font-size: 12px; color: rgba(255,255,255,.4); }
-.rev-panel-body { padding: 24px 28px; background: var(--canvas); }
-.rev-range { display: flex; flex-direction: column; gap: 14px; }
-.rev-range-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--hairline); padding-bottom: 14px; }
-.rev-range-row:last-child { border-bottom: none; padding-bottom: 0; }
-.rev-range-lbl { font-size: 13px; color: var(--muted); }
-.rev-range-val { font-size: 14px; font-weight: 700; color: var(--ink); }
-
-/* ─── SUPPORT ─── */
-#support { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.sup-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden;
-  background: var(--hairline); gap: 1px;
-}
-.sup-card { background: var(--canvas); padding: 28px 22px; transition: background .2s; }
-.sup-card:hover { background: var(--soft); }
-.sup-ic { font-size: 26px; margin-bottom: 12px; }
-.sup-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
-.sup-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.stat-suffix { font-size: 22px; font-weight: 500; color: #B96069; margin-left: 2px; }
+.stat-label { font-size: 15px; font-weight: 400; color: #6B6B6E; margin-top: 12px; }
+.stats-disclaimer { font-size: 12.5px; color: #a5a5a8; margin: 44px 0 0; }
 
 /* ─── COST ─── */
-#cost { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.cost-wrap { display: grid; grid-template-columns: 1fr 1.7fr; gap: 72px; align-items: start; }
-.cost-intro .sec-h { font-size: clamp(28px, 3vw, 42px); margin-bottom: 16px; }
-.cost-intro p { color: var(--muted); line-height: 1.8; font-size: 15px; margin-bottom: 32px; }
-.cost-hl {
-  border: 1px solid var(--hairline); border-radius: 14px;
-  padding: 24px; background: var(--canvas);
+#cost { padding: 140px 56px; scroll-margin-top: 96px; }
+.cost-inner { max-width: 1200px; margin: 0 auto; }
+.cost-h2 { font-size: 44px; font-weight: 900; margin: 0 0 16px; }
+.cost-sub { font-size: 16px; color: #a8a8ac; margin: 0 0 56px; }
+.cost-table { display: flex; flex-direction: column; }
+.cost-head-row {
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
 }
-.cost-hl-t { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
-.cost-hl-n { font-size: 36px; font-weight: 800; color: var(--ink); letter-spacing: -1px; }
-.cost-hl-s { font-size: 12px; color: var(--muted); margin-top: 4px; }
-.cost-tbl { border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden; }
-.cost-thead {
-  display: grid; grid-template-columns: 1fr 130px 110px;
-  padding: 14px 24px; background: var(--soft);
-  border-bottom: 1px solid var(--hairline);
-  font-size: 11px; font-weight: 700; color: var(--muted);
-  text-transform: uppercase; letter-spacing: .4px;
+.cost-head-cell {
+  padding: 18px 20px; font-size: 14px; font-weight: 600;
+  color: #a8a8ac; border-bottom: 1px solid rgba(255,255,255,0.16);
 }
-.cost-thead span:not(:first-child) { text-align: right; }
-.cost-tr {
-  display: grid; grid-template-columns: 1fr 130px 110px;
-  padding: 18px 24px; border-bottom: 1px solid var(--hairline);
-  align-items: center; transition: background .15s;
+.cost-head-cell.highlight {
+  font-weight: 700; color: #0E0E10; background: #D98E92;
+  border-bottom: none;
 }
-.cost-tr:last-of-type { border-bottom: none; }
-.cost-tr:hover { background: var(--soft); }
-.cost-name { font-size: 14px; font-weight: 600; color: var(--ink); }
-.cost-name-s { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.cost-amt { text-align: right; font-size: 14px; font-weight: 700; color: var(--ink); }
-.cost-note { text-align: right; font-size: 12px; color: var(--muted); }
-.cost-total {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 20px 24px; background: var(--soft); border-top: 1px solid var(--hairline);
+.cost-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; }
+.cost-cell {
+  padding: 22px 20px; font-size: 17px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.cost-total-lbl { font-size: 14px; font-weight: 700; color: var(--ink); }
-.cost-total-n { font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; }
+.cost-cell.label { font-weight: 500; color: #fff; }
+.cost-cell.pamangtte { font-weight: 700; color: #2A1416; background: rgba(217,142,146,0.9); border-bottom: none; }
+.cost-cell.other { font-weight: 400; color: #a8a8ac; }
+.cost-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+.cost-benefit-card {
+  background: rgba(217,142,146,0.1);
+  border: 1px solid rgba(217,142,146,0.4);
+  border-radius: 16px; padding: 28px 30px;
+  display: flex; gap: 18px; align-items: flex-start;
+}
+.cost-benefit-n { font-size: 26px; font-weight: 900; color: #D98E92; flex-shrink: 0; }
+.cost-benefit-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+.cost-benefit-desc { font-size: 14.5px; font-weight: 400; line-height: 1.6; color: #a8a8ac; }
 
-/* ─── PROCESS ─── */
-#process { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.proc-grid { display: grid; grid-template-columns: repeat(5,1fr); position: relative; gap: 0; }
-.proc-line {
-  position: absolute; top: 39px;
-  left: calc(10% + 20px); right: calc(10% + 20px);
-  height: 1px; background: var(--hairline);
+/* ─── TIMELINE ─── */
+#timeline { background: #D98E92; padding: 140px 56px; scroll-margin-top: 96px; }
+.timeline-inner { max-width: 1200px; margin: 0 auto; }
+.timeline-label {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  color: #3A1418; margin-bottom: 20px;
 }
-.proc-step { text-align: center; position: relative; z-index: 1; padding: 0 12px; }
-.proc-num {
-  width: 80px; height: 80px; border-radius: 50%;
-  background: var(--canvas); border: 1px solid var(--hairline);
+.timeline-h2 { font-size: 44px; font-weight: 900; color: #2A1416; margin: 0 0 64px; }
+.timeline-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px;
+}
+.timeline-step { border-top: 3px solid #2A1416; padding-top: 22px; }
+.timeline-n { font-size: 30px; font-weight: 900; color: #2A1416; margin-bottom: 20px; }
+.timeline-title { font-size: 17px; font-weight: 700; color: #2A1416; margin: 0 0 10px; }
+.timeline-desc { font-size: 14px; font-weight: 500; line-height: 1.6; color: #4a2226; }
+
+/* ─── GALLERY ─── */
+#gallery { padding: 140px 56px; }
+.gallery-inner { max-width: 1200px; margin: 0 auto; }
+.gallery-h2 { font-size: 44px; font-weight: 900; margin: 0 0 56px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.gallery-item {
+  position: relative; overflow: hidden; height: 240px; cursor: zoom-in;
+}
+.gallery-item img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(0.15);
+  transition: transform 0.6s cubic-bezier(.16,.84,.44,1);
+}
+.gallery-item:hover img { transform: scale(1.08); }
+.gallery-label {
+  position: absolute; left: 18px; bottom: 16px;
+  color: #fff; font-size: 13px; font-weight: 600;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+}
+.gallery-placeholder {
+  position: relative; overflow: hidden; height: 240px;
+  background-image: repeating-linear-gradient(135deg, #1c1c1e, #1c1c1e 12px, #141416 12px, #141416 24px);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 24px; font-size: 20px; font-weight: 800; color: var(--muted);
-  box-shadow: var(--shadow);
 }
-.proc-step.done .proc-num { background: var(--ink); color: #fff; border-color: var(--ink); }
-.proc-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
-.proc-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.gallery-placeholder-tag {
+  font-family: monospace; font-size: 12.5px; color: #a8a8ac;
+  background: #0E0E10; padding: 6px 12px; border-radius: 6px;
+}
+
+/* ─── VIDEO ─── */
+#video { padding: 140px 56px; scroll-margin-top: 96px; }
+.video-inner { max-width: 1200px; margin: 0 auto; }
+.video-h2 { font-size: 44px; font-weight: 900; margin: 0 0 48px; }
+.video-placeholder {
+  position: relative; width: 100%; padding-top: 42%;
+  border-radius: 20px; overflow: hidden;
+  background-image: repeating-linear-gradient(135deg, #1c1c1e, #1c1c1e 12px, #141416 12px, #141416 24px);
+  display: flex; align-items: center; justify-content: center;
+}
+.video-placeholder-tag {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: monospace; font-size: 13px; color: #a8a8ac;
+  background: #0E0E10; padding: 10px 18px; border-radius: 6px; text-align: center;
+  white-space: nowrap;
+}
+.video-embed-wrap {
+  position: relative; width: 100%; padding-top: 56.25%;
+  border-radius: 20px; overflow: hidden; background: #000;
+}
+.video-embed-wrap iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+}
 
 /* ─── TESTIMONIALS ─── */
-#testimonials { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-.testi-card {
-  border: 1px solid var(--hairline); border-radius: 16px; padding: 32px 28px;
-  transition: box-shadow .2s;
+#testimonials { background: #fff; padding: 120px 56px; color: #0E0E10; }
+.testimonials-inner { max-width: 1100px; margin: 0 auto; }
+.testimonials-h2 { font-size: 40px; font-weight: 900; color: #0E0E10; margin: 0 0 56px; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
+.testimonial-quote {
+  font-style: italic; font-size: 22px; font-weight: 500;
+  line-height: 1.6; color: #0E0E10; margin: 0 0 26px;
 }
-.testi-card:hover { box-shadow: var(--shadow); }
-.testi-stars { color: var(--ink); font-size: 13px; letter-spacing: 2px; margin-bottom: 20px; }
-.testi-q { font-size: 15px; color: var(--body-c); line-height: 1.75; margin-bottom: 28px; }
-.testi-q::before {
-  content: '\201C'; font-size: 36px; color: var(--hairline);
-  line-height: 1; display: block; margin-bottom: 12px;
-}
-.testi-author {
-  display: flex; align-items: center; gap: 12px;
-  border-top: 1px solid var(--hairline); padding-top: 20px;
-}
-.testi-av {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--soft);
-  display: flex; align-items: center; justify-content: center; font-size: 16px;
-  border: 1px solid var(--hairline); flex-shrink: 0;
-}
-.testi-name { font-size: 13px; font-weight: 700; color: var(--ink); }
-.testi-role { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.testimonial-name { font-size: 15px; font-weight: 700; color: #0E0E10; }
+.testimonial-meta { font-size: 13.5px; font-weight: 400; color: #B96069; margin-top: 4px; }
 
 /* ─── FAQ ─── */
-#faq { background: var(--canvas); border-top: 1px solid var(--hairline); }
-.faq-layout { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: start; }
-.faq-list { border: 1px solid var(--hairline); border-radius: 16px; overflow: hidden; }
-.faq-item { border-bottom: 1px solid var(--hairline); background: var(--canvas); }
-.faq-item:last-child { border-bottom: none; }
-.faq-q {
-  padding: 20px 24px; display: flex; justify-content: space-between;
-  align-items: center; cursor: pointer; font-size: 14px; font-weight: 600;
-  color: var(--ink); gap: 14px; user-select: none;
+#faq { padding: 140px 56px; scroll-margin-top: 96px; }
+.faq-inner { max-width: 860px; margin: 0 auto; }
+.faq-h2 { font-size: 44px; font-weight: 900; margin: 0 0 48px; }
+details.faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  padding: 24px 0;
 }
-.faq-ic {
-  flex: 0 0 20px; height: 20px; border-radius: 50%;
-  border: 1px solid var(--hairline);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 400; color: var(--muted);
-  transition: transform .25s, border-color .25s; flex-shrink: 0;
+details.faq-item summary {
+  font-size: 18px; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.faq-item.open .faq-ic { transform: rotate(45deg); border-color: var(--ink); color: var(--ink); }
-.faq-a { display: none; padding: 0 24px 20px; font-size: 14px; color: var(--muted); line-height: 1.78; }
-.faq-item.open .faq-a { display: block; }
+.faq-icon { color: #D98E92; font-size: 22px; transition: transform 0.2s; flex-shrink: 0; margin-left: 16px; }
+details.faq-item[open] .faq-icon { transform: rotate(45deg); }
+details.faq-item p {
+  font-size: 15.5px; font-weight: 400; line-height: 1.7;
+  color: #a8a8ac; margin: 18px 0 0;
+}
 
-/* ─── CTA ─── */
-#contact { background: var(--ink); padding: 112px 48px; text-align: center; }
-.cta-inner { max-width: 600px; margin: 0 auto; }
-.cta-eyebrow {
-  font-size: 12px; font-weight: 700; color: rgba(255,255,255,.4);
-  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+/* ─── CONSULT ─── */
+#consult { background: #D98E92; padding: 140px 56px; scroll-margin-top: 96px; }
+.consult-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
 }
-.cta-h {
-  font-size: clamp(36px, 5vw, 58px); font-weight: 800; color: #fff;
-  letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
+.consult-label {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
+  color: #3A1418; margin-bottom: 20px;
 }
-.cta-sub { font-size: 17px; color: rgba(255,255,255,.52); line-height: 1.75; margin-bottom: 48px; }
-.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 56px; }
-.cta-btn-w {
-  background: #fff; color: var(--ink);
-  padding: 16px 36px; border-radius: 100px; font-size: 15px; font-weight: 700;
-  text-decoration: none; transition: opacity .2s;
+.consult-h2 { font-size: 40px; font-weight: 900; color: #2A1416; line-height: 1.3; margin: 0 0 22px; }
+.consult-desc { font-size: 17px; font-weight: 500; line-height: 1.65; color: #4a2226; }
+.consult-form {
+  background: #fff; border-radius: 24px; padding: 40px;
+  display: flex; flex-direction: column; gap: 14px;
 }
-.cta-btn-w:hover { opacity: .88; }
-.cta-btn-ghost {
-  background: transparent; color: rgba(255,255,255,.75);
-  padding: 16px 36px; border-radius: 100px; font-size: 15px; font-weight: 500;
-  text-decoration: none; border: 1px solid rgba(255,255,255,.22);
-  transition: border-color .2s, color .2s;
+.consult-form input,
+.consult-form textarea {
+  background: #F7F1F1; border: 1px solid #EAD8D9;
+  border-radius: 12px; padding: 15px 18px;
+  color: #171717; font-size: 15px;
+  font-family: 'Pretendard', sans-serif;
+  width: 100%; outline: none;
+  transition: border-color 0.2s;
 }
-.cta-btn-ghost:hover { border-color: rgba(255,255,255,.6); color: #fff; }
-.cta-contacts { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
-.cta-ci { text-align: center; }
-.cta-ci-lbl { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.32); letter-spacing: .6px; text-transform: uppercase; margin-bottom: 4px; }
-.cta-ci-val { font-size: 16px; font-weight: 600; color: rgba(255,255,255,.8); text-decoration: none; display: block; }
-.cta-ci-val:hover { color: #fff; }
+.consult-form input:focus,
+.consult-form textarea:focus { border-color: #D98E92; }
+.consult-form textarea { resize: none; }
+.consult-submit {
+  margin-top: 6px; background: #0E0E10; color: #fff;
+  font-size: 16px; font-weight: 700; padding: 16px;
+  border: none; border-radius: 999px; cursor: pointer;
+  font-family: 'Pretendard', sans-serif;
+  transition: background 0.2s, transform 0.2s;
+}
+.consult-submit:hover { background: #232323; transform: scale(1.02); }
 
 /* ─── FOOTER ─── */
-footer { background: #0A0A0A; padding: 40px 64px; }
-.foot-inner {
-  max-width: 1120px; margin: 0 auto;
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+footer {
+  padding: 56px;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.foot-logo { font-size: 18px; font-weight: 800; color: rgba(255,255,255,.4); letter-spacing: -.3px; }
-.foot-copy { font-size: 12px; color: rgba(255,255,255,.18); }
-.foot-links { display: flex; gap: 20px; }
-.foot-links a { font-size: 12px; color: rgba(255,255,255,.22); text-decoration: none; transition: color .15s; }
-.foot-links a:hover { color: rgba(255,255,255,.5); }
+.footer-copy { font-size: 16px; font-weight: 700; color: #a8a8ac; }
+.footer-links { display: flex; gap: 28px; font-size: 14px; color: #a8a8ac; }
 
-/* ─── RESPONSIVE ─── */
-@media (max-width: 1024px) {
-  .nav { display: none; }
-  .mob-bar { display: flex; }
-  .sec { padding: 72px 24px; }
-  #home { padding-top: 58px; }
-  .hero-top-bar { padding: 24px 24px 0; }
-  .hero-headline-zone { padding: 32px 24px; }
-  .hero-h1 { letter-spacing: -3px; }
-  .hero-stat-item { padding: 16px 24px; }
-  .hero-stat-n { font-size: 34px; }
-  .hero-info-row { padding: 32px 24px 48px; grid-template-columns: 1fr; gap: 24px; }
-  .hero-info-right { align-items: flex-start; text-align: left; }
-  .trust-band { padding: 40px 24px; }
-  .trust-inner { grid-template-columns: repeat(2,1fr); gap: 0; }
-  .trust-item { padding: 24px 16px; }
-  .trust-item:nth-child(2) { border-right: none; }
-  .trust-item:nth-child(3) { border-top: 1px solid var(--hairline); border-right: 1px solid var(--hairline); }
-  .trust-item:nth-child(4) { border-top: 1px solid var(--hairline); border-right: none; }
-  .brand-grid { grid-template-columns: 1fr; gap: 40px; }
-  .feat-grid { grid-template-columns: repeat(2,1fr); }
-  .mkt-layout { grid-template-columns: 1fr; gap: 48px; }
-  .rev-layout { grid-template-columns: 1fr; gap: 32px; }
-  .sup-grid { grid-template-columns: repeat(2,1fr); }
-  .cost-wrap { grid-template-columns: 1fr; gap: 40px; }
-  .proc-grid { grid-template-columns: 1fr; }
-  .proc-line { display: none; }
-  .proc-step {
-    text-align: left; display: grid;
-    grid-template-columns: 56px 1fr; gap: 16px; align-items: start;
-    border-bottom: 1px solid var(--hairline); padding-bottom: 24px; margin-bottom: 24px;
-  }
-  .proc-step:last-child { border-bottom: none; margin-bottom: 0; }
-  .proc-num { width: 44px; height: 44px; font-size: 15px; margin: 0; }
-  .proc-step > div:last-child { grid-column: 2; }
-  .testi-grid { grid-template-columns: 1fr; }
-  .faq-layout { grid-template-columns: 1fr; gap: 40px; }
-  #contact { padding: 72px 24px; }
-  footer { padding: 32px 24px; }
-  .foot-inner { flex-direction: column; text-align: center; }
-  .cost-note, .cost-thead span:last-child { display: none; }
-  .cost-thead { grid-template-columns: 1fr 130px; }
-  .cost-tr { grid-template-columns: 1fr 130px; }
+/* ─── BACK TO TOP ─── */
+#back-to-top {
+  position: fixed; right: 32px; bottom: 32px;
+  width: 52px; height: 52px; border-radius: 999px;
+  background: #D98E92; color: #0E0E10;
+  border: none; font-size: 20px; font-weight: 700;
+  cursor: pointer; z-index: 90;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  display: none; align-items: center; justify-content: center;
+  transition: transform 0.2s;
+  animation: overlayFadeIn 0.3s ease-out both;
 }
-@media (max-width: 640px) {
-  .feat-grid { grid-template-columns: 1fr; }
-  .mkt-right-grid { grid-template-columns: 1fr 1fr; }
-  .cta-contacts { flex-direction: column; gap: 24px; }
-  .hero-stat-row { flex-direction: column; border-radius: 12px; gap: 0; }
-  .hero-stat-item { border-right: none !important; border-bottom: 1px solid var(--hairline); }
-  .hero-stat-item:last-child { border-bottom: none; }
-  .hero-btns { flex-direction: column; }
+#back-to-top.visible { display: flex; }
+#back-to-top:hover { transform: translateY(-4px) scale(1.06); }
+
+/* ─── LIGHTBOX ─── */
+#lightbox {
+  display: none; position: fixed; inset: 0;
+  background: rgba(8,8,9,0.82);
+  backdrop-filter: blur(6px);
+  z-index: 200; align-items: center; justify-content: center;
+  animation: overlayFadeIn 0.25s ease-out both;
 }
+#lightbox.open { display: flex; }
+.lightbox-content {
+  position: relative;
+  max-width: 82vw; max-height: 82vh;
+  animation: modalPop 0.4s cubic-bezier(.16,.84,.44,1) both;
+}
+.lightbox-content img {
+  max-width: 82vw; max-height: 82vh;
+  display: block; border-radius: 16px; object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+.lightbox-label {
+  position: absolute; left: 24px; bottom: 24px;
+  color: #fff; font-size: 16px; font-weight: 600;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.65);
+}
+.lightbox-close {
+  position: fixed; top: 32px; right: 36px;
+  width: 46px; height: 46px; border-radius: 999px;
+  background: #fff; color: #0E0E10;
+  border: none; font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s;
+}
+.lightbox-close:hover { transform: scale(1.08); }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="nav" id="mainNav">
-  <a class="nav-logo" href="#home">새없결</a>
-  <div class="nav-links">
-    <a class="nav-a" href="#brand">브랜드</a>
-    <a class="nav-a" href="#features">선택 이유</a>
-    <a class="nav-a" href="#market">시장 분석</a>
-    <a class="nav-a" href="#revenue">수익 구조</a>
-    <a class="nav-a" href="#support">본사 지원</a>
-    <a class="nav-a" href="#cost">창업 비용</a>
-    <a class="nav-a" href="#process">프로세스</a>
-    <a class="nav-a" href="#faq">FAQ</a>
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">PAMANGTTE</span>
+    <div class="nav-links">
+      <a href="#philosophy">브랜드</a>
+      <a href="#features">기술력</a>
+      <a href="#cost">창업비용</a>
+      <a href="#timeline">가맹절차</a>
+      <a href="#video">영상</a>
+      <a href="#faq">FAQ</a>
+      <a href="#consult" class="nav-cta">상담 신청</a>
+    </div>
   </div>
-  <a class="nav-cta" href="#contact">가맹 문의하기</a>
 </nav>
 
-<!-- MOBILE NAV -->
-<div class="mob-bar">
-  <a class="mob-logo" href="#home">새없결</a>
-  <button class="mob-ham" id="mobHam" aria-label="메뉴 열기">
-    <span></span><span></span><span></span>
-  </button>
-</div>
-<div class="mob-drawer" id="mobDrawer">
-  <a href="#brand" onclick="closeMob()">브랜드 소개</a>
-  <a href="#features" onclick="closeMob()">선택받는 이유</a>
-  <a href="#market" onclick="closeMob()">시장 분석</a>
-  <a href="#revenue" onclick="closeMob()">수익 구조</a>
-  <a href="#support" onclick="closeMob()">본사 지원</a>
-  <a href="#cost" onclick="closeMob()">창업 비용</a>
-  <a href="#process" onclick="closeMob()">가맹 프로세스</a>
-  <a href="#testimonials" onclick="closeMob()">파트너 후기</a>
-  <a href="#faq" onclick="closeMob()">FAQ</a>
-  <a href="#contact" class="mob-cta-btn" onclick="closeMob()">가맹 문의하기 →</a>
-</div>
-
 <!-- HERO -->
-<section id="home">
-  <div class="hero-top-bar">
-    <div class="hero-overline">현재 가맹점 모집 중 · EST. 2022</div>
-    <div class="hero-overline-r">두피·모발 케어 No.1 프랜차이즈</div>
-  </div>
+<div class="hero">
+  <img class="hero-img" src="uploads/tKt20.jpg" alt="파망떼 매장 인테리어">
+  <div class="hero-overlay"></div>
+  <div class="hero-body">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-text-bg"></div>
+        <div class="hero-text-content">
+          <div class="hero-eyebrow">PAMANGTTE FRANCHISE 2026</div>
+          <h1 class="hero-h1">헤어 시장의 룰을,<br><em>파망떼가 다시<br>씁니다</em></h1>
+          <p class="hero-desc">과학으로 증명한 손상모 복구 프로토콜과 검증된 수익 모델. 경력이 없어도, 표준화된 시스템이 성공을 설계합니다.</p>
+          <div class="hero-btns">
+            <a href="#consult" class="btn-hero-primary">가맹 상담 신청</a>
+            <a href="#philosophy" class="btn-hero-outline">브랜드 스토리 보기</a>
+          </div>
+        </div>
+      </div>
 
-  <div class="hero-headline-zone">
-    <h1 class="hero-h1">
-      지금 가장 빠르게<br>성장하는 프랜차이즈
-    </h1>
-    <div class="hero-stat-row">
-      <div class="hero-stat-item">
-        <span class="hero-stat-n">300<sup>+</sup></span>
-        <span class="hero-stat-l">전국 가맹점</span>
+      <!-- Opening Card -->
+      <div class="opening-card" id="opening-card">
+        <button class="opening-card-close" onclick="document.getElementById('opening-card').classList.add('hidden')" aria-label="닫기">✕</button>
+        <div class="opening-card-img">
+          <img src="uploads/tKt20.jpg" alt="파망떼 강남점">
+        </div>
+        <div class="opening-card-badge">최근 가맹점 오픈 소식</div>
+        <div class="opening-card-name">파망떼 강남점</div>
+        <div class="opening-card-date">2026.06 그랜드 오픈</div>
       </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-n">92%</span>
-        <span class="hero-stat-l">6개월 내 BEP 달성률</span>
-      </div>
-      <div class="hero-stat-item">
-        <span class="hero-stat-n">4.8★</span>
-        <span class="hero-stat-l">파트너 만족도</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-info-row">
-    <div class="hero-info-left">
-      <div class="hero-info-label">새없결이란</div>
-      <div class="hero-info-title">검증된 수익 모델로<br>함께 성장합니다</div>
-    </div>
-    <div class="hero-info-right">
-      <p class="hero-info-body">
-        새없결은 검증된 수익 모델과 전폭적인 본사 지원으로
-        파트너의 성공을 함께 만들어갑니다.
-        오픈 6개월 내 BEP 달성률 92%.
-      </p>
-      <div class="hero-btns">
-        <a class="btn-primary" href="#contact">가맹 문의하기 →</a>
-        <a class="btn-outline" href="#brand">브랜드 알아보기</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST BAND -->
-<div class="trust-band">
-  <div class="trust-inner">
-    <div class="trust-item">
-      <div class="trust-n">300<sup>+</sup></div>
-      <div class="trust-l">전국 가맹점</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-n">92%</div>
-      <div class="trust-l">6개월 내 BEP 달성률</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-n">4.8★</div>
-      <div class="trust-l">파트너 만족도</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-n">2022</div>
-      <div class="trust-l">브랜드 설립 연도</div>
     </div>
   </div>
 </div>
 
-<!-- BRAND -->
-<section class="sec" id="brand">
-  <div class="inner">
-    <div class="brand-grid">
-      <div class="brand-vis">
-        <div class="brand-watermark">22</div>
-        <div class="brand-yr-txt">EST. 2022</div>
-        <div class="brand-vis-title">새없결의 시작</div>
-        <p class="brand-vis-body">
-          2022년, 더 건강하고 특별한 경험을 만들겠다는 철학 하나로 시작했습니다.
-          3년이 채 되지 않아 전국 300개 이상의 파트너와 함께 성장하고 있습니다.
-          우리의 성공 공식을 이제 당신과 함께 나누고 싶습니다.
-        </p>
-        <div class="brand-pills">
-          <span class="brand-pill">검증된 시스템</span>
-          <span class="brand-pill">높은 재구매율</span>
-          <span class="brand-pill">독점 상권 보장</span>
-        </div>
+<!-- PHILOSOPHY -->
+<div id="philosophy" class="reveal">
+  <div style="background:#D98E92; padding:120px 56px;">
+    <div class="philosophy-inner">
+      <div>
+        <div class="philosophy-label">BRAND PHILOSOPHY</div>
+        <h2 class="philosophy-h2">SCIENCE ×<br>RESTORE × BEAUTY</h2>
       </div>
-      <div class="brand-vals">
-        <span class="eyebrow">Brand Identity</span>
-        <h2 class="sec-h">왜 새없결인가</h2>
-        <div class="bv">
-          <div class="bv-ic">🌿</div>
-          <div>
-            <div class="bv-title">건강한 철학</div>
-            <div class="bv-desc">화학첨가물 없이 자연 그대로의 원재료를 고집합니다. 소비자가 오래 신뢰하는 브랜드를 만듭니다.</div>
-          </div>
-        </div>
-        <div class="bv">
-          <div class="bv-ic">📈</div>
-          <div>
-            <div class="bv-title">검증된 수익 모델</div>
-            <div class="bv-desc">오픈 6개월 내 BEP 달성률 92%. 데이터로 증명된 수익 구조를 그대로 제공합니다.</div>
-          </div>
-        </div>
-        <div class="bv">
-          <div class="bv-ic">🤝</div>
-          <div>
-            <div class="bv-title">파트너 우선주의</div>
-            <div class="bv-desc">본사의 성공은 가맹점의 성공에서 시작됩니다. 파트너의 이익이 곧 우리의 이익입니다.</div>
-          </div>
-        </div>
+      <div>
+        <p class="philosophy-body">파망떼는 손상모 복구를 감(感)이 아닌 과학으로 다룹니다. 모발 진단 데이터를 기반으로 손상 원인을 분석하고, 염색과 동시에 모발 구조를 되살리는 복구 시스템을 완성했습니다.</p>
+        <p class="philosophy-body">단순히 컬러를 입히는 염색이 아니라, 시술 후에도 건강한 모발 상태가 유지되는 결과 — 그것이 파망떼가 정의하는 프리미엄입니다.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- FEATURES -->
-<section class="sec" id="features">
-  <div class="inner">
-    <span class="eyebrow">Why Choose Us</span>
-    <h2 class="sec-h">새없결을 선택하는 이유</h2>
-    <p class="sec-sub">수많은 프랜차이즈 중 새없결이 특별한 6가지 이유.</p>
-    <div class="feat-grid">
-      <div class="feat-card">
-        <div class="feat-num">01</div>
-        <div class="feat-ic">⚡</div>
-        <div class="feat-title">빠른 BEP 달성</div>
-        <p class="feat-desc">오픈 후 평균 6개월 내 초기 투자금 회수. 업계 평균 대비 2배 빠른 손익분기점 달성.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-num">02</div>
-        <div class="feat-ic">🎯</div>
-        <div class="feat-title">독점 상권 보장</div>
-        <p class="feat-desc">가맹점 개설 시 일정 반경 내 독점 영업권 보장. 내부 경쟁 없는 안정적 영업 환경.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-num">03</div>
-        <div class="feat-ic">🏭</div>
-        <div class="feat-title">중앙 공급 시스템</div>
-        <p class="feat-desc">본사 직영 생산 시설로 품질 균일화. 발주부터 배송까지 원스탑 처리.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-num">04</div>
-        <div class="feat-ic">📱</div>
-        <div class="feat-title">스마트 운영 앱</div>
-        <p class="feat-desc">전용 가맹점 앱으로 재고·매출·발주를 실시간 관리. 경험 없이도 쉽게 운영.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-num">05</div>
-        <div class="feat-ic">🎓</div>
-        <div class="feat-title">체계적 교육 과정</div>
-        <p class="feat-desc">오픈 전 2주 집중 교육 + 오픈 동행 지원. 외식업 경험이 없어도 걱정 없습니다.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-num">06</div>
-        <div class="feat-ic">💡</div>
-        <div class="feat-title">마케팅 풀 서포트</div>
-        <p class="feat-desc">SNS 콘텐츠, 배달 플랫폼 최적화, 지역 마케팅까지. 마케팅 걱정은 본사가 합니다.</p>
+<div id="features" class="reveal">
+  <div style="padding:140px 56px;">
+    <div class="features-inner">
+      <div class="section-label-rose">TECHNOLOGY</div>
+      <h2 class="features-h2">복구염색 기술력, 파망떼의 차별점</h2>
+      <div class="features-grid">
+        <div class="feature-cell reveal-child" style="transition-delay:0ms">
+          <div class="feature-n">01</div>
+          <h3 class="feature-title">AI 모발 진단 시스템</h3>
+          <p class="feature-desc">전 지점 동일한 진단 장비로 손상도를 수치화하고, 데이터 기반 시술 설계로 실패 없는 결과를 만듭니다.</p>
+        </div>
+        <div class="feature-cell reveal-child" style="transition-delay:110ms">
+          <div class="feature-n">02</div>
+          <h3 class="feature-title">3단계 복구염색 프로토콜</h3>
+          <p class="feature-desc">손상 억제 → 컬러 착색 → 케라틴 코팅으로 이어지는 특허 시술 공정으로 염색과 복구를 동시에 완성합니다.</p>
+        </div>
+        <div class="feature-cell reveal-child" style="transition-delay:220ms">
+          <div class="feature-n">03</div>
+          <h3 class="feature-title">표준화된 마스터 트레이닝</h3>
+          <p class="feature-desc">본사 직영 교육센터에서 최소 120시간 실습을 이수한 디자이너만 매장에 배치되어 품질 편차를 없앱니다.</p>
+        </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- MARKET -->
-<section class="sec" id="market">
-  <div class="inner">
-    <span class="eyebrow">Market Analysis</span>
-    <div class="mkt-layout">
-      <div>
-        <div class="mkt-big">14<sub>조원</sub></div>
-        <p class="mkt-cap">국내 건강·뷰티 케어 시장 규모 (2024)</p>
-        <div class="mkt-bars">
-          <div>
-            <div class="mkt-bar-lbl"><span>시장 연평균 성장률</span><span>+18%</span></div>
-            <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:82%"></div></div>
-          </div>
-          <div>
-            <div class="mkt-bar-lbl"><span>프랜차이즈 선호도</span><span>78%</span></div>
-            <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:78%"></div></div>
-          </div>
-          <div>
-            <div class="mkt-bar-lbl"><span>고객 재구매율</span><span>91%</span></div>
-            <div class="mkt-bar-track"><div class="mkt-bar-fill" style="width:91%"></div></div>
-          </div>
+<!-- STATS -->
+<div id="stats" class="reveal">
+  <div style="background:#fff; padding:120px 56px;">
+    <div class="stats-inner">
+      <div class="section-label-dark">REVENUE MODEL</div>
+      <h2 class="stats-h2">숫자로 증명하는 가맹점 수익 모델</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-n"><span class="stat-val" data-target="4200" data-decimals="0">0</span><span class="stat-suffix">만원</span></div>
+          <div class="stat-label">가맹점 평균 월매출</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-n"><span class="stat-val" data-target="68" data-decimals="0">0</span><span class="stat-suffix">%</span></div>
+          <div class="stat-label">고객 재방문율</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-n"><span class="stat-val" data-target="18" data-decimals="0">0</span><span class="stat-suffix">만원</span></div>
+          <div class="stat-label">평균 객단가</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-n"><span class="stat-val" data-target="5.8" data-decimals="1">0</span><span class="stat-suffix">개월</span></div>
+          <div class="stat-label">평균 손익분기 도달</div>
         </div>
       </div>
-      <div class="mkt-right-grid">
-        <div class="mkt-card">
-          <div class="mkt-card-n">2.3배</div>
-          <div class="mkt-card-l">5년 내 시장 성장 예측</div>
-        </div>
-        <div class="mkt-card">
-          <div class="mkt-card-n">MZ</div>
-          <div class="mkt-card-l">핵심 소비층 세대</div>
-        </div>
-        <div class="mkt-card">
-          <div class="mkt-card-n">1위</div>
-          <div class="mkt-card-l">카테고리 브랜드 인지도</div>
-        </div>
-        <div class="mkt-card">
-          <div class="mkt-card-n">23개</div>
-          <div class="mkt-card-l">수상 및 인증 획득</div>
-        </div>
-      </div>
+      <p class="stats-disclaimer">* 2025년 가맹점 평균 기준 예시 데이터입니다.</p>
     </div>
   </div>
-</section>
-
-<!-- REVENUE -->
-<section class="sec" id="revenue">
-  <div class="inner">
-    <span class="eyebrow">Revenue Model</span>
-    <h2 class="sec-h">수익 구조</h2>
-    <p class="sec-sub">다양한 매출 채널로 안정적인 수익을 창출합니다.</p>
-    <div class="rev-layout">
-      <div class="rev-rows">
-        <div class="rev-row">
-          <div>
-            <div class="rev-row-name">홀 매장 판매</div>
-            <div class="rev-row-sub">기본 매출 채널</div>
-          </div>
-          <div class="rev-pct">45%</div>
-        </div>
-        <div class="rev-row">
-          <div>
-            <div class="rev-row-name">배달 주문</div>
-            <div class="rev-row-sub">배달앱 최적화 지원</div>
-          </div>
-          <div class="rev-pct">35%</div>
-        </div>
-        <div class="rev-row">
-          <div>
-            <div class="rev-row-name">포장 판매</div>
-            <div class="rev-row-sub">테이크아웃 강세</div>
-          </div>
-          <div class="rev-pct">15%</div>
-        </div>
-        <div class="rev-row">
-          <div>
-            <div class="rev-row-name">B2B / 케이터링</div>
-            <div class="rev-row-sub">기업 단체 수주</div>
-          </div>
-          <div class="rev-pct">5%</div>
-        </div>
-      </div>
-      <div class="rev-panel">
-        <div class="rev-panel-head">
-          <div class="rev-panel-lbl">월 평균 매출</div>
-          <div class="rev-panel-n">3,800만원</div>
-          <div class="rev-panel-sub">전국 가맹점 평균 기준</div>
-        </div>
-        <div class="rev-panel-body">
-          <div class="rev-range">
-            <div class="rev-range-row">
-              <span class="rev-range-lbl">하위 25%</span>
-              <span class="rev-range-val">2,200만원</span>
-            </div>
-            <div class="rev-range-row">
-              <span class="rev-range-lbl">중간값</span>
-              <span class="rev-range-val">3,800만원</span>
-            </div>
-            <div class="rev-range-row">
-              <span class="rev-range-lbl">상위 25%</span>
-              <span class="rev-range-val">5,600만원</span>
-            </div>
-            <div class="rev-range-row">
-              <span class="rev-range-lbl">평균 순이익률</span>
-              <span class="rev-range-val">22 – 28%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SUPPORT -->
-<section class="sec" id="support">
-  <div class="inner">
-    <span class="eyebrow">HQ Support</span>
-    <h2 class="sec-h">본사의 전폭적 지원</h2>
-    <p class="sec-sub">새없결은 파트너의 성공을 위해 아끼지 않습니다.</p>
-    <div class="sup-grid">
-      <div class="sup-card">
-        <div class="sup-ic">🏗</div>
-        <div class="sup-title">인테리어 지원</div>
-        <p class="sup-desc">본사 협력사를 통한 합리적인 비용의 표준 인테리어 시공 지원</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">📦</div>
-        <div class="sup-title">원자재 공급</div>
-        <p class="sup-desc">본사 직소싱 원재료 안정 공급. 품질과 가격 모두 보장된 공급망</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">📊</div>
-        <div class="sup-title">데이터 분석</div>
-        <p class="sup-desc">매출 데이터 분석 및 개선 방향 제시. 주간 리포트로 경영 인사이트 제공</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">🎨</div>
-        <div class="sup-title">마케팅 지원</div>
-        <p class="sup-desc">SNS 콘텐츠, 인쇄물, 이벤트 기획 등 마케팅 전 분야 본사 지원</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">📞</div>
-        <div class="sup-title">24시간 상담</div>
-        <p class="sup-desc">영업 중 발생하는 모든 이슈 즉각 대응. 전담 매니저 1:1 배정</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">🔄</div>
-        <div class="sup-title">메뉴 R&amp;D</div>
-        <p class="sup-desc">분기별 신메뉴 개발·출시. 트렌드를 앞서가는 지속적인 메뉴 혁신</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">🏆</div>
-        <div class="sup-title">우수 가맹점 인센티브</div>
-        <p class="sup-desc">성과 우수 가맹점 추가 마케팅 지원 및 인센티브 제공 프로그램</p>
-      </div>
-      <div class="sup-card">
-        <div class="sup-ic">🌐</div>
-        <div class="sup-title">온라인 판매 채널</div>
-        <p class="sup-desc">배달 플랫폼 입점 지원, 온라인 주문 시스템, 통합 포스 무상 제공</p>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
 <!-- COST -->
-<section class="sec" id="cost">
-  <div class="inner">
-    <div class="cost-wrap">
-      <div class="cost-intro">
-        <span class="eyebrow">Investment</span>
-        <h2 class="sec-h">창업 비용</h2>
-        <p>합리적인 초기 투자로 새없결의 검증된 비즈니스 모델을 운영하세요. 모든 비용은 투명하게 공개됩니다.</p>
-        <div class="cost-hl">
-          <div class="cost-hl-t">총 예상 투자금</div>
-          <div class="cost-hl-n">8,500만원~</div>
-          <div class="cost-hl-s">10평 기준 · 임차 보증금 별도</div>
+<div id="cost" class="reveal">
+  <div style="padding:140px 56px;">
+    <div class="cost-inner">
+      <div class="section-label-rose">INVESTMENT</div>
+      <h2 class="cost-h2">창업 비용, 투명하게 비교하세요</h2>
+      <p class="cost-sub">33㎡(10평) 기준, 동일 조건에서의 초기 투자 비용 비교입니다.</p>
+      <div class="cost-table">
+        <div class="cost-head-row">
+          <div class="cost-head-cell">항목</div>
+          <div class="cost-head-cell highlight">파망떼</div>
+          <div class="cost-head-cell">일반 프랜차이즈</div>
+          <div class="cost-head-cell">개인 창업</div>
+        </div>
+        <div class="cost-row">
+          <div class="cost-cell label">가맹비</div>
+          <div class="cost-cell pamangtte">1,500만원</div>
+          <div class="cost-cell other">2,000만원</div>
+          <div class="cost-cell other">-</div>
+        </div>
+        <div class="cost-row">
+          <div class="cost-cell label">교육비</div>
+          <div class="cost-cell pamangtte">포함</div>
+          <div class="cost-cell other">500만원</div>
+          <div class="cost-cell other">-</div>
+        </div>
+        <div class="cost-row">
+          <div class="cost-cell label">인테리어 (33㎡ 기준)</div>
+          <div class="cost-cell pamangtte">6,800만원</div>
+          <div class="cost-cell other">8,500만원</div>
+          <div class="cost-cell other">9,200만원</div>
+        </div>
+        <div class="cost-row">
+          <div class="cost-cell label">초도 물품 · 오픈 마케팅</div>
+          <div class="cost-cell pamangtte">1,200만원</div>
+          <div class="cost-cell other">1,000만원</div>
+          <div class="cost-cell other">미지원</div>
+        </div>
+        <div class="cost-row">
+          <div class="cost-cell label">총 초기 투자</div>
+          <div class="cost-cell pamangtte">약 9,500만원</div>
+          <div class="cost-cell other">약 1억 2,000만원</div>
+          <div class="cost-cell other">약 1억원 이상</div>
         </div>
       </div>
-      <div class="cost-tbl">
-        <div class="cost-thead">
-          <span>항목</span>
-          <span style="text-align:right">금액</span>
-          <span style="text-align:right" class="cost-note">비고</span>
+      <div class="cost-benefits">
+        <div class="cost-benefit-card">
+          <span class="cost-benefit-n">01</span>
+          <div>
+            <h4 class="cost-benefit-title">가맹비 3개월 분납 가능</h4>
+            <p class="cost-benefit-desc">초기 부담을 줄일 수 있도록 가맹비를 3개월에 걸쳐 나누어 납부할 수 있습니다.</p>
+          </div>
         </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">가맹비</div><div class="cost-name-s">브랜드 사용권</div></div>
-          <div class="cost-amt">500만원</div>
-          <div class="cost-note">일회성</div>
-        </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">교육비</div><div class="cost-name-s">2주 과정 포함</div></div>
-          <div class="cost-amt">200만원</div>
-          <div class="cost-note">일회성</div>
-        </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">인테리어 공사비</div><div class="cost-name-s">표준형 기준 10평</div></div>
-          <div class="cost-amt">3,500만원~</div>
-          <div class="cost-note">면적별 상이</div>
-        </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">주방기기 및 집기</div><div class="cost-name-s">본사 협력사 구매</div></div>
-          <div class="cost-amt">2,000만원~</div>
-          <div class="cost-note">임대 가능</div>
-        </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">간판 및 사인물</div><div class="cost-name-s">외부·내부 포함</div></div>
-          <div class="cost-amt">500만원~</div>
-          <div class="cost-note">규모별 상이</div>
-        </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">초도 물품비</div><div class="cost-name-s">1개월 운영 재고</div></div>
-          <div class="cost-amt">800만원~</div>
-          <div class="cost-note">실사용 후 정산</div>
-        </div>
-        <div class="cost-tr">
-          <div><div class="cost-name">기타 / 예비비</div><div class="cost-name-s">운전 자금 포함</div></div>
-          <div class="cost-amt">1,000만원</div>
-          <div class="cost-note">권장 보유</div>
-        </div>
-        <div class="cost-total">
-          <div class="cost-total-lbl">합계 (임차 보증금 제외)</div>
-          <div class="cost-total-n">8,500만원~</div>
+        <div class="cost-benefit-card">
+          <span class="cost-benefit-n">02</span>
+          <div>
+            <h4 class="cost-benefit-title">본사 제품 40% 할인 구매</h4>
+            <p class="cost-benefit-desc">전 가맹점은 파망떼 전 제품을 정가 대비 40% 할인된 가격으로 공급받습니다.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- PROCESS -->
-<section class="sec" id="process">
-  <div class="inner">
-    <span class="eyebrow">How to Start</span>
-    <h2 class="sec-h">가맹 프로세스</h2>
-    <p class="sec-sub">단 5단계로 새없결 파트너가 되어보세요.</p>
-    <div class="proc-grid">
-      <div class="proc-line"></div>
-      <div class="proc-step done">
-        <div class="proc-num">1</div>
-        <div>
-          <div class="proc-title">온라인 상담 신청</div>
-          <p class="proc-desc">홈페이지 또는 전화로 간단한 상담 신청서 작성</p>
+<!-- TIMELINE -->
+<div id="timeline" class="reveal">
+  <div style="background:#D98E92; padding:140px 56px;">
+    <div class="timeline-inner">
+      <div class="timeline-label">PROCESS</div>
+      <h2 class="timeline-h2">가맹 절차, 5단계로 완성됩니다</h2>
+      <div class="timeline-grid">
+        <div class="timeline-step reveal-child" style="transition-delay:0ms">
+          <div class="timeline-n">01</div>
+          <h3 class="timeline-title">가맹 상담 신청</h3>
+          <p class="timeline-desc">온라인 폼 또는 전화로 상담을 신청하면 담당 매니저가 1:1로 배정됩니다.</p>
         </div>
-      </div>
-      <div class="proc-step done">
-        <div class="proc-num">2</div>
-        <div>
-          <div class="proc-title">가맹 상담 진행</div>
-          <p class="proc-desc">전담 매니저와 1:1 맞춤 상담 및 사업계획서 공유</p>
+        <div class="timeline-step reveal-child" style="transition-delay:110ms">
+          <div class="timeline-n">02</div>
+          <h3 class="timeline-title">사업설명회 참석</h3>
+          <p class="timeline-desc">브랜드 철학, 수익 모델, 지원 정책을 직접 확인하는 오프라인 설명회입니다.</p>
         </div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num">3</div>
-        <div>
-          <div class="proc-title">상권 분석 &amp; 계약</div>
-          <p class="proc-desc">입지 분석 후 가맹 계약 체결 및 독점 상권 부여</p>
+        <div class="timeline-step reveal-child" style="transition-delay:220ms">
+          <div class="timeline-n">03</div>
+          <h3 class="timeline-title">상권분석 · 입지선정</h3>
+          <p class="timeline-desc">본사 상권분석팀이 후보 입지를 데이터로 검증하고 최종 후보지를 함께 선정합니다.</p>
         </div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num">4</div>
-        <div>
-          <div class="proc-title">교육 &amp; 인테리어</div>
-          <p class="proc-desc">2주 운영 교육 이수 + 동시 인테리어 공사 진행</p>
+        <div class="timeline-step reveal-child" style="transition-delay:330ms">
+          <div class="timeline-n">04</div>
+          <h3 class="timeline-title">인테리어 · 시공</h3>
+          <p class="timeline-desc">표준 매뉴얼에 따라 설계부터 시공까지 본사가 전 과정을 관리합니다.</p>
         </div>
-      </div>
-      <div class="proc-step">
-        <div class="proc-num">5</div>
-        <div>
-          <div class="proc-title">오픈 &amp; 사후 지원</div>
-          <p class="proc-desc">본사 동행 오픈 + 초기 30일 밀착 지원 프로그램</p>
+        <div class="timeline-step reveal-child" style="transition-delay:440ms">
+          <div class="timeline-n">05</div>
+          <h3 class="timeline-title">트레이닝 · 오픈</h3>
+          <p class="timeline-desc">디자이너 교육과 오픈 마케팅을 마치면 그랜드 오픈으로 이어집니다.</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
+
+<!-- GALLERY -->
+<div id="gallery" class="reveal">
+  <div style="padding:140px 56px;">
+    <div class="gallery-inner">
+      <div class="section-label-rose">SPACE</div>
+      <h2 class="gallery-h2">매장 인테리어 · 시술 갤러리</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item reveal-child" style="transition-delay:0ms" onclick="openLightbox('파망떼 강남 플래그십점')">
+          <img src="uploads/tKt20.jpg" alt="파망떼 강남 플래그십점">
+          <div class="gallery-label">파망떼 강남 플래그십점</div>
+        </div>
+        <div class="gallery-placeholder reveal-child" style="transition-delay:110ms">
+          <span class="gallery-placeholder-tag">시술 진행 사진</span>
+        </div>
+        <div class="gallery-placeholder reveal-child" style="transition-delay:220ms">
+          <span class="gallery-placeholder-tag">제품 진열 디테일</span>
+        </div>
+        <div class="gallery-item reveal-child" style="transition-delay:330ms" onclick="openLightbox('프리미엄 인테리어')">
+          <img src="uploads/tKt20.jpg" alt="프리미엄 인테리어">
+          <div class="gallery-label">프리미엄 인테리어</div>
+        </div>
+        <div class="gallery-placeholder reveal-child" style="transition-delay:440ms">
+          <span class="gallery-placeholder-tag">상담 라운지</span>
+        </div>
+        <div class="gallery-placeholder reveal-child" style="transition-delay:550ms">
+          <span class="gallery-placeholder-tag">시그니처 컬러 결과</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div id="video" class="reveal">
+  <div style="padding:140px 56px;">
+    <div class="video-inner">
+      <div class="section-label-rose">BRAND FILM</div>
+      <h2 class="video-h2">영상으로 만나는 파망떼</h2>
+      <div class="video-placeholder" id="video-placeholder">
+        <span class="video-placeholder-tag">유튜브 영상 링크를 추가하세요</span>
+      </div>
+      <div class="video-embed-wrap" id="video-embed" style="display:none">
+        <iframe id="video-iframe" src="" title="파망떼 브랜드 영상"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- TESTIMONIALS -->
-<section class="sec" id="testimonials">
-  <div class="inner">
-    <span class="eyebrow">Partner Reviews</span>
-    <h2 class="sec-h">파트너들의 이야기</h2>
-    <p class="sec-sub">새없결과 함께하는 파트너들의 진솔한 후기를 들어보세요.</p>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">외식업 경험이 전혀 없어서 걱정이 많았는데, 본사 교육이 너무 체계적이어서 오픈하고 바로 자신감이 생겼어요. 오픈 4개월 만에 BEP를 달성했습니다.</p>
-        <div class="testi-author">
-          <div class="testi-av">👨</div>
-          <div>
-            <div class="testi-name">김○○ 대표</div>
-            <div class="testi-role">강남구 역삼점 · 2023년 오픈</div>
-          </div>
+<div id="testimonials" class="reveal">
+  <div style="background:#fff; padding:120px 56px;">
+    <div class="testimonials-inner">
+      <div class="section-label-dark">SUCCESS STORIES</div>
+      <h2 class="testimonials-h2">먼저 시작한 가맹점주의 이야기</h2>
+      <div class="testimonials-grid">
+        <div class="reveal-child" style="transition-delay:0ms">
+          <p class="testimonial-quote">"경력 없이 시작했는데, 표준화된 시스템 덕분에 6개월 만에 손익분기를 넘겼습니다."</p>
+          <div class="testimonial-name">김O영 원장</div>
+          <div class="testimonial-meta">파망떼 강남점 · 오픈 8개월차</div>
         </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">직영점처럼 본사가 적극적으로 도와줘서 놀랐어요. SNS 마케팅, 배달 최적화까지 모두 지원해줘서 매달 매출이 꾸준히 성장하고 있습니다.</p>
-        <div class="testi-author">
-          <div class="testi-av">👩</div>
-          <div>
-            <div class="testi-name">이○○ 대표</div>
-            <div class="testi-role">마포구 합정점 · 2023년 오픈</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">2호점을 준비 중입니다. 첫 가맹점이 워낙 잘 되어서 자연스럽게 확장하게 됐어요. 새없결 브랜드 파워가 정말 크다는 걸 직접 체감하고 있습니다.</p>
-        <div class="testi-author">
-          <div class="testi-av">👨‍💼</div>
-          <div>
-            <div class="testi-name">박○○ 대표</div>
-            <div class="testi-role">수원 인계점 · 2022년 오픈</div>
-          </div>
+        <div class="reveal-child" style="transition-delay:110ms">
+          <p class="testimonial-quote">"기존 미용실을 운영하다 전환했는데, 객단가가 이전보다 2배 이상 올랐어요."</p>
+          <div class="testimonial-name">이O호 원장</div>
+          <div class="testimonial-meta">파망떼 대전점 · 오픈 1년차</div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- FAQ -->
-<section class="sec" id="faq">
-  <div class="inner">
-    <div class="faq-layout">
-      <div>
-        <span class="eyebrow">FAQ</span>
-        <h2 class="sec-h">자주 묻는<br>질문들</h2>
-        <p style="color:var(--muted);line-height:1.78;margin-top:16px;font-size:15px;">더 궁금한 점은 언제든지 상담 신청을 통해 전담 매니저에게 문의하세요.</p>
-        <a class="btn-primary" href="#contact" style="margin-top:32px;display:inline-flex">상담 신청하기 →</a>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item open">
-          <div class="faq-q">외식업 경험이 없어도 창업이 가능한가요? <span class="faq-ic">+</span></div>
-          <div class="faq-a">네, 가능합니다. 새없결은 외식업 경험 없이도 누구나 운영할 수 있도록 체계적인 2주 교육 프로그램을 운영합니다. 오픈 후에도 30일 밀착 지원이 제공됩니다.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">상권 분석은 어떻게 진행되나요? <span class="faq-ic">+</span></div>
-          <div class="faq-a">본사 전문 상권분석팀이 유동인구, 경쟁점 현황, 소비자 데이터를 분석하여 최적의 입지를 추천해 드립니다. 기존 희망 입지가 있으시면 객관적인 분석 리포트를 제공합니다.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">로열티는 어떻게 산정되나요? <span class="faq-ic">+</span></div>
-          <div class="faq-a">월 매출의 3%가 로열티로 부과됩니다. 브랜드 마케팅, R&D, 전국 광고비 등에 사용됩니다. 초기 6개월은 로열티 50% 감면 혜택이 제공됩니다.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">계약 기간과 갱신 조건은? <span class="faq-ic">+</span></div>
-          <div class="faq-a">기본 계약 기간은 3년이며, 만료 후 협의를 통해 갱신이 가능합니다. 갱신 시 가맹비가 면제되며 우수 가맹점에는 추가 인센티브가 제공됩니다.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">최소 창업 면적은 얼마나 되나요? <span class="faq-ic">+</span></div>
-          <div class="faq-a">최소 7평부터 창업이 가능합니다. 배달 전문 매장은 더 작은 공간도 가능합니다. 홀 매장은 10평 이상을 권장하며 면적에 따라 비용이 달라집니다.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">원재료는 반드시 본사에서 구매해야 하나요? <span class="faq-ic">+</span></div>
-          <div class="faq-a">핵심 소스류와 특화 재료는 브랜드 품질 유지를 위해 본사 공급을 원칙으로 합니다. 채소, 육류 등 일반 식재료는 가맹점에서 지역 업체를 활용하실 수 있습니다.</div>
-        </div>
-      </div>
+<div id="faq" class="reveal">
+  <div style="padding:140px 56px;">
+    <div class="faq-inner">
+      <div class="section-label-rose">FAQ</div>
+      <h2 class="faq-h2">자주 묻는 질문</h2>
+      <details class="faq-item reveal-child" style="transition-delay:0ms">
+        <summary>미용 경력이 없어도 창업할 수 있나요?<span class="faq-icon">+</span></summary>
+        <p>네. 본사 교육센터의 120시간 표준 커리큘럼을 이수하면 경력과 무관하게 매장 운영이 가능합니다. 디자이너 채용을 원하시면 채용까지 지원합니다.</p>
+      </details>
+      <details class="faq-item reveal-child" style="transition-delay:110ms">
+        <summary>상권은 보호되나요?<span class="faq-icon">+</span></summary>
+        <p>반경 기준 상권 보호 정책을 적용하여 동일 상권 내 중복 출점을 제한합니다.</p>
+      </details>
+      <details class="faq-item reveal-child" style="transition-delay:220ms">
+        <summary>가맹비에 포함되는 항목은 무엇인가요?<span class="faq-icon">+</span></summary>
+        <p>브랜드 사용권, 초기 교육, 오픈 지원 인력 파견이 포함됩니다. 인테리어와 장비는 별도이며, 가맹비는 3개월 분납이 가능합니다.</p>
+      </details>
+      <details class="faq-item reveal-child" style="transition-delay:330ms">
+        <summary>제품은 얼마에 공급받나요?<span class="faq-icon">+</span></summary>
+        <p>전 가맹점은 파망떼 정품을 정가 대비 40% 할인된 가격으로 공급받아 수익성을 높일 수 있습니다.</p>
+      </details>
+      <details class="faq-item reveal-child" style="transition-delay:440ms">
+        <summary>투자금 회수까지 얼마나 걸리나요?<span class="faq-icon">+</span></summary>
+        <p>가맹점 평균 기준 약 5.8개월이 소요됩니다. (2025년 가맹점 평균, 예시 데이터)</p>
+      </details>
+      <details class="faq-item reveal-child" style="transition-delay:550ms">
+        <summary>본사에서 어떤 지원을 받을 수 있나요?<span class="faq-icon">+</span></summary>
+        <p>상권분석, 인테리어 시공, 오픈 마케팅, 정기 교육, 물류 공급까지 창업 전 과정을 지원합니다.</p>
+      </details>
     </div>
   </div>
-</section>
+</div>
 
-<!-- CTA -->
-<section id="contact">
-  <div class="cta-inner">
-    <div class="cta-eyebrow">Join Us Now</div>
-    <h2 class="cta-h">새없결과 함께<br>성공을 시작하세요</h2>
-    <p class="cta-sub">지금 상담을 신청하시면 전담 매니저가 48시간 내에 연락드립니다.<br>무료 상권 분석 리포트도 함께 제공됩니다.</p>
-    <div class="cta-btns">
-      <a class="cta-btn-w" href="tel:02-0000-0000">전화 상담 신청</a>
-      <a class="cta-btn-ghost" href="mailto:franchise@seupkyul.com">이메일 문의</a>
-    </div>
-    <div class="cta-contacts">
-      <div class="cta-ci">
-        <div class="cta-ci-lbl">전화</div>
-        <a class="cta-ci-val" href="tel:02-0000-0000">02-0000-0000</a>
+<!-- CONSULT -->
+<div id="consult" class="reveal">
+  <div style="background:#D98E92; padding:140px 56px;">
+    <div class="consult-inner">
+      <div>
+        <div class="consult-label">CONSULTATION</div>
+        <h2 class="consult-h2">지금 상담을 신청하고<br>파망떼의 파트너가 되세요</h2>
+        <p class="consult-desc">담당 매니저가 1:1로 배정되어 상권 분석부터 오픈까지 전 과정을 안내합니다.</p>
       </div>
-      <div class="cta-ci">
-        <div class="cta-ci-lbl">이메일</div>
-        <a class="cta-ci-val" href="mailto:franchise@seupkyul.com">franchise@seupkyul.com</a>
-      </div>
-      <div class="cta-ci">
-        <div class="cta-ci-lbl">운영 시간</div>
-        <span class="cta-ci-val">평일 09:00 – 18:00</span>
-      </div>
+      <form class="consult-form" onsubmit="return false">
+        <input type="text" placeholder="성함">
+        <input type="tel" placeholder="연락처">
+        <input type="text" placeholder="희망 지역">
+        <textarea rows="3" placeholder="문의 내용"></textarea>
+        <button type="button" class="consult-submit">상담 신청하기</button>
+      </form>
     </div>
   </div>
-</section>
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="foot-inner">
-    <div class="foot-logo">새없결</div>
-    <div class="foot-copy">© 2024 새없결. All rights reserved.</div>
-    <div class="foot-links">
-      <a href="#">개인정보처리방침</a>
-      <a href="#">이용약관</a>
-      <a href="#">사업자정보</a>
-    </div>
+  <span class="footer-copy">© 2026 PAMANGTTE. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="#">이용약관</a>
+    <a href="#">개인정보처리방침</a>
   </div>
 </footer>
 
+<!-- BACK TO TOP -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="맨 위로">↑</button>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <img id="lightbox-img" src="uploads/tKt20.jpg" alt="">
+    <div class="lightbox-label" id="lightbox-label"></div>
+  </div>
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+</div>
+
 <script>
-const mainNav = document.getElementById('mainNav');
+/* ─── INTERSECTION OBSERVER: section reveals ─── */
+const revealEls = document.querySelectorAll('.reveal');
+const childEls  = document.querySelectorAll('.reveal-child');
+let statsCounted = false;
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    el.classList.add('visible');
+
+    // also reveal children inside this section
+    el.querySelectorAll('.reveal-child').forEach(c => c.classList.add('visible'));
+
+    // stats count-up trigger
+    if (el.id === 'stats' && !statsCounted) {
+      statsCounted = true;
+      startCountUp();
+    }
+
+    obs.unobserve(el);
+  });
+}, { threshold: 0.18 });
+
+revealEls.forEach(el => obs.observe(el));
+
+/* ─── COUNT-UP ANIMATION ─── */
+function startCountUp() {
+  const duration = 1400;
+  const start = performance.now();
+  const vals = document.querySelectorAll('.stat-val');
+
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    vals.forEach(el => {
+      const target  = parseFloat(el.dataset.target);
+      const dec     = parseInt(el.dataset.decimals);
+      const current = target * eased;
+      el.textContent = dec > 0
+        ? current.toFixed(dec)
+        : Math.round(current).toLocaleString('ko-KR');
+    });
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ─── BACK TO TOP ─── */
+const topBtn = document.getElementById('back-to-top');
 window.addEventListener('scroll', () => {
-  mainNav.classList.toggle('on', window.scrollY > 40);
+  topBtn.classList.toggle('visible', window.scrollY > 700);
 }, { passive: true });
 
-const mobHam = document.getElementById('mobHam');
-const mobDrawer = document.getElementById('mobDrawer');
-mobHam.addEventListener('click', () => mobDrawer.classList.toggle('open'));
-function closeMob() { mobDrawer.classList.remove('open'); }
-
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.closest('.faq-item');
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  });
+/* ─── LIGHTBOX ─── */
+function openLightbox(label) {
+  document.getElementById('lightbox-label').textContent = label;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
 });
+
+/* ─── YOUTUBE EMBED (optional) ─── */
+(function() {
+  const youtubeUrl = 'https://www.youtube.com/watch?v=R7bO7scUO8E';
+  if (!youtubeUrl) return;
+  const patterns = [/youtu\.be\/([^?&]+)/, /[?&]v=([^?&]+)/, /embed\/([^?&]+)/, /shorts\/([^?&]+)/];
+  let ytId = null;
+  for (const p of patterns) {
+    const m = youtubeUrl.match(p);
+    if (m) { ytId = m[1]; break; }
+  }
+  if (!ytId) return;
+  const placeholder = document.getElementById('video-placeholder');
+  const embedWrap   = document.getElementById('video-embed');
+  const iframe      = document.getElementById('video-iframe');
+  if (placeholder) placeholder.style.display = 'none';
+  if (embedWrap)   embedWrap.style.display = 'block';
+  if (iframe)      iframe.src = 'https://www.youtube.com/embed/' + ytId;
+})();
 </script>
 </body>
 </html>
