@@ -210,10 +210,12 @@ nav {
 }
 .reveal-child.visible { opacity: 1; transform: translateY(0); }
 
+/* ─── SECTION WRAPPER ─── */
+.sec-wrap { padding: 80px 56px; }
+
 /* ─── PHILOSOPHY ─── */
 #philosophy {
   background: #D98E92;
-  padding: 80px 56px;
   scroll-margin-top: 96px;
 }
 .philosophy-inner {
@@ -235,7 +237,7 @@ nav {
 .philosophy-body:last-child { margin-bottom: 0; }
 
 /* ─── FEATURES ─── */
-#features { padding: 0px 56px; scroll-margin-top: 96px; }
+#features { scroll-margin-top: 96px; }
 .features-inner { max-width: 1200px; margin: 0 auto; }
 .section-label-rose {
   font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
@@ -254,7 +256,7 @@ nav {
 .feature-desc { font-size: 15.5px; font-weight: 400; line-height: 1.7; color: #a8a8ac; }
 
 /* ─── STATS ─── */
-#stats { background: #fff; padding: 0px 56px; color: #0E0E10; }
+#stats { background: #fff; color: #0E0E10; }
 .stats-inner { max-width: 1200px; margin: 0 auto; }
 .section-label-dark {
   font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
@@ -274,7 +276,7 @@ nav {
 .stats-disclaimer { font-size: 12.5px; color: #a5a5a8; margin: 44px 0 0; }
 
 /* ─── COST ─── */
-#cost { padding: 0px 56px; scroll-margin-top: 96px; }
+#cost { scroll-margin-top: 96px; }
 .cost-inner { max-width: 1200px; margin: 0 auto; }
 .cost-h2 { font-size: 44px; font-weight: 900; margin: 0 0 16px; }
 .cost-sub { font-size: 16px; color: #a8a8ac; margin: 0 0 56px; }
@@ -310,7 +312,7 @@ nav {
 .cost-benefit-desc { font-size: 14.5px; font-weight: 400; line-height: 1.6; color: #a8a8ac; }
 
 /* ─── TIMELINE ─── */
-#timeline { background: #D98E92; padding: 0px 56px; scroll-margin-top: 96px; }
+#timeline { background: #D98E92; scroll-margin-top: 96px; }
 .timeline-inner { max-width: 1200px; margin: 0 auto; }
 .timeline-label {
   font-size: 13px; font-weight: 600; letter-spacing: 0.2em;
@@ -326,7 +328,7 @@ nav {
 .timeline-desc { font-size: 14px; font-weight: 500; line-height: 1.6; color: #4a2226; }
 
 /* ─── GALLERY ─── */
-#gallery { padding: 0px 56px; }
+#gallery { scroll-margin-top: 96px; }
 .gallery-inner { max-width: 1200px; margin: 0 auto; }
 .gallery-h2 { font-size: 44px; font-weight: 900; margin: 0 0 56px; }
 .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
@@ -355,7 +357,7 @@ nav {
 }
 
 /* ─── VIDEO ─── */
-#video { padding: 0px 56px; scroll-margin-top: 96px; }
+#video { scroll-margin-top: 96px; }
 .video-inner { max-width: 1200px; margin: 0 auto; }
 .video-h2 { font-size: 44px; font-weight: 900; margin: 0 0 48px; }
 .video-placeholder {
@@ -379,7 +381,7 @@ nav {
 }
 
 /* ─── TESTIMONIALS ─── */
-#testimonials { background: #fff; padding: 0px 56px; color: #0E0E10; }
+#testimonials { background: #fff; color: #0E0E10; }
 .testimonials-inner { max-width: 1100px; margin: 0 auto; }
 .testimonials-h2 { font-size: 40px; font-weight: 900; color: #0E0E10; margin: 0 0 56px; }
 .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
@@ -391,7 +393,7 @@ nav {
 .testimonial-meta { font-size: 13.5px; font-weight: 400; color: #B96069; margin-top: 4px; }
 
 /* ─── FAQ ─── */
-#faq { padding: 0px 56px; scroll-margin-top: 96px; }
+#faq { scroll-margin-top: 96px; }
 .faq-inner { max-width: 860px; margin: 0 auto; }
 .faq-h2 { font-size: 44px; font-weight: 900; margin: 0 0 48px; }
 details.faq-item {
@@ -410,7 +412,7 @@ details.faq-item p {
 }
 
 /* ─── CONSULT ─── */
-#consult { background: #D98E92; padding: 80px 56px; scroll-margin-top: 96px; }
+#consult { background: #D98E92; scroll-margin-top: 96px; }
 .consult-inner {
   max-width: 1100px; margin: 0 auto;
   display: grid; grid-template-columns: 1fr 1fr;
@@ -503,6 +505,142 @@ footer {
   transition: transform 0.2s;
 }
 .lightbox-close:hover { transform: scale(1.08); }
+
+/* ─── RESPONSIVE: TABLET ≤ 1024px ─── */
+@media (max-width: 1024px) {
+  nav { padding: 0 32px; }
+  .hero-body { padding: 0 32px; }
+  .hero { height: 680px; }
+  .hero-h1 { font-size: 42px; }
+  .hero-desc { font-size: 17px; }
+  .opening-card { flex: 0 0 270px; width: 270px; }
+  .opening-card-img { height: 210px; }
+
+  .sec-wrap { padding: 64px 32px; }
+
+  .philosophy-h2 { font-size: 36px; }
+  .philosophy-body { font-size: 18px; }
+
+  .features-h2 { font-size: 36px; }
+  .stats-h2 { font-size: 32px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .cost-h2 { font-size: 36px; }
+  .timeline-h2 { font-size: 36px; }
+  .timeline-grid { grid-template-columns: repeat(3, 1fr); }
+  .gallery-h2 { font-size: 36px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .video-h2 { font-size: 36px; }
+  .testimonials-h2 { font-size: 32px; }
+  .faq-h2 { font-size: 36px; }
+  .consult-h2 { font-size: 32px; }
+
+  footer { padding: 40px 32px; }
+}
+
+/* ─── RESPONSIVE: MOBILE ≤ 768px ─── */
+@media (max-width: 768px) {
+  /* NAV */
+  nav { padding: 0 20px; }
+  .nav-inner { padding: 16px 0; }
+  .nav-logo { font-size: 19px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .nav-cta { font-size: 13px; padding: 9px 16px; }
+
+  /* HERO */
+  .hero { height: 100svh; min-height: 560px; }
+  .hero-body { padding: 0 20px; }
+  .hero-inner {
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 52px;
+    gap: 0;
+  }
+  .opening-card { display: none; }
+  .hero-eyebrow { margin-bottom: 16px; }
+  .hero-h1 { font-size: 30px; max-width: 100%; margin: 0 0 16px; }
+  .hero-desc { font-size: 15px; max-width: 100%; margin: 0 0 24px; }
+  .hero-btns { flex-wrap: wrap; gap: 10px; }
+  .btn-hero-primary,
+  .btn-hero-outline { font-size: 14px; padding: 13px 22px; }
+
+  /* SECTION WRAPPER */
+  .sec-wrap { padding: 56px 20px; }
+
+  /* PHILOSOPHY */
+  .philosophy-inner { grid-template-columns: 1fr; gap: 28px; }
+  .philosophy-h2 { font-size: 28px; }
+  .philosophy-body { font-size: 16px; }
+
+  /* FEATURES */
+  .features-h2 { font-size: 26px; margin: 0 0 36px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-cell { padding: 30px 22px; }
+  .feature-n { font-size: 36px; margin-bottom: 20px; }
+
+  /* STATS */
+  .stats-h2 { font-size: 24px; margin: 0 0 32px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .stat-n { font-size: 32px; }
+  .stat-suffix { font-size: 16px; }
+  .stat-label { font-size: 13px; }
+
+  /* COST */
+  .cost-h2 { font-size: 26px; }
+  .cost-sub { font-size: 14px; margin: 0 0 28px; }
+  .cost-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cost-table { min-width: 520px; }
+  .cost-cell { font-size: 14px; padding: 16px 12px; }
+  .cost-head-cell { padding: 14px 12px; font-size: 12px; }
+  .cost-benefits { grid-template-columns: 1fr; }
+
+  /* TIMELINE */
+  .timeline-h2 { font-size: 26px; margin: 0 0 36px; }
+  .timeline-grid { grid-template-columns: 1fr; gap: 28px; }
+
+  /* GALLERY */
+  .gallery-h2 { font-size: 26px; margin: 0 0 32px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-item,
+  .gallery-placeholder { height: 180px; }
+
+  /* VIDEO */
+  .video-h2 { font-size: 26px; margin: 0 0 28px; }
+
+  /* TESTIMONIALS */
+  .testimonials-h2 { font-size: 24px; margin: 0 0 32px; }
+  .testimonials-grid { grid-template-columns: 1fr; gap: 32px; }
+  .testimonial-quote { font-size: 17px; }
+
+  /* FAQ */
+  .faq-h2 { font-size: 26px; margin: 0 0 28px; }
+  details.faq-item summary { font-size: 15px; }
+
+  /* CONSULT */
+  .consult-inner { grid-template-columns: 1fr; gap: 32px; }
+  .consult-h2 { font-size: 26px; }
+  .consult-desc { font-size: 15px; }
+  .consult-form { padding: 26px 20px; }
+
+  /* FOOTER */
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 36px 20px;
+  }
+
+  /* BACK TO TOP */
+  #back-to-top { right: 16px; bottom: 20px; width: 44px; height: 44px; font-size: 17px; }
+}
+
+/* ─── RESPONSIVE: SMALL MOBILE ≤ 480px ─── */
+@media (max-width: 480px) {
+  .hero-h1 { font-size: 26px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item,
+  .gallery-placeholder { height: 200px; }
+}
 </style>
 </head>
 <body>
@@ -558,7 +696,7 @@ footer {
 
 <!-- PHILOSOPHY -->
 <div id="philosophy" class="reveal">
-  <div style="background:#D98E92; padding:80px 56px;">
+  <div class="sec-wrap" style="background:#D98E92;">
     <div class="philosophy-inner">
       <div>
         <div class="philosophy-label">BRAND PHILOSOPHY</div>
@@ -574,7 +712,7 @@ footer {
 
 <!-- FEATURES -->
 <div id="features" class="reveal">
-  <div style="padding:80px 56px;">
+  <div class="sec-wrap">
     <div class="features-inner">
       <div class="section-label-rose">TECHNOLOGY</div>
       <h2 class="features-h2">복구염색 기술력, 파망떼의 차별점</h2>
@@ -601,7 +739,7 @@ footer {
 
 <!-- STATS -->
 <div id="stats" class="reveal">
-  <div style="background:#fff; padding:80px 56px;">
+  <div class="sec-wrap" style="background:#fff;">
     <div class="stats-inner">
       <div class="section-label-dark">REVENUE MODEL</div>
       <h2 class="stats-h2">숫자로 증명하는 가맹점 수익 모델</h2>
@@ -630,7 +768,7 @@ footer {
 
 <!-- COST -->
 <div id="cost" class="reveal">
-  <div style="padding:80px 56px;">
+  <div class="sec-wrap">
     <div class="cost-inner">
       <div class="section-label-rose">INVESTMENT</div>
       <h2 class="cost-h2">창업 비용, 투명하게 비교하세요</h2>
@@ -695,7 +833,7 @@ footer {
 
 <!-- TIMELINE -->
 <div id="timeline" class="reveal">
-  <div style="background:#D98E92; padding:80px 56px;">
+  <div class="sec-wrap" style="background:#D98E92;">
     <div class="timeline-inner">
       <div class="timeline-label">PROCESS</div>
       <h2 class="timeline-h2">가맹 절차, 5단계로 완성됩니다</h2>
@@ -732,7 +870,7 @@ footer {
 
 <!-- GALLERY -->
 <div id="gallery" class="reveal">
-  <div style="padding:80px 56px;">
+  <div class="sec-wrap">
     <div class="gallery-inner">
       <div class="section-label-rose">SPACE</div>
       <h2 class="gallery-h2">매장 인테리어 · 시술 갤러리</h2>
@@ -764,7 +902,7 @@ footer {
 
 <!-- VIDEO -->
 <div id="video" class="reveal">
-  <div style="padding:80px 56px;">
+  <div class="sec-wrap">
     <div class="video-inner">
       <div class="section-label-rose">BRAND FILM</div>
       <h2 class="video-h2">영상으로 만나는 파망떼</h2>
@@ -782,7 +920,7 @@ footer {
 
 <!-- TESTIMONIALS -->
 <div id="testimonials" class="reveal">
-  <div style="background:#fff; padding:80px 56px;">
+  <div class="sec-wrap" style="background:#fff;">
     <div class="testimonials-inner">
       <div class="section-label-dark">SUCCESS STORIES</div>
       <h2 class="testimonials-h2">먼저 시작한 가맹점주의 이야기</h2>
@@ -804,7 +942,7 @@ footer {
 
 <!-- FAQ -->
 <div id="faq" class="reveal">
-  <div style="padding:80px 56px;">
+  <div class="sec-wrap">
     <div class="faq-inner">
       <div class="section-label-rose">FAQ</div>
       <h2 class="faq-h2">자주 묻는 질문</h2>
@@ -838,7 +976,7 @@ footer {
 
 <!-- CONSULT -->
 <div id="consult" class="reveal">
-  <div style="background:#D98E92; padding:80px 56px;">
+  <div class="sec-wrap" style="background:#D98E92;">
     <div class="consult-inner">
       <div>
         <div class="consult-label">CONSULTATION</div>
