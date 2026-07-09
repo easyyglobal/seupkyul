@@ -732,56 +732,17 @@ footer {
   position: fixed; inset: 0; z-index: 9999;
   background: #0E0E10;
   display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
   transition: opacity 0.55s ease-in;
 }
 #intro-overlay.fade-out { opacity: 0; pointer-events: none; }
 
-#intro-frame {
-  width: 76px; height: 76px;
-  border: 2px solid #D98E92;
-  border-radius: 20px;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0;
-  transform-origin: center center;
-  will-change: transform, opacity, border-radius;
-  transition:
-    opacity   0.32s ease,
-    transform 0.52s cubic-bezier(.76,0,.14,1),
-    border-radius 0.52s cubic-bezier(.76,0,.14,1),
-    border-color  0.2s ease;
-}
-#intro-frame.visible { opacity: 1; }
-#intro-frame.expand {
-  transform: scale(var(--intro-scale, 40));
-  border-radius: 0 !important;
-  border-color: transparent;
-}
-
-#intro-p {
-  font-family: 'Pretendard', -apple-system, sans-serif;
-  font-size: 38px; font-weight: 900; color: #D98E92;
-  opacity: 0;
-  display: block;
-  transition: opacity 0.2s;
-}
-#intro-p.visible { opacity: 1; }
-#intro-p.bounce { animation: introBounce 0.32s ease-in-out 0s 3; }
-@keyframes introBounce {
-  0%,100% { transform: translateY(0) scaleY(1); }
-  42%     { transform: translateY(-15px) scaleY(1.05); }
-  80%     { transform: translateY(-4px) scaleY(1); }
-}
-
 #intro-text {
-  position: absolute;
   font-family: 'Pretendard', -apple-system, sans-serif;
   font-size: clamp(26px, 6vw, 54px);
   font-weight: 900; letter-spacing: 0.14em;
   color: #fff;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.38s ease;
+  transition: opacity 0.5s ease;
   white-space: nowrap;
 }
 #intro-text.visible { opacity: 1; }
@@ -1221,9 +1182,6 @@ footer {
 
 <!-- INTRO OVERLAY -->
 <div id="intro-overlay">
-  <div id="intro-frame">
-    <span id="intro-p">P</span>
-  </div>
   <span id="intro-text">PAMANGTTE</span>
 </div>
 
@@ -1267,38 +1225,16 @@ window.scrollTo(0, 0);
 /* ─── INTRO ANIMATION ─── */
 (function() {
   var overlay = document.getElementById('intro-overlay');
-  var frame   = document.getElementById('intro-frame');
-  var pEl     = document.getElementById('intro-p');
   var textEl  = document.getElementById('intro-text');
   if (!overlay) return;
 
-  // scale needed: diagonal of viewport / box size, with margin
-  var diag  = Math.hypot(window.innerWidth || 375, window.innerHeight || 812);
-  var scale = Math.ceil(diag / 76) + 4;
-  overlay.style.setProperty('--intro-scale', scale);
+  // PAMANGTTE 텍스트 fade in
+  setTimeout(function() { textEl.classList.add('visible'); }, 300);
 
-  // Phase 1 – frame appears (t = 220ms)
-  setTimeout(function() { frame.classList.add('visible'); }, 220);
-
-  // Phase 2 – P fades in (t = 450ms)
-  setTimeout(function() { pEl.classList.add('visible'); }, 450);
-
-  // Phase 3 – P bounces 3x (t = 700ms, ~0.96s total)
-  setTimeout(function() { pEl.classList.add('bounce'); }, 700);
-
-  // Phase 4 – P hides, frame expands to full screen (t = 1680ms)
-  setTimeout(function() {
-    pEl.style.opacity = '0';
-    frame.classList.add('expand');
-  }, 1680);
-
-  // Phase 5 – PAMANGTTE appears (t = 1880ms)
-  setTimeout(function() { textEl.classList.add('visible'); }, 1880);
-
-  // Phase 6 – overlay fades out (t = 2500ms)
+  // 오버레이 fade out
   setTimeout(function() { overlay.classList.add('fade-out'); }, 2500);
 
-  // Phase 7 – remove from DOM (t = 3100ms)
+  // DOM 제거
   setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 3100);
 })();
 
