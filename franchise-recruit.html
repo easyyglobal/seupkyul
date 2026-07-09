@@ -44,6 +44,10 @@ details summary::-webkit-details-marker { display: none; }
   from { opacity: 0; transform: scale(0.82); }
   to   { opacity: 1; transform: scale(1); }
 }
+@keyframes slideUpIn {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
 
 /* ─── NAV ─── */
 nav {
@@ -506,6 +510,55 @@ footer {
 }
 .lightbox-close:hover { transform: scale(1.08); }
 
+/* ─── MOBILE POPUP ─── */
+.mobile-popup {
+  display: none;
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  align-items: flex-end; justify-content: center;
+  animation: overlayFadeIn 0.28s ease-out both;
+}
+.mobile-popup.open { display: flex; }
+.mobile-popup-box {
+  background: #fff; color: #0E0E10;
+  border-radius: 24px 24px 0 0;
+  width: 100%; max-height: 90svh;
+  overflow: hidden;
+  animation: slideUpIn 0.38s cubic-bezier(.16,.84,.44,1) both;
+}
+.mobile-popup-img { width: 100%; height: 220px; overflow: hidden; flex-shrink: 0; }
+.mobile-popup-img img { width: 100%; height: 100%; object-fit: cover; }
+.mobile-popup-content { padding: 20px 24px 14px; }
+.mobile-popup-badge {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  color: #B96069; margin-bottom: 8px;
+}
+.mobile-popup-name { font-size: 22px; font-weight: 800; color: #0E0E10; margin-bottom: 4px; }
+.mobile-popup-date { font-size: 14px; color: #6B6B6E; }
+.mobile-popup-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px 28px;
+  border-top: 1px solid #F0EAEA;
+}
+.mobile-popup-skip {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: #999; cursor: pointer;
+}
+.mobile-popup-skip input[type="checkbox"] {
+  accent-color: #D98E92; width: 16px; height: 16px; cursor: pointer;
+}
+.mobile-popup-close-btn {
+  background: #0E0E10; color: #fff;
+  border: none; border-radius: 999px;
+  font-size: 14px; font-weight: 700;
+  padding: 11px 24px; cursor: pointer;
+  font-family: 'Pretendard', sans-serif;
+  transition: background 0.2s;
+}
+.mobile-popup-close-btn:hover { background: #333; }
+
 /* ─── RESPONSIVE: TABLET ≤ 1024px ─── */
 @media (max-width: 1024px) {
   nav { padding: 0 32px; }
@@ -547,12 +600,12 @@ footer {
   .nav-cta { font-size: 13px; padding: 9px 16px; }
 
   /* HERO */
-  .hero { height: 100svh; min-height: 560px; }
+  .hero { height: 75vh; min-height: 500px; max-height: 680px; }
   .hero-body { padding: 0 20px; }
   .hero-inner {
     flex-direction: column;
     justify-content: flex-end;
-    padding-bottom: 52px;
+    padding-bottom: 56px;
     gap: 0;
   }
   .opening-card { display: none; }
@@ -587,8 +640,8 @@ footer {
   /* COST */
   .cost-h2 { font-size: 26px; }
   .cost-sub { font-size: 14px; margin: 0 0 28px; }
-  .cost-inner { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .cost-table { min-width: 520px; }
+  .cost-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cost-table-scroll .cost-table { min-width: 520px; }
   .cost-cell { font-size: 14px; padding: 16px 12px; }
   .cost-head-cell { padding: 14px 12px; font-size: 12px; }
   .cost-benefits { grid-template-columns: 1fr; }
@@ -599,9 +652,19 @@ footer {
 
   /* GALLERY */
   .gallery-h2 { font-size: 26px; margin: 0 0 32px; }
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-item,
-  .gallery-placeholder { height: 180px; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  /* 첫 번째·마지막 아이템: 전체 너비, 원본 비율 유지 */
+  .gallery-grid > *:first-child,
+  .gallery-grid > *:last-child {
+    grid-column: 1 / -1;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+  /* 중간 4개: 1:1 정사각형 2열 그리드 */
+  .gallery-grid > *:not(:first-child):not(:last-child) {
+    height: auto;
+    aspect-ratio: 1;
+  }
 
   /* VIDEO */
   .video-h2 { font-size: 26px; margin: 0 0 28px; }
@@ -637,9 +700,9 @@ footer {
 @media (max-width: 480px) {
   .hero-h1 { font-size: 26px; }
   .stats-grid { grid-template-columns: 1fr; }
+  /* 매우 작은 화면: 갤러리 1열, 모든 아이템 4:3 비율 */
   .gallery-grid { grid-template-columns: 1fr; }
-  .gallery-item,
-  .gallery-placeholder { height: 200px; }
+  .gallery-grid > * { aspect-ratio: 4 / 3; height: auto; grid-column: auto; }
 }
 </style>
 </head>
@@ -773,6 +836,7 @@ footer {
       <div class="section-label-rose">INVESTMENT</div>
       <h2 class="cost-h2">창업 비용, 투명하게 비교하세요</h2>
       <p class="cost-sub">33㎡(10평) 기준, 동일 조건에서의 초기 투자 비용 비교입니다.</p>
+      <div class="cost-table-scroll">
       <div class="cost-table">
         <div class="cost-head-row">
           <div class="cost-head-cell">항목</div>
@@ -811,6 +875,7 @@ footer {
           <div class="cost-cell other">약 1억원 이상</div>
         </div>
       </div>
+      </div><!-- /.cost-table-scroll -->
       <div class="cost-benefits">
         <div class="cost-benefit-card">
           <span class="cost-benefit-n">01</span>
@@ -1006,6 +1071,26 @@ footer {
 <!-- BACK TO TOP -->
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="맨 위로">↑</button>
 
+<!-- MOBILE POPUP (오픈 소식, 모바일 전용 팝업) -->
+<div id="mobile-popup" class="mobile-popup" onclick="handleMobilePopupBgClick(event)">
+  <div class="mobile-popup-box">
+    <div class="mobile-popup-img">
+      <img src="uploads/tKt20.jpg" alt="파망떼 천안점">
+    </div>
+    <div class="mobile-popup-content">
+      <div class="mobile-popup-badge">최근 가맹점 오픈 소식</div>
+      <div class="mobile-popup-name">파망떼 천안점</div>
+      <div class="mobile-popup-date">2026.10 그랜드 오픈</div>
+    </div>
+    <div class="mobile-popup-footer">
+      <label class="mobile-popup-skip">
+        <input type="checkbox" id="mobile-popup-skip-check"> 오늘 다시 안 보기
+      </label>
+      <button class="mobile-popup-close-btn" onclick="closeMobilePopup()">닫기</button>
+    </div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox()">
   <div class="lightbox-content" onclick="event.stopPropagation()">
@@ -1081,6 +1166,45 @@ function closeLightbox() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
 });
+
+/* ─── MOBILE POPUP ─── */
+(function() {
+  var STORAGE_KEY = 'pamangtte_popup_hidden';
+
+  function isMobile() { return window.innerWidth <= 768; }
+
+  function shouldShow() {
+    if (!isMobile()) return false;
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return true;
+    return saved !== new Date().toDateString();
+  }
+
+  window.closeMobilePopup = function() {
+    var popup = document.getElementById('mobile-popup');
+    if (!popup) return;
+    var check = document.getElementById('mobile-popup-skip-check');
+    if (check && check.checked) {
+      localStorage.setItem(STORAGE_KEY, new Date().toDateString());
+    }
+    popup.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  window.handleMobilePopupBgClick = function(e) {
+    if (e.target === document.getElementById('mobile-popup')) {
+      closeMobilePopup();
+    }
+  };
+
+  if (shouldShow()) {
+    var popup = document.getElementById('mobile-popup');
+    if (popup) {
+      popup.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+})();
 
 /* ─── YOUTUBE EMBED (optional) ─── */
 (function() {
