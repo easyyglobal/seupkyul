@@ -1638,7 +1638,7 @@ tr:hover td { background: rgba(232,221,192,0.07) !important; }
     </div>
     <div class="inq-tab-bar">
       <button class="inq-tab active" id="inq-tab-customer"  onclick="switchInqTab('customer',this)">👤 고객 1:1 문의</button>
-      <button class="inq-tab"        id="inq-tab-franchise" onclick="switchInqTab('franchise',this)">🏢 가맹 문의</button>
+      <button class="inq-tab"        id="inq-tab-franchise" onclick="switchInqTab('franchise',this)">🏢 가맹 문의 <span id="inq-fran-tab-badge" style="display:none;background:#C45252;color:white;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;padding:0 4px;margin-left:5px;vertical-align:middle;line-height:17px;">0</span></button>
     </div>
     <div id="inq-pane-customer"><div class="inq-empty">접수된 문의가 없습니다</div></div>
     <div id="inq-pane-franchise" style="display:none;"><div class="inq-empty">접수된 가맹 문의가 없습니다</div></div>
@@ -2565,42 +2565,95 @@ function renderAdminInquiries() {
       </div>`;
     }).join('');
   });
-  // 미답변 뱃지 업데이트
-  const pending = _getInq('customer').filter(i=>i.status==='pending').length
-                + _getInq('franchise').filter(i=>i.status==='pending').length;
+  // 미답변 뱃지 업데이트 (사이드바)
+  const custPending = _getInq('customer').filter(i=>i.status==='pending').length;
+  const franPending = _getInq('franchise').filter(i=>i.status==='pending').length;
+  const pending = custPending + franPending;
   const badge = document.getElementById('sb-inq-badge');
   if (badge) { badge.textContent = pending; badge.style.display = pending > 0 ? 'flex' : 'none'; }
+  // 가맹 문의 탭 뱃지 업데이트
+  const franTabBadge = document.getElementById('inq-fran-tab-badge');
+  if (franTabBadge) { franTabBadge.textContent = franPending; franTabBadge.style.display = franPending > 0 ? 'inline-flex' : 'none'; }
 }
 
 function openInqModal(id, type) {
   _inqId = id; _inqType = type;
   const inq = _getInq(type).find(i => i.id === id);
   if (!inq) return;
-  document.getElementById('inq-modal-title').textContent = type === 'franchise' ? '가맹 문의 내용' : '1:1 고객 문의 내용';
-  const extra = type === 'franchise'
-    ? `<div style="font-size:12px;color:#888;margin-top:6px;">희망지역: ${_esc(inq.region)} · 예산: ${_esc(inq.budget)} · 경험: ${_esc(inq.experience||'-')}</div>`
-    : `<div style="font-size:12px;color:#888;margin-top:6px;">유형: ${_esc(inq.subject)}</div>`;
-  document.getElementById('inq-modal-body').innerHTML = `
-    <div style="background:#F8F8F5;border-radius:12px;padding:16px 20px;font-size:13px;">
-      <div style="font-weight:700;color:#1A1A1A;margin-bottom:4px;">${_esc(inq.name)} · ${_esc(inq.phone||'')} · ${inq.date}</div>
-      ${extra}
-      <div style="color:#444;line-height:1.75;margin-top:10px;white-space:pre-wrap;">${_esc(inq.content)}</div>
-    </div>`;
   const replyEl = document.getElementById('inq-modal-reply');
   const btn = document.getElementById('inq-send-btn');
-  if (inq.status === 'answered') {
-    replyEl.innerHTML = `
-      <div style="background:#EDFAED;border-radius:12px;padding:14px 20px;font-size:13px;margin:14px 0 10px;">
-        <div style="font-size:11px;font-weight:700;color:#2E7D32;margin-bottom:6px;">등록된 답변 · ${inq.replyDate}</div>
-        <div style="color:#333;line-height:1.75;white-space:pre-wrap;">${_esc(inq.reply)}</div>
-      </div>
-      <textarea id="inq-reply-input" placeholder="답변을 수정하려면 입력 후 등록하세요."
-        style="width:100%;padding:12px 16px;border:1.5px solid #E0E0E0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;min-height:90px;outline:none;box-sizing:border-box;"></textarea>`;
-    btn.textContent = '답변 수정';
+
+  if (type === 'franchise') {
+    /* ── 가맹 문의: 큰 뷰 + 상태 토글 ── */
+    document.getElementById('inq-modal-title').textContent = '가맹 문의 상세';
+    document.getElementById('inq-modal-body').innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:#F8F8F5;border-radius:10px;padding:12px 16px;">
+            <div style="font-size:10px;font-weight:700;color:#999;margin-bottom:4px;letter-spacing:0.08em;">성함</div>
+            <div style="font-size:16px;font-weight:800;color:#1A1A1A;">${_esc(inq.name)}</div>
+          </div>
+          <div style="background:#F8F8F5;border-radius:10px;padding:12px 16px;">
+            <div style="font-size:10px;font-weight:700;color:#999;margin-bottom:4px;letter-spacing:0.08em;">연락처</div>
+            <div style="font-size:16px;font-weight:800;color:#1A1A1A;">${_esc(inq.phone||'-')}</div>
+          </div>
+        </div>
+        ${inq.email ? `<div style="background:#F8F8F5;border-radius:10px;padding:12px 16px;"><div style="font-size:10px;font-weight:700;color:#999;margin-bottom:4px;">이메일</div><div style="font-size:14px;color:#1A1A1A;">${_esc(inq.email)}</div></div>` : ''}
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <div style="background:#F0F4FF;border-radius:10px;padding:12px 16px;">
+            <div style="font-size:10px;font-weight:700;color:#5566AA;margin-bottom:4px;">희망 지역</div>
+            <div style="font-size:14px;font-weight:700;color:#1A1A1A;">${_esc(inq.region||'-')}</div>
+          </div>
+          <div style="background:#F0F4FF;border-radius:10px;padding:12px 16px;">
+            <div style="font-size:10px;font-weight:700;color:#5566AA;margin-bottom:4px;">예산</div>
+            <div style="font-size:13px;font-weight:700;color:#1A1A1A;">${_esc(inq.budget||'-')}</div>
+          </div>
+          <div style="background:#F0F4FF;border-radius:10px;padding:12px 16px;">
+            <div style="font-size:10px;font-weight:700;color:#5566AA;margin-bottom:4px;">경험</div>
+            <div style="font-size:13px;font-weight:700;color:#1A1A1A;">${_esc(inq.experience||'-')}</div>
+          </div>
+        </div>
+        <div style="background:#FAFAFA;border:1.5px solid #EBEBEB;border-radius:12px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#999;margin-bottom:8px;letter-spacing:0.08em;">문의 내용 및 자기소개</div>
+          <div style="font-size:15px;color:#1A1A1A;line-height:1.8;white-space:pre-wrap;">${_esc(inq.content)||'<span style="color:#bbb;font-style:italic;">작성된 내용 없음</span>'}</div>
+        </div>
+        <div style="font-size:12px;color:#bbb;text-align:right;">접수일 ${inq.date}</div>
+      </div>`;
+    if (inq.status === 'answered') {
+      replyEl.innerHTML = `<div style="background:#EDFAED;border-radius:10px;padding:12px 18px;font-size:13px;font-weight:600;color:#2E7D32;">✅ 담당자 연락 완료 처리됨 · ${inq.replyDate||''}</div>`;
+      btn.textContent = '미답변으로 되돌리기';
+      btn.style.background = '#888';
+    } else {
+      replyEl.innerHTML = '';
+      btn.textContent = '담당자 연락 완료 처리';
+      btn.style.background = '';
+    }
+    btn.onclick = toggleFranchiseStatus;
   } else {
-    replyEl.innerHTML = `<textarea id="inq-reply-input" placeholder="답변 내용을 입력하세요."
-      style="width:100%;margin-top:14px;padding:12px 16px;border:1.5px solid #E0E0E0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;min-height:120px;outline:none;box-sizing:border-box;"></textarea>`;
-    btn.textContent = '답변 등록';
+    /* ── 고객 1:1 문의: 기존 답변 시스템 ── */
+    document.getElementById('inq-modal-title').textContent = '1:1 고객 문의 내용';
+    document.getElementById('inq-modal-body').innerHTML = `
+      <div style="background:#F8F8F5;border-radius:12px;padding:16px 20px;font-size:13px;">
+        <div style="font-weight:700;color:#1A1A1A;margin-bottom:4px;">${_esc(inq.name)} · ${_esc(inq.phone||'')} · ${inq.date}</div>
+        <div style="font-size:12px;color:#888;margin-top:6px;">유형: ${_esc(inq.subject||'')}</div>
+        <div style="color:#444;line-height:1.75;margin-top:10px;white-space:pre-wrap;">${_esc(inq.content)}</div>
+      </div>`;
+    if (inq.status === 'answered') {
+      replyEl.innerHTML = `
+        <div style="background:#EDFAED;border-radius:12px;padding:14px 20px;font-size:13px;margin:14px 0 10px;">
+          <div style="font-size:11px;font-weight:700;color:#2E7D32;margin-bottom:6px;">등록된 답변 · ${inq.replyDate}</div>
+          <div style="color:#333;line-height:1.75;white-space:pre-wrap;">${_esc(inq.reply)}</div>
+        </div>
+        <textarea id="inq-reply-input" placeholder="답변을 수정하려면 입력 후 등록하세요."
+          style="width:100%;padding:12px 16px;border:1.5px solid #E0E0E0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;min-height:90px;outline:none;box-sizing:border-box;"></textarea>`;
+      btn.textContent = '답변 수정';
+    } else {
+      replyEl.innerHTML = `<textarea id="inq-reply-input" placeholder="답변 내용을 입력하세요."
+        style="width:100%;margin-top:14px;padding:12px 16px;border:1.5px solid #E0E0E0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;min-height:120px;outline:none;box-sizing:border-box;"></textarea>`;
+      btn.textContent = '답변 등록';
+    }
+    btn.style.background = '';
+    btn.onclick = submitInqReply;
   }
   document.getElementById('inqReplyModal').classList.add('open');
 }
@@ -2608,6 +2661,21 @@ function openInqModal(id, type) {
 function closeInqModal() {
   document.getElementById('inqReplyModal').classList.remove('open');
   _inqId = null; _inqType = null;
+}
+
+function toggleFranchiseStatus() {
+  const list = _getInq('franchise');
+  const idx  = list.findIndex(i => i.id === _inqId);
+  if (idx === -1) return;
+  const newStatus = list[idx].status === 'answered' ? 'pending' : 'answered';
+  list[idx].status = newStatus;
+  if (newStatus === 'answered') {
+    const d = new Date();
+    list[idx].replyDate = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  }
+  _saveInq('franchise', list);
+  closeInqModal();
+  renderAdminInquiries();
 }
 
 function submitInqReply() {
