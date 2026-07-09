@@ -678,6 +678,9 @@ footer {
   .timeline-h2 { font-size: 26px; margin: 0 0 36px; }
   .timeline-grid { grid-template-columns: 1fr; gap: 28px; }
 
+  /* HERO TEXT */
+  .hero-text-content { padding-top: 20px; }
+
   /* GALLERY */
   .gallery-h2 { font-size: 26px; margin: 0 0 32px; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
@@ -719,10 +722,22 @@ footer {
 @media (max-width: 480px) {
   .hero-h1 { font-size: 26px; }
   .stats-grid { grid-template-columns: 1fr; }
-  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
   .gallery-item,
-  .gallery-placeholder { height: 200px; }
+  .gallery-placeholder { height: 110px; }
 }
+
+/* ─── SUBMIT TOAST ─── */
+.submit-toast {
+  position: fixed; bottom: 80px; left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: #1A1A1A; color: #fff; border-radius: 14px;
+  padding: 14px 22px; font-size: 14px; font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.36); z-index: 500;
+  opacity: 0; transition: opacity 0.28s, transform 0.28s; pointer-events: none;
+  white-space: nowrap; max-width: calc(100vw - 40px); text-align: center;
+}
+.submit-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -1071,21 +1086,21 @@ footer {
         <div class="cf-row cf-row-2">
           <div class="cf-field">
             <label class="cf-label">성함 <span class="cf-req">*</span></label>
-            <input type="text" placeholder="홍길동" required>
+            <input id="cf-name" type="text" placeholder="홍길동" required>
           </div>
           <div class="cf-field">
             <label class="cf-label">연락처 <span class="cf-req">*</span></label>
-            <input type="tel" placeholder="010-0000-0000" required>
+            <input id="cf-phone" type="tel" placeholder="010-0000-0000" required maxlength="13">
           </div>
         </div>
         <div class="cf-field">
           <label class="cf-label">이메일</label>
-          <input type="email" placeholder="example@email.com">
+          <input id="cf-email" type="email" placeholder="example@email.com">
         </div>
         <div class="cf-row cf-row-2">
           <div class="cf-field">
             <label class="cf-label">희망 운영 지역 <span class="cf-req">*</span></label>
-            <select required>
+            <select id="cf-region" required>
               <option value="" disabled selected>선택해주세요</option>
               <option>서울</option>
               <option>경기</option>
@@ -1105,7 +1120,7 @@ footer {
           </div>
           <div class="cf-field">
             <label class="cf-label">예상 투자 예산 <span class="cf-req">*</span></label>
-            <select required>
+            <select id="cf-budget" required>
               <option value="" disabled selected>선택해주세요</option>
               <option>5,000만원 미만</option>
               <option>5,000만원 ~ 1억원</option>
@@ -1116,8 +1131,8 @@ footer {
         </div>
         <div class="cf-field">
           <label class="cf-label">창업 / 미용업 경험</label>
-          <select>
-            <option value="" selected>없음</option>
+          <select id="cf-experience">
+            <option value="없음" selected>없음</option>
             <option>미용업 종사 경험 있음</option>
             <option>창업 경험 있음</option>
             <option>미용업 + 창업 경험 모두 있음</option>
@@ -1125,9 +1140,9 @@ footer {
         </div>
         <div class="cf-field">
           <label class="cf-label">문의 내용 및 자기소개</label>
-          <textarea rows="4" placeholder="간단한 자기소개 및 가맹 문의 내용을 자유롭게 작성해주세요."></textarea>
+          <textarea id="cf-content" rows="4" placeholder="간단한 자기소개 및 가맹 문의 내용을 자유롭게 작성해주세요."></textarea>
         </div>
-        <button type="button" class="consult-submit">상담 신청하기</button>
+        <button type="button" class="consult-submit" id="consult-submit-btn">상담 신청하기</button>
       </form>
     </div>
   </div>
@@ -1144,6 +1159,9 @@ footer {
 
 <!-- BACK TO TOP -->
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="맨 위로">↑</button>
+
+<!-- SUBMIT TOAST -->
+<div id="submit-toast" class="submit-toast">상담 신청이 접수되었습니다. 담당 매니저가 빠르게 연락드립니다.</div>
 
 <!-- MOBILE POPUP (오픈 소식, 모바일 전용 팝업) -->
 <div id="mobile-popup" class="mobile-popup" onclick="handleMobilePopupBgClick(event)">
@@ -1278,6 +1296,87 @@ document.addEventListener('keydown', e => {
       document.body.style.overflow = 'hidden';
     }
   }
+})();
+
+/* ─── PHONE AUTO-FORMAT ─── */
+(function() {
+  var el = document.getElementById('cf-phone');
+  if (!el) return;
+  el.addEventListener('input', function() {
+    var digits = this.value.replace(/\D/g, '').slice(0, 11);
+    if (digits.length <= 3) {
+      this.value = digits;
+    } else if (digits.length <= 7) {
+      this.value = digits.slice(0, 3) + '-' + digits.slice(3);
+    } else {
+      this.value = digits.slice(0, 3) + '-' + digits.slice(3, 7) + '-' + digits.slice(7);
+    }
+  });
+})();
+
+/* ─── CONSULT FORM → ADMIN localStorage ─── */
+(function() {
+  var FRAN_INQ_KEY = 'seupkyul_franchise_inquiries';
+
+  function getList() {
+    try { return JSON.parse(localStorage.getItem(FRAN_INQ_KEY)) || []; } catch(e) { return []; }
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '.' + pad(d.getMonth()+1) + '.' + pad(d.getDate());
+  }
+
+  function showToast() {
+    var t = document.getElementById('submit-toast');
+    if (!t) return;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3500);
+  }
+
+  var btn = document.getElementById('consult-submit-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', function() {
+    var name     = document.getElementById('cf-name').value.trim();
+    var phone    = document.getElementById('cf-phone').value.trim();
+    var email    = document.getElementById('cf-email').value.trim();
+    var region   = document.getElementById('cf-region').value;
+    var budget   = document.getElementById('cf-budget').value;
+    var exp      = document.getElementById('cf-experience').value;
+    var content  = document.getElementById('cf-content').value.trim();
+
+    if (!name)   { alert('성함을 입력해주세요.');           document.getElementById('cf-name').focus();   return; }
+    if (!phone)  { alert('연락처를 입력해주세요.');         document.getElementById('cf-phone').focus();  return; }
+    if (!region) { alert('희망 운영 지역을 선택해주세요.'); document.getElementById('cf-region').focus(); return; }
+    if (!budget) { alert('예상 투자 예산을 선택해주세요.'); document.getElementById('cf-budget').focus(); return; }
+
+    var list = getList();
+    list.push({
+      id:         Date.now(),
+      name:       name,
+      phone:      phone,
+      email:      email,
+      region:     region,
+      budget:     budget,
+      experience: exp || '없음',
+      content:    content,
+      date:       todayStr(),
+      status:     'pending'
+    });
+    localStorage.setItem(FRAN_INQ_KEY, JSON.stringify(list));
+
+    /* 폼 초기화 */
+    ['cf-name','cf-phone','cf-email','cf-content'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('cf-region').value = '';
+    document.getElementById('cf-budget').value = '';
+    document.getElementById('cf-experience').value = '없음';
+
+    showToast();
+  });
 })();
 
 /* ─── YOUTUBE EMBED (optional) ─── */
