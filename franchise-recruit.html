@@ -727,6 +727,65 @@ footer {
   .gallery-placeholder { height: 110px; }
 }
 
+/* ─── INTRO OVERLAY ─── */
+#intro-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0E0E10;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.55s ease-in;
+}
+#intro-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+#intro-frame {
+  width: 76px; height: 76px;
+  border: 2px solid #D98E92;
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: transform, opacity, border-radius;
+  transition:
+    opacity   0.32s ease,
+    transform 0.52s cubic-bezier(.76,0,.14,1),
+    border-radius 0.52s cubic-bezier(.76,0,.14,1),
+    border-color  0.2s ease;
+}
+#intro-frame.visible { opacity: 1; }
+#intro-frame.expand {
+  transform: scale(var(--intro-scale, 40));
+  border-radius: 0 !important;
+  border-color: transparent;
+}
+
+#intro-p {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  font-size: 38px; font-weight: 900; color: #D98E92;
+  opacity: 0;
+  display: block;
+  transition: opacity 0.2s;
+}
+#intro-p.visible { opacity: 1; }
+#intro-p.bounce { animation: introBounce 0.32s ease-in-out 0s 3; }
+@keyframes introBounce {
+  0%,100% { transform: translateY(0) scaleY(1); }
+  42%     { transform: translateY(-15px) scaleY(1.05); }
+  80%     { transform: translateY(-4px) scaleY(1); }
+}
+
+#intro-text {
+  position: absolute;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  font-size: clamp(26px, 6vw, 54px);
+  font-weight: 900; letter-spacing: 0.14em;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s ease;
+  white-space: nowrap;
+}
+#intro-text.visible { opacity: 1; }
+
 /* ─── SUBMIT TOAST ─── */
 .submit-toast {
   position: fixed; bottom: 80px; left: 50%;
@@ -802,6 +861,24 @@ footer {
       <div>
         <p class="philosophy-body">파망떼는 손상모 복구를 감(感)이 아닌 과학으로 다룹니다. 모발 진단 데이터를 기반으로 손상 원인을 분석하고, 염색과 동시에 모발 구조를 되살리는 복구 시스템을 완성했습니다.</p>
         <p class="philosophy-body">단순히 컬러를 입히는 염색이 아니라, 시술 후에도 건강한 모발 상태가 유지되는 결과 — 그것이 파망떼가 정의하는 프리미엄입니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div id="video" class="reveal">
+  <div class="sec-wrap">
+    <div class="video-inner">
+      <div class="section-label-rose">BRAND FILM</div>
+      <h2 class="video-h2">영상으로 만나는 파망떼</h2>
+      <div class="video-placeholder" id="video-placeholder">
+        <span class="video-placeholder-tag">유튜브 영상 링크를 추가하세요</span>
+      </div>
+      <div class="video-embed-wrap" id="video-embed" style="display:none">
+        <iframe id="video-iframe" src="" title="파망떼 브랜드 영상"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -999,24 +1076,6 @@ footer {
   </div>
 </div>
 
-<!-- VIDEO -->
-<div id="video" class="reveal">
-  <div class="sec-wrap">
-    <div class="video-inner">
-      <div class="section-label-rose">BRAND FILM</div>
-      <h2 class="video-h2">영상으로 만나는 파망떼</h2>
-      <div class="video-placeholder" id="video-placeholder">
-        <span class="video-placeholder-tag">유튜브 영상 링크를 추가하세요</span>
-      </div>
-      <div class="video-embed-wrap" id="video-embed" style="display:none">
-        <iframe id="video-iframe" src="" title="파망떼 브랜드 영상"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- TESTIMONIALS -->
 <div id="testimonials" class="reveal">
   <div class="sec-wrap" style="background:#fff;">
@@ -1160,6 +1219,14 @@ footer {
 <!-- BACK TO TOP -->
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="맨 위로">↑</button>
 
+<!-- INTRO OVERLAY -->
+<div id="intro-overlay">
+  <div id="intro-frame">
+    <span id="intro-p">P</span>
+  </div>
+  <span id="intro-text">PAMANGTTE</span>
+</div>
+
 <!-- SUBMIT TOAST -->
 <div id="submit-toast" class="submit-toast">상담 신청이 접수되었습니다. 담당 매니저가 빠르게 연락드립니다.</div>
 
@@ -1193,6 +1260,48 @@ footer {
 </div>
 
 <script>
+/* ─── SCROLL TO TOP ON LOAD ─── */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+/* ─── INTRO ANIMATION ─── */
+(function() {
+  var overlay = document.getElementById('intro-overlay');
+  var frame   = document.getElementById('intro-frame');
+  var pEl     = document.getElementById('intro-p');
+  var textEl  = document.getElementById('intro-text');
+  if (!overlay) return;
+
+  // scale needed: diagonal of viewport / box size, with margin
+  var diag  = Math.hypot(window.innerWidth || 375, window.innerHeight || 812);
+  var scale = Math.ceil(diag / 76) + 4;
+  overlay.style.setProperty('--intro-scale', scale);
+
+  // Phase 1 – frame appears (t = 220ms)
+  setTimeout(function() { frame.classList.add('visible'); }, 220);
+
+  // Phase 2 – P fades in (t = 450ms)
+  setTimeout(function() { pEl.classList.add('visible'); }, 450);
+
+  // Phase 3 – P bounces 3x (t = 700ms, ~0.96s total)
+  setTimeout(function() { pEl.classList.add('bounce'); }, 700);
+
+  // Phase 4 – P hides, frame expands to full screen (t = 1680ms)
+  setTimeout(function() {
+    pEl.style.opacity = '0';
+    frame.classList.add('expand');
+  }, 1680);
+
+  // Phase 5 – PAMANGTTE appears (t = 1880ms)
+  setTimeout(function() { textEl.classList.add('visible'); }, 1880);
+
+  // Phase 6 – overlay fades out (t = 2500ms)
+  setTimeout(function() { overlay.classList.add('fade-out'); }, 2500);
+
+  // Phase 7 – remove from DOM (t = 3100ms)
+  setTimeout(function() { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 3100);
+})();
+
 /* ─── INTERSECTION OBSERVER: section reveals ─── */
 const revealEls = document.querySelectorAll('.reveal');
 const childEls  = document.querySelectorAll('.reveal-child');
