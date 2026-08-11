@@ -1225,6 +1225,8 @@ body.ticker-on .subpage-hero { padding-top: 158px; }
 body.ticker-on .mypage-hero  { padding-top: 118px; }
 body.ticker-on #page-cart section,
 body.ticker-on #page-booking-history section,
+body.ticker-on #page-order-history section,
+body.ticker-on #page-profile-edit section,
 body.ticker-on #page-inquiry section { padding-top: 130px !important; }
 
 /* ── 팝업 모달 ── */
@@ -2246,22 +2248,22 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
   </div>
 
   <div class="mypage-grid">
-    <div class="mypage-card" onclick="showPage('cart')">
-      <div class="mypage-card-ico">🛒</div>
-      <div class="mypage-card-title">장바구니</div>
-      <div class="mypage-card-sub" id="cart-count-label">0개 상품</div>
-    </div>
     <div class="mypage-card" onclick="showPage('booking-history')">
       <div class="mypage-card-ico">📅</div>
       <div class="mypage-card-title">예약 내역</div>
       <div class="mypage-card-sub">최근 예약 확인</div>
+    </div>
+    <div class="mypage-card" onclick="showPage('order-history')">
+      <div class="mypage-card-ico">📦</div>
+      <div class="mypage-card-title">주문 내역</div>
+      <div class="mypage-card-sub">배송 현황 확인</div>
     </div>
     <div class="mypage-card" onclick="showPage('inquiry')">
       <div class="mypage-card-ico">💬</div>
       <div class="mypage-card-title">1:1 문의</div>
       <div class="mypage-card-sub">문의 및 답변</div>
     </div>
-    <div class="mypage-card" onclick="alert('회원정보 수정 기능은 실제 구현 시 프로필 편집 페이지로 이동합니다.')">
+    <div class="mypage-card" onclick="showPage('profile-edit')">
       <div class="mypage-card-ico">⚙️</div>
       <div class="mypage-card-title">회원정보</div>
       <div class="mypage-card-sub">프로필 · 비밀번호</div>
@@ -2364,6 +2366,79 @@ body.ticker-on .notice-page-wrap { padding-top: 158px; }
   </section>
   <footer class="footer"><div class="footer-inner"><div class="footer-bottom" style="border-top:none;padding-top:0;">© 2026 seupkyul. All rights reserved.</div></div></footer>
 </div><!-- /page-booking-history -->
+
+
+<!-- ── 주문 내역 ── -->
+<div class="page" id="page-order-history">
+  <section style="padding:92px 24px 60px;max-width:700px;margin:0 auto;">
+    <button class="mypage-back-btn" onclick="showPage('mypage')">← 마이페이지</button>
+    <h1 style="font-size:26px;font-weight:800;color:#1A1A1A;margin-bottom:24px;">주문 내역</h1>
+    <div id="order-history-list" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="background:white;border-radius:20px;padding:40px;text-align:center;color:#bbb;font-size:13px;">불러오는 중...</div>
+    </div>
+    <div style="margin-top:24px;text-align:center;">
+      <a href="#" onclick="showPage('shop');return false;" style="display:inline-block;padding:14px 32px;background:var(--teal);color:white;font-size:14px;font-weight:700;border-radius:14px;text-decoration:none;">쇼핑몰 바로가기</a>
+    </div>
+  </section>
+  <footer class="footer"><div class="footer-inner"><div class="footer-bottom" style="border-top:none;padding-top:0;">© 2026 seupkyul. All rights reserved.</div></div></footer>
+</div><!-- /page-order-history -->
+
+
+<!-- ── 회원정보 수정 ── -->
+<div class="page" id="page-profile-edit">
+  <section style="padding:92px 24px 60px;max-width:700px;margin:0 auto;">
+    <button class="mypage-back-btn" onclick="showPage('mypage')">← 마이페이지</button>
+    <h1 style="font-size:26px;font-weight:800;color:#1A1A1A;margin-bottom:24px;">회원정보</h1>
+
+    <!-- 탭 -->
+    <div style="display:flex;border-bottom:2px solid #F3F4F6;margin-bottom:24px;" id="profile-tabs">
+      <button onclick="switchProfileTab('info')" id="profile-tab-info" style="padding:12px 20px;font-size:14px;font-weight:700;background:none;border:none;border-bottom:2px solid #1A1A1A;color:#1A1A1A;cursor:pointer;margin-bottom:-2px;font-family:inherit;">기본 정보</button>
+      <button onclick="switchProfileTab('password')" id="profile-tab-password" style="padding:12px 20px;font-size:14px;font-weight:700;background:none;border:none;border-bottom:2px solid transparent;color:#9CA3AF;cursor:pointer;margin-bottom:-2px;font-family:inherit;">비밀번호 변경</button>
+    </div>
+
+    <!-- 기본 정보 탭 -->
+    <div id="profile-info-tab">
+      <div style="background:white;border-radius:20px;padding:28px 24px;box-shadow:0 2px 14px rgba(0,0,0,0.06);">
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">이메일</label>
+          <div id="profile-email-display" style="height:52px;padding:0 16px;border-radius:14px;background:#F3F4F6;color:#9CA3AF;border:1px solid #E5E7EB;display:flex;align-items:center;font-size:15px;">—</div>
+          <p style="font-size:11px;color:#bbb;margin-top:5px;">이메일은 변경할 수 없습니다.</p>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">이름</label>
+          <input id="profile-name-input" type="text" placeholder="이름" style="width:100%;height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#FAFAF8;font-size:15px;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#1A1A1A'" onblur="this.style.borderColor='rgba(0,0,0,0.08)'">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">휴대폰 번호</label>
+          <input id="profile-phone-input" type="tel" placeholder="010-0000-0000" maxlength="13" style="width:100%;height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#FAFAF8;font-size:15px;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#1A1A1A'" onblur="this.style.borderColor='rgba(0,0,0,0.08)'" oninput="this.value=formatPhoneInput(this.value)">
+        </div>
+        <div id="profile-info-msg" style="font-size:12px;margin-bottom:12px;display:none;"></div>
+        <button onclick="saveProfileInfo()" style="width:100%;height:52px;border-radius:14px;background:#1A1A1A;color:white;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">저장하기</button>
+      </div>
+    </div>
+
+    <!-- 비밀번호 변경 탭 -->
+    <div id="profile-password-tab" style="display:none;">
+      <div style="background:white;border-radius:20px;padding:28px 24px;box-shadow:0 2px 14px rgba(0,0,0,0.06);">
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">현재 비밀번호</label>
+          <input id="profile-cur-pw" type="password" placeholder="현재 비밀번호" style="width:100%;height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#FAFAF8;font-size:15px;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#1A1A1A'" onblur="this.style.borderColor='rgba(0,0,0,0.08)'">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">새 비밀번호</label>
+          <input id="profile-new-pw" type="password" placeholder="새 비밀번호 (8자 이상)" style="width:100%;height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#FAFAF8;font-size:15px;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#1A1A1A'" onblur="this.style.borderColor='rgba(0,0,0,0.08)'">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">새 비밀번호 확인</label>
+          <input id="profile-confirm-pw" type="password" placeholder="새 비밀번호 확인" style="width:100%;height:52px;padding:0 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);background:#FAFAF8;font-size:15px;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#1A1A1A'" onblur="this.style.borderColor='rgba(0,0,0,0.08)'">
+        </div>
+        <div id="profile-pw-msg" style="font-size:12px;margin-bottom:12px;display:none;"></div>
+        <button onclick="saveProfilePassword()" style="width:100%;height:52px;border-radius:14px;background:#1A1A1A;color:white;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">비밀번호 변경</button>
+      </div>
+    </div>
+  </section>
+  <footer class="footer"><div class="footer-inner"><div class="footer-bottom" style="border-top:none;padding-top:0;">© 2026 seupkyul. All rights reserved.</div></div></footer>
+</div><!-- /page-profile-edit -->
 
 
 <!-- ── 1:1 문의 ── -->
@@ -3102,7 +3177,7 @@ function showToast(msg) {
 }
 
 function showPage(name) {
-  const authRequired = ['mypage','cart','booking-history','inquiry'];
+  const authRequired = ['mypage','cart','booking-history','order-history','inquiry','profile-edit'];
   if (authRequired.includes(name) && !auth.user) { openAuthModal('login'); auth._pendingCb = () => showPage(name); return; }
   if (name === 'mypage' && auth.user) {
     const initials = auth.user.name.charAt(0);
@@ -3118,10 +3193,12 @@ function showPage(name) {
     a.classList.toggle('nav-active', a.dataset.page === name);
   });
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (name === 'cart')    renderCartPage();
-  if (name === 'shop')    renderShopPage();
-  if (name === 'notices') renderNoticesPage();
-  if (name === 'inquiry') renderCustomerInquiryHistory();
+  if (name === 'cart')          renderCartPage();
+  if (name === 'shop')          renderShopPage();
+  if (name === 'notices')       renderNoticesPage();
+  if (name === 'inquiry')       renderCustomerInquiryHistory();
+  if (name === 'order-history') renderOrderHistoryPage();
+  if (name === 'profile-edit')  renderProfileEditPage();
   const ffWrap = document.getElementById('franchiseFloat');
   if (ffWrap) {
     if (name === 'franchise') {
@@ -4150,6 +4227,141 @@ async function renderBookingHistoryPage() {
         ${r.payment_amount?(r.payment_amount.toLocaleString()+'원 (현장 결제)'):''}
       </div>
     </div>`).join('');
+}
+
+/* ── 주문 내역 ── */
+async function renderOrderHistoryPage() {
+  const el = document.getElementById('order-history-list');
+  if (!el) return;
+  if (!auth.user) { el.innerHTML = '<div style="background:white;border-radius:20px;padding:40px;text-align:center;color:#bbb;font-size:13px;">로그인 후 확인 가능합니다</div>'; return; }
+  el.innerHTML = '<div style="background:white;border-radius:20px;padding:40px;text-align:center;color:#bbb;font-size:13px;">불러오는 중...</div>';
+
+  const { data } = await window.db.from('b2c_orders')
+    .select('id, order_no, status, total_amount, carrier, tracking_number, created_at, b2c_order_items(product_name, quantity, unit_price, subtotal)')
+    .eq('customer_id', auth.user.id)
+    .neq('status', 'payment_pending')
+    .order('created_at', { ascending: false })
+    .limit(30);
+
+  const list = data || [];
+  if (!list.length) {
+    el.innerHTML = '<div style="background:white;border-radius:20px;padding:48px;text-align:center;"><div style="font-size:40px;margin-bottom:12px;">📦</div><div style="font-size:14px;font-weight:700;color:#888;margin-bottom:6px;">주문 내역이 없습니다</div><div style="font-size:12px;color:#bbb;">쇼핑몰에서 제품을 구매해보세요.</div></div>';
+    return;
+  }
+
+  const statusLabel = { paid:'결제완료', preparing:'배송준비중', shipping:'배송중', delivered:'배송완료', cancelled:'취소/환불' };
+  const statusColor = { paid:'#4A9A6A', preparing:'#D97706', shipping:'#2563EB', delivered:'#6B7280', cancelled:'#EF4444' };
+  const statusBg    = { paid:'rgba(74,154,106,0.10)', preparing:'#FFFBEB', shipping:'#EFF6FF', delivered:'#F3F4F6', cancelled:'#FEF2F2' };
+  const steps = ['paid','preparing','shipping','delivered'];
+
+  el.innerHTML = list.map(order => {
+    const items = Array.isArray(order.b2c_order_items) ? order.b2c_order_items : [];
+    const label = items.length === 0 ? '-' : items.length === 1
+      ? `${items[0].product_name} ×${items[0].quantity}`
+      : `${items[0].product_name} 외 ${items.length-1}건`;
+    const dateStr = new Date(order.created_at).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+    const stIdx = steps.indexOf(order.status);
+    const stepBar = steps.map((s, i) => {
+      const done = i <= stIdx;
+      const lbl = statusLabel[s] || s;
+      const circle = `<div style="width:12px;height:12px;border-radius:50%;border:2px solid ${done?'#1A1A1A':'#D1D5DB'};background:${done?'#1A1A1A':'white'};flex-shrink:0;"></div>`;
+      const text = `<div style="font-size:10px;margin-top:4px;font-weight:600;color:${done?'#1A1A1A':'#9CA3AF'};white-space:nowrap;">${lbl}</div>`;
+      const line = i < steps.length-1 ? `<div style="flex:1;height:2px;background:${i<stIdx?'#1A1A1A':'#E5E7EB'};margin-top:-14px;"></div>` : '';
+      return `<div style="display:flex;flex-direction:column;align-items:center;">${circle}${text}</div>${line}`;
+    }).join('');
+    const trackInfo = order.tracking_number
+      ? `<div style="font-size:11px;color:#9CA3AF;margin-top:10px;font-family:monospace;">${order.carrier||''} · ${order.tracking_number}</div>`
+      : '';
+    const cancelled = order.status === 'cancelled';
+    return `
+      <div style="background:white;border-radius:20px;padding:20px 22px;box-shadow:0 2px 14px rgba(0,0,0,0.06);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:11px;color:#9CA3AF;font-family:monospace;">${order.order_no}</span>
+          <span style="font-size:11px;font-weight:700;color:#9CA3AF;">${dateStr}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:${cancelled?'0':'14px'};">
+          <div style="font-size:14px;font-weight:800;color:#1A1A1A;flex:1;">${label}</div>
+          <div style="text-align:right;flex-shrink:0;margin-left:12px;">
+            <div style="font-size:14px;font-weight:800;color:#1A1A1A;">${order.total_amount?.toLocaleString()}원</div>
+            <div style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;background:${statusBg[order.status]||'#F3F4F6'};color:${statusColor[order.status]||'#6B7280'};">${statusLabel[order.status]||order.status}</div>
+          </div>
+        </div>
+        ${cancelled ? '' : `<div style="display:flex;align-items:flex-start;gap:0;">${stepBar}</div>${trackInfo}`}
+      </div>`;
+  }).join('');
+}
+
+/* ── 회원정보 수정 ── */
+function renderProfileEditPage() {
+  const emailEl = document.getElementById('profile-email-display');
+  const nameEl  = document.getElementById('profile-name-input');
+  const phoneEl = document.getElementById('profile-phone-input');
+  if (emailEl && auth.user) emailEl.textContent = auth.user.email || '—';
+  if (nameEl  && auth.user) nameEl.value  = auth.user.name  || '';
+  if (phoneEl && auth.user) phoneEl.value = formatPhoneInput(auth.user.phone || '');
+}
+
+function switchProfileTab(tab) {
+  const infoTab = document.getElementById('profile-info-tab');
+  const pwTab   = document.getElementById('profile-password-tab');
+  const infoBtn = document.getElementById('profile-tab-info');
+  const pwBtn   = document.getElementById('profile-tab-password');
+  if (tab === 'info') {
+    infoTab.style.display = ''; pwTab.style.display = 'none';
+    infoBtn.style.borderBottomColor = '#1A1A1A'; infoBtn.style.color = '#1A1A1A';
+    pwBtn.style.borderBottomColor   = 'transparent'; pwBtn.style.color = '#9CA3AF';
+  } else {
+    infoTab.style.display = 'none'; pwTab.style.display = '';
+    pwBtn.style.borderBottomColor   = '#1A1A1A'; pwBtn.style.color = '#1A1A1A';
+    infoBtn.style.borderBottomColor = 'transparent'; infoBtn.style.color = '#9CA3AF';
+  }
+}
+
+function formatPhoneInput(v) {
+  const d = v.replace(/\D/g, '').slice(0, 11);
+  if (d.length < 4) return d;
+  if (d.length < 8) return d.slice(0,3) + '-' + d.slice(3);
+  return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
+}
+
+async function saveProfileInfo() {
+  const name  = document.getElementById('profile-name-input')?.value?.trim();
+  const phone = document.getElementById('profile-phone-input')?.value?.replace(/\D/g,'');
+  const msgEl = document.getElementById('profile-info-msg');
+  if (!name) { showProfileMsg(msgEl, '이름을 입력해주세요.', false); return; }
+  const { error } = await window.db.from('users').update({ name, phone }).eq('id', auth.user.id);
+  if (error) { showProfileMsg(msgEl, '저장 중 오류가 발생했습니다.', false); return; }
+  await window.db.auth.updateUser({ data: { name, phone } });
+  auth.user.name  = name;
+  auth.user.phone = phone;
+  showProfileMsg(msgEl, '프로필이 저장되었습니다.', true);
+}
+
+async function saveProfilePassword() {
+  const curPw     = document.getElementById('profile-cur-pw')?.value;
+  const newPw     = document.getElementById('profile-new-pw')?.value;
+  const confirmPw = document.getElementById('profile-confirm-pw')?.value;
+  const msgEl     = document.getElementById('profile-pw-msg');
+  if (!curPw || !newPw || !confirmPw) { showProfileMsg(msgEl, '모든 항목을 입력해주세요.', false); return; }
+  if (newPw !== confirmPw) { showProfileMsg(msgEl, '새 비밀번호가 일치하지 않습니다.', false); return; }
+  if (newPw.length < 8)   { showProfileMsg(msgEl, '비밀번호는 8자 이상이어야 합니다.', false); return; }
+  const { error: signErr } = await window.db.auth.signInWithPassword({ email: auth.user.email, password: curPw });
+  if (signErr) { showProfileMsg(msgEl, '현재 비밀번호가 올바르지 않습니다.', false); return; }
+  const { error } = await window.db.auth.updateUser({ password: newPw });
+  if (error) { showProfileMsg(msgEl, '비밀번호 변경 중 오류가 발생했습니다.', false); return; }
+  document.getElementById('profile-cur-pw').value = '';
+  document.getElementById('profile-new-pw').value = '';
+  document.getElementById('profile-confirm-pw').value = '';
+  showProfileMsg(msgEl, '비밀번호가 변경되었습니다.', true);
+}
+
+function showProfileMsg(el, msg, ok) {
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = ok ? '#4A9A6A' : '#EF4444';
+  el.style.display = 'block';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.display = 'none'; }, 3000);
 }
 
 /* ── 공지/팝업 (Supabase) ── */
